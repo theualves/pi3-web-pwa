@@ -3,16 +3,18 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="text-white flex flex-col">
-      <div>
+    <header className="text-white flex flex-col w-full bg-[#f2f2f2]">
+      <div className='max-w-[1500px] mx-auto w-full flex p-4 justify-between'>
+      <div className=''>
         <Image src="/logo.png" alt="Logo" width={80} height={80} />
       </div>
 
-      <nav className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold">
-          My App
+      <nav className="container mx-auto flex items-center">
+        <Link href="/" className="text-xl">
+          Contato
         </Link>
       </nav>
+      </div>
 
       <div className="h-[6px] w-full bg-orange-500" />
     </header>

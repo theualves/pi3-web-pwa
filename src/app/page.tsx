@@ -9,13 +9,13 @@ export default function Home() {
     <div>
       <Header />
       <Banner />
-      <h1 className="text-2xl font-semibold">Cadastre, acompanhe e valide atividades de forma rápida e organizada.</h1>
+      <h1 className="text-2xl font-semibold mt-[60]">Cadastre, acompanhe e valide atividades de forma rápida e organizada.</h1>
       <div className="flex justify-center w-full mt-6">
         <Button
           className="mt-4"
           onClick={() => alert("O Shadcn está funcionando")}
         >
-          Click me
+          Entrar
         </Button>
       </div>
     </div>
