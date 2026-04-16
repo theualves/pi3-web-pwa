@@ -10,7 +10,7 @@ export default function Header() {
       </div>
 
       <nav className="flex items-center">
-        <Link href="/" className="text-xl">
+        <Link href="https://www.pe.senac.br/contato/" className="text-xl text-[#014A8E] hover:text-orange-500 transition-all duration-300 ease-in-out">
           Contato
         </Link>
       </nav>
