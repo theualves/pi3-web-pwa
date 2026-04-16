@@ -1,23 +1,31 @@
 "use client";
 
 import Banner from "@/components/Banner";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <Banner />
-      <h1 className="text-2xl font-semibold mt-[60]">Cadastre, acompanhe e valide atividades de forma rápida e organizada.</h1>
-      <div className="flex justify-center w-full mt-6">
-        <Button
-          className="mt-4"
-          onClick={() => alert("O Shadcn está funcionando")}
-        >
-          Entrar
-        </Button>
-      </div>
+      <main className="flex-grow">
+        <Banner />
+        <h1 className="max-w-[1500px] mx-auto text-2xl font-semibold mt-[60px]">
+          Cadastre, acompanhe e valide atividades <br /> de forma rápida e
+          organizada.
+        </h1>
+        <div className="flex justify-center w-full mt-6">
+          <Button
+            variant="senac"
+            className="my-[60px]"
+          >
+            <Link href="/login">Entrar</Link>
+          </Button>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }
