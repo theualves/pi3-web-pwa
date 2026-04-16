@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
+import  Link  from "next/link";
 
 export default function Login() {
   return (
@@ -68,7 +69,14 @@ export default function Login() {
                 />
               </div>
 
-              <Button variant="senac">Entrar</Button>
+              <Button variant="senac" className="mt-4">
+                Entrar
+              </Button>
+
+              <Link href="/esqueci-senha" className="text-sm text-center block text-[#004A8D] hover:underline mt-2">
+                Esqueci minha senha
+              </Link>
+
             </form>
           </CardContent>
         </Card>
