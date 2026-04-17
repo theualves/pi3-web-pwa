@@ -73,14 +73,14 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: oklch(0.368 0.142 253.5); /* Seu azul #014A8E */
+  --sidebar-foreground: oklch(0.985 0 0); /* Texto Branco */
+  --sidebar-primary: oklch(0.627 0.194 40.8); /* Laranja para destaque */
+  --sidebar-primary-foreground: oklch(0.985 0 0); /* Texto Branco no destaque */
+  --sidebar-accent: oklch(0.627 0.194 40.8); /* Azul levemente mais claro para o hover */
+  --sidebar-accent-foreground: oklch(0.985 0 0); /* Texto Branco no hover */
+  --sidebar-border: oklch(0.300 0.142 253.5); /* Borda num tom de azul mais escuro */
+  --sidebar-ring: oklch(0.627 0.194 40.8); /* Anel de foco laranja */
 }
 
 .dark {
