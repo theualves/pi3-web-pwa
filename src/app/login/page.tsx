@@ -46,13 +46,13 @@ export default function Login() {
               <div>
                 <Select>
                   <SelectTrigger className="w-full h-12 text-base text-slate-600">
-                    <SelectValue placeholder="Selecione seu perfil"></SelectValue>
-                    <SelectContent>
-                      <SelectItem value="aluno">Aluno</SelectItem>
-                      <SelectItem value="coordernador">Coordenador</SelectItem>
-                      <SelectItem value="gestor">Gestor</SelectItem>
-                    </SelectContent>
+                    <SelectValue placeholder="Selecione seu perfil" />
                   </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="aluno">Aluno</SelectItem>
+                    <SelectItem value="coordernador">Coordenador</SelectItem>
+                    <SelectItem value="gestor">Gestor</SelectItem>
+                  </SelectContent>
                 </Select>
               </div>
 
@@ -69,11 +69,11 @@ export default function Login() {
                 />
               </div>
 
-              <Link href="/home">
-                <Button variant="senac" className="mt-4">
+              <Button variant="senac" className="w-full h-12 mt-4 text-lg" asChild>
+                <Link href="/home">
                   Entrar
-                </Button>
-              </Link>
+                </Link>
+              </Button>
 
               <Link
                 href="/esqueci-senha"
