@@ -1,5 +1,7 @@
 import { DataTable } from "@/components/DataTable";
 import { buscarAtividadesRecentes } from "@/services/atividadesService";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function AtividadesPage() {
   const atividadesAPI = await buscarAtividadesRecentes();
@@ -20,18 +22,25 @@ export default async function AtividadesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Cabeçalho da Página */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Gerenciamento de Atividades</h1>
-          <p className="text-slate-500">Visualize e administre as horas complementares enviadas.</p>
+          <h1 className="text-2xl font-bold text-slate-800">
+            Atividades enviadas
+          </h1>
         </div>
-        
         {/* Espaço reservado para um futuro botão de "Nova Atividade" ou "Exportar" */}
+        <div className="flex gap-4">
+          <Button variant="outline">
+            <Link href="/login">Buscar uma atividade</Link>
+          </Button>
+
+          <Button variant="outline">
+            <Link href="/login">Validar uma atividade</Link>
+          </Button>
+        </div>
       </div>
 
-      {/* Tabela de Atividades */}
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200">
         <DataTable columns={colunas} data={dadosFormatados} />
       </div>
     </div>

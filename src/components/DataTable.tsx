@@ -21,7 +21,6 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   
-  // Função auxiliar para pintar as etiquetas baseadas no texto
   const renderStatusBadge = (status: string) => {
     switch (status) {
       case "Aprovado":
@@ -43,21 +42,20 @@ export function DataTable({ columns, data }: DataTableProps) {
           </Badge>
         );
       default:
-        // Caso venha um status não mapeado, renderiza uma badge cinza padrão
         return <Badge variant="secondary">{status}</Badge>;
     }
   };
 
   return (
-    <div className="rounded-md bg-white overflow-hidden">
+    <div className="rounded-md bg-[#EDEDED] overflow-hidden">
       <Table>
         <TableHeader>
           {/* Cabeçalho com fundo cinza super claro para destacar do corpo */}
-          <TableRow className="bg-slate-50 hover:bg-slate-50">
+          <TableRow className="bg-[#F28322] hover:bg-[#F28322]">
             {columns.map((col) => (
               <TableHead 
                 key={col.accessor} 
-                className="font-semibold text-slate-600 h-12"
+                className="font-semibold text-white h-12"
               >
                 {col.header}
               </TableHead>
@@ -70,10 +68,6 @@ export function DataTable({ columns, data }: DataTableProps) {
               <TableRow key={rowIndex}>
                 {columns.map((col) => (
                   <TableCell key={col.accessor} className="py-4 align-middle">
-                    
-                    {/* A MÁGICA ACONTECE AQUI: 
-                        Se a coluna for "status", em vez de mostrar o texto simples, 
-                        chamamos a função que desenha a etiqueta colorida. */}
                     {col.accessor === "status" 
                       ? renderStatusBadge(row[col.accessor]) 
                       : row[col.accessor]}
@@ -83,7 +77,6 @@ export function DataTable({ columns, data }: DataTableProps) {
               </TableRow>
             ))
           ) : (
-            // Tratamento elegante caso a tabela não tenha dados
             <TableRow>
               <TableCell 
                 colSpan={columns.length} 

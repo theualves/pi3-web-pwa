@@ -1,5 +1,3 @@
-
-
 export interface Atividade {
   id: string;
   estudante: string;

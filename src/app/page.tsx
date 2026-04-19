@@ -21,7 +21,7 @@ export default function Home() {
             variant="senac"
             className="my-[60px]"
           >
-            <Link href="/login">Entrar</Link>
+            <Link href="/login" className="text-xl">Entrar</Link>
           </Button>
         </div>
       </main>

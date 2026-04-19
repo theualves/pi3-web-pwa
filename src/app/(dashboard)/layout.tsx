@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import Header from "@/components/Header";
 import AppSidebar from "@/components/App-sidebar";
 
@@ -9,12 +9,11 @@ export default function DashboardLayout({
 }>) {
   return (
     <SidebarProvider>
+      
+      {/* 1. A Sidebar agora será auto-suficiente e cuidará do seu próprio botão */}
       <AppSidebar />
 
-      <div className="bg-[#EDEDED] flex flex-col border-r border-slate-200 w-14 items-center py-4 min-h-screen shadow-sm z-10">
-        <SidebarTrigger />
-      </div>
-      
+      {/* 2. Área principal de conteúdo */}
       <main className="flex-1 flex flex-col w-full bg-slate-50 min-h-screen">
         <div className="border-b border-slate-200 bg-white flex items-center min-h-[64px]">
           <Header isLoggedIn={true} />
@@ -22,6 +21,7 @@ export default function DashboardLayout({
 
         <div className="p-6 flex-1">{children}</div>
       </main>
+      
     </SidebarProvider>
   );
 }

@@ -8,10 +8,10 @@ interface HeaderProps {
 
 export default function Header({ isLoggedIn = false }: HeaderProps) {
   return (
-    <header className="flex flex-col w-full bg-[#f2f2f2]">
-      <div className="max-w-[1500px] mx-auto w-full flex p-4 justify-between items-center">
+    <header className="flex flex-col w-full">
+      <div className="max-w-[1220px] mx-auto w-full flex p-4 justify-between items-center">
         <div className="">
-          <Image src="/logo.png" alt="Logo" width={80} height={80} />
+          <Image src="/logo.svg" alt="Logo" width={100} height={100} />
         </div>
 
         <nav className="flex items-center">
@@ -27,7 +27,7 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
         </nav>
       </div>
 
-      <div className="h-[6px] w-full bg-orange-500" />
+      <div className="h-[6px] w-full bg-[#F19100]" />
     </header>
   );
 }
