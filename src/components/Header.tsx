@@ -27,7 +27,7 @@ export default function Header({ isLoggedIn = false }: HeaderProps) {
         </nav>
       </div>
 
-      <div className="h-[6px] w-full bg-[#F19100]" />
+      <div className="h-[5px] w-full bg-[#F19100]" />
     </header>
   );
 }

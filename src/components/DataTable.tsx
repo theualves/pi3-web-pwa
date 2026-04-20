@@ -7,8 +7,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button"; // Importação adicionada
+import { Eye, Pencil, Trash2 } from "lucide-react";
 
-// Definimos o contrato do que cada coluna precisa ter
 export interface Column {
   header: string;
   accessor: string;
@@ -16,11 +17,10 @@ export interface Column {
 
 interface DataTableProps {
   columns: Column[];
-  data: any[]; // Em um cenário 100% tipado, usaríamos um Generic <T> aqui
+  data: any[];
 }
 
 export function DataTable({ columns, data }: DataTableProps) {
-  
   const renderStatusBadge = (status: string) => {
     switch (status) {
       case "Aprovado":
@@ -50,13 +50,9 @@ export function DataTable({ columns, data }: DataTableProps) {
     <div className="rounded-md bg-[#EDEDED] overflow-hidden">
       <Table>
         <TableHeader>
-          {/* Cabeçalho com fundo cinza super claro para destacar do corpo */}
           <TableRow className="bg-[#F28322] hover:bg-[#F28322]">
             {columns.map((col) => (
-              <TableHead 
-                key={col.accessor} 
-                className="font-semibold text-white h-12"
-              >
+              <TableHead key={col.accessor} className="font-semibold text-white h-12">
                 {col.header}
               </TableHead>
             ))}
@@ -68,21 +64,32 @@ export function DataTable({ columns, data }: DataTableProps) {
               <TableRow key={rowIndex}>
                 {columns.map((col) => (
                   <TableCell key={col.accessor} className="py-4 align-middle">
-                    {col.accessor === "status" 
-                      ? renderStatusBadge(row[col.accessor]) 
-                      : row[col.accessor]}
-
+                    {/* Lógica unificada para evitar duplicidade */}
+                    {col.accessor === "acoes" ? (
+                      <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-[#004A8D]">
+                          <Eye className="size-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-amber-600">
+                          <Pencil className="size-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-red-600">
+                          <Trash2 className="size-4" />
+                        </Button>
+                      </div>
+                    ) : col.accessor === "status" ? (
+                      renderStatusBadge(row[col.accessor])
+                    ) : (
+                      row[col.accessor]
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell 
-                colSpan={columns.length} 
-                className="h-24 text-center text-slate-500"
-              >
-                Nenhum registo encontrado.
+              <TableCell colSpan={columns.length} className="h-24 text-center text-slate-500">
+                Nenhum registro encontrado.
               </TableCell>
             </TableRow>
           )}

@@ -31,7 +31,7 @@ export default function Login() {
           <CardHeader className="flex flex-col items-center justify-center text-center">
             <div className="flex justify-center mb-4">
               <Image
-                src="/logo.png"
+                src="/logo.svg"
                 alt="Logo"
                 width={140}
                 height={140}
