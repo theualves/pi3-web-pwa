@@ -22,7 +22,7 @@ export default function DashboardLayout({
           {children}
         </div>
 
-        <footer className="bg-[#002d63] text-white py-4 text-center text-sm">
+        <footer className="bg-[#0165AA] text-white py-4 text-center text-sm">
           <p>© {new Date().getFullYear()} - Todos os direitos reservados</p>
         </footer>
       </main>
