@@ -1,6 +1,6 @@
 import { DataTable } from "@/components/DataTable";
 import { buscarEstudantes } from "@/services/estudanteService";
-import { Button } from "@/components/ui/button";
+import  NovoEstudanteModal  from "@/components/NovoEstudanteModal";
 
 export default async function EstudantePage() {
   const estudantes = await buscarEstudantes();
@@ -20,9 +20,7 @@ export default async function EstudantePage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Estudantes</h1>
         </div>
-        <Button variant="senac" className="gap-2">
-          Novo Estudante
-        </Button>
+        <NovoEstudanteModal />
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
