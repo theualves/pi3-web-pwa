@@ -1,7 +1,6 @@
 import { DataTable } from "@/components/DataTable";
 import { buscarEstudantes } from "@/services/estudanteService";
 import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
 
 export default async function EstudantePage() {
   const estudantes = await buscarEstudantes();
