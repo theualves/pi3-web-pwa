@@ -11,12 +11,12 @@ export default function DashboardLayout({
     <SidebarProvider>
       <AppSidebar />
 
-      <main className="flex-1 flex flex-col w-full min-h-screen">
+      <main className="flex-1 flex flex-col w-full min-h-screen bg-[#F7F7FB]">
         <div className="border-b border-slate-200 bg-white flex items-center min-h-[64px]">
           <Header isLoggedIn={true} />
         </div>
 
-        <div className="p-6 flex-1 w-full max-w-[1220px] mx-auto">
+        <div className="p-6 flex-1 w-full max-w-[1400px] mx-auto ">
           {children}
         </div>
 //#0165AA

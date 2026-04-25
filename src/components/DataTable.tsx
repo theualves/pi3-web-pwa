@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -7,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button"; // Importação adicionada
+import { Button } from "@/components/ui/button";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 
 export interface Column {
@@ -18,9 +20,10 @@ export interface Column {
 interface DataTableProps {
   columns: Column[];
   data: any[];
+  onViewClick?: (row: any) => void;
 }
 
-export function DataTable({ columns, data }: DataTableProps) {
+export function DataTable({ columns, data, onViewClick }: DataTableProps) {
   const renderStatusBadge = (status: string) => {
     switch (status) {
       case "Aprovado":
@@ -52,7 +55,10 @@ export function DataTable({ columns, data }: DataTableProps) {
         <TableHeader>
           <TableRow className="bg-[#F28322] hover:bg-[#F28322]">
             {columns.map((col) => (
-              <TableHead key={col.accessor} className="font-semibold text-white h-12">
+              <TableHead
+                key={col.accessor}
+                className="font-semibold text-white h-12"
+              >
                 {col.header}
               </TableHead>
             ))}
@@ -64,17 +70,16 @@ export function DataTable({ columns, data }: DataTableProps) {
               <TableRow key={rowIndex}>
                 {columns.map((col) => (
                   <TableCell key={col.accessor} className="py-4 align-middle">
-                    {/* Lógica unificada para evitar duplicidade */}
                     {col.accessor === "acoes" ? (
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-[#004A8D]">
-                          <Eye className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-amber-600">
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-red-600">
-                          <Trash2 className="size-4" />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="bg-white text-slate-500 text-slate-500 hover:text-[#004A8D]"
+                          onClick={() => onViewClick && onViewClick(row)}
+                        >
+                          <Eye className="size-4 mr-2" />
+                          Visualizar
                         </Button>
                       </div>
                     ) : col.accessor === "status" ? (
@@ -88,7 +93,10 @@ export function DataTable({ columns, data }: DataTableProps) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center text-slate-500">
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 text-center text-slate-500"
+              >
                 Nenhum registro encontrado.
               </TableCell>
             </TableRow>

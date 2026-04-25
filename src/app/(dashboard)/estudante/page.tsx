@@ -11,7 +11,7 @@ export default async function EstudantePage() {
     { header: "Período", accessor: "periodo" },
     { header: "Horas Registradas", accessor: "horasRegistradas" },
     { header: "Status", accessor: "status" },
-    { header: "Ações", accessor: "acoes" }, // Coluna especial
+    { header: "Ações", accessor: "acoes" }, 
   ];
 
   return (

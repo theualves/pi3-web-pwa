@@ -1,23 +1,15 @@
-import { DataTable } from "@/components/DataTable";
 import { buscarAtividadesRecentes } from "@/services/atividadesService";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { TabelaAtividadesClient } from "@/components/TabelaAtividadesClient";
 
 export default async function AtividadesPage() {
   const atividadesAPI = await buscarAtividadesRecentes();
 
-  const colunas = [
-    { header: "Estudante", accessor: "estudante" },
-    { header: "Categoria e Carga Horária", accessor: "categoriaCarga" },
-    { header: "Período", accessor: "periodo" },
-    { header: "Status", accessor: "status" },
-  ];
-
+  // Mapeando e garantindo que o resto dos dados (...atividade) passe adiante
   const dadosFormatados = atividadesAPI.map((atividade) => ({
-    estudante: atividade.estudante,
+    ...atividade,
     categoriaCarga: `${atividade.categoria} (${atividade.cargaHoraria}h)`,
-    periodo: atividade.periodo,
-    status: atividade.status,
   }));
 
   return (
@@ -28,20 +20,18 @@ export default async function AtividadesPage() {
             Atividades enviadas
           </h1>
         </div>
-        {/* Espaço reservado para um futuro botão de "Nova Atividade" ou "Exportar" */}
         <div className="flex gap-4">
-          <Button variant="outline">
+          <Button variant="outline" asChild>
             <Link href="/login">Buscar uma atividade</Link>
           </Button>
-
-          <Button variant="outline">
+          <Button variant="outline" asChild>
             <Link href="/login">Validar uma atividade</Link>
           </Button>
         </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-slate-200">
-        <DataTable columns={colunas} data={dadosFormatados} />
+        <TabelaAtividadesClient dadosIniciais={dadosFormatados} />
       </div>
     </div>
   );

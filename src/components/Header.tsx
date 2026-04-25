@@ -21,7 +21,7 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header className="flex flex-col w-full">
-      <div className="max-w-[1220px] mx-auto w-full flex p-4 justify-between items-center">
+      <div className="max-w-[1440px] mx-auto w-full flex py-4 px-8 justify-between items-center">
         <div className="">
           <Link href="/home" className="">
             <Image src="/logo.svg" alt="Logo" width={100} height={100} />
@@ -64,7 +64,7 @@ export default function Header({
         </nav>
       </div>
 
-      <div className="h-[5px] w-full bg-[#F19100]" />
+      <div className="h-[8px] w-full bg-[#F19100]" />
     </header>
   );
 }
