@@ -19,7 +19,6 @@ export default function DashboardLayout({
         <div className="p-6 flex-1 w-full max-w-[1400px] mx-auto ">
           {children}
         </div>
-//#0165AA
         <footer className="bg-[#003D86] text-white py-4 text-center text-sm">
           <p>© {new Date().getFullYear()} - Todos os direitos reservados</p>
         </footer>

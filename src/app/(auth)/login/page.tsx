@@ -59,7 +59,7 @@ export default function Login() {
       if (usuario.role === "coordenador") {
         router.push("/coordenador/home");
       } else if (usuario.role === "gestor") {
-        router.push("/gestor/dashboard");
+        router.push("/gestor/home");
       } else if (usuario.role === "aluno") {
         router.push("/aluno/dashboard"); 
       }

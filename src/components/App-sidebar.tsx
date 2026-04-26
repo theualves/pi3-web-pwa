@@ -1,6 +1,6 @@
-"use client"; // 1. Obrigatório para usar hooks de navegação
-
-import { Home, Settings, User, Bell } from "lucide-react";
+"use client";
+import { useEffect, useState } from "react";
+import { Home, Settings, User, Bell, BookOpen, FileCheck, Users} from "lucide-react";
 import {
   Sidebar,
   SidebarHeader,
@@ -16,15 +16,31 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const items = [
-  { title: "Visão Geral", url: "/home", icon: Home },
-  { title: "Atividades", url: "/atividades", icon: Home },
-  { title: "Estudante", url: "/estudante", icon: User },
-  { title: "Relatórios", url: "/relatorios", icon: User },
-];
+const links = {
+  coordenador: [
+    { title: "Visão Geral", url: "/coordenador/home", icon: Home },
+    { title: "Atividades", url: "/coordenador/atividades", icon: FileCheck },
+    { title: "Estudante", url: "/coordenador/estudante", icon: FileCheck },
+    { title: "Relatórios", url: "/coordenador/relatorios", icon: BookOpen },
+  ],
+  gestor: [
+    { title: "Visão Geral", url: "/gestor/home", icon: Home },
+    { title: "Cursos", url: "/gestor/cursos", icon: BookOpen },
+    { title: "Usuários", url: "/gestor/usuarios", icon: Users },
+    { title: "Relatórios", url: "/gestor/relatorios", icon: FileCheck },
+  ],
+};
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
+    setRole(user.role);
+  }, []);
+
+  const items = role ? links[role as keyof typeof links] : [];
 
   return (
     <Sidebar collapsible="icon">
