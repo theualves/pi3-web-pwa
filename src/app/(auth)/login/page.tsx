@@ -87,17 +87,16 @@ export default function Login() {
           </CardHeader>
           
           <CardContent>
-            {/* Adicionamos o onSubmit no form */}
+            
             <form onSubmit={handleLogin} className="space-y-4 flex flex-col">
               <div>
-                {/* Adicionamos o onValueChange no Select */}
                 <Select onValueChange={setPerfil} required>
                   <SelectTrigger className="w-full h-12 text-base text-slate-600">
                     <SelectValue placeholder="Selecione seu perfil" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="aluno">Aluno</SelectItem>
-                    <SelectItem value="coordenador">Coordenador</SelectItem> {/* Corrigi um errinho de digitação aqui (estava coordernador) */}
+                    <SelectItem value="coordenador">Coordenador</SelectItem> 
                     <SelectItem value="gestor">Gestor</SelectItem>
                   </SelectContent>
                 </Select>
@@ -126,14 +125,12 @@ export default function Login() {
                 />
               </div>
 
-              {/* Mensagem de Erro Dinâmica */}
               {erro && (
                 <div className="text-sm text-red-600 font-medium text-center bg-red-50 border border-red-100 p-2 rounded-md">
                   {erro}
                 </div>
               )}
 
-              {/* O botão agora é do tipo submit e não usa mais Link */}
               <Button type="submit" variant="senac" className="w-full h-12 mt-4 text-lg">
                 Entrar
               </Button>
