@@ -1,9 +1,8 @@
 import { KpiCard } from "@/components/KpiCard";
-import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Users, CheckCircle2, AlertTriangle, Plus } from "lucide-react";
 import { buscarDadosUsuarios } from "@/services/usuariosService";
 import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 
 export default async function UsuariosPage() {
   const stats = await buscarDadosUsuarios();
