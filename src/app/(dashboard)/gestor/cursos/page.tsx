@@ -9,11 +9,9 @@ import { ModalCriarCurso } from "@/components/ModalCriarCurso";
 export default function CursosPage() {
   const [modalAberto, setModalAberto] = useState(false);
   
-  // 1. Estado para armazenar os cursos vindos do banco
   const [cursos, setCursos] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
-  // 2. Função para buscar os dados na API
   const carregarCursos = async () => {
     try {
       setCarregando(true);
@@ -27,7 +25,6 @@ export default function CursosPage() {
     }
   };
 
-  // 3. Executa a busca assim que a página carrega
   useEffect(() => {
     carregarCursos();
   }, []);
@@ -56,7 +53,6 @@ export default function CursosPage() {
         </div>
 
         <div className="flex gap-2">
-          {/* Botão de atualizar manual */}
           <Button 
             variant="outline" 
             onClick={carregarCursos}
@@ -76,14 +72,11 @@ export default function CursosPage() {
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-slate-200">
-        {/* 4. Passamos os cursos do estado para a DataTable */}
         <DataTable 
           columns={colunas} 
           data={cursos} 
           onViewClick={handleVisualizarCurso} 
         />
-        
-        {/* Aviso caso não tenha nada no banco */}
         {!carregando && cursos.length === 0 && (
           <div className="p-8 text-center text-slate-500">
             Nenhum curso encontrado no banco de dados.
@@ -95,7 +88,7 @@ export default function CursosPage() {
         isOpen={modalAberto} 
         onClose={() => {
           setModalAberto(false);
-          carregarCursos(); // 5. Recarrega a lista automaticamente ao fechar o modal
+          carregarCursos(); 
         }} 
       />
     </div>
