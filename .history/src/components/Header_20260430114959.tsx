@@ -36,7 +36,7 @@ export default function Header({
               </button>
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <div className="flex items-center gap-2 cursor-pointer group border rounded-md px-4 py-1.5 bg-[#F28322] hover:bg-[#E07604] shadow-md">
+                  <div className="flex items-center gap-2 cursor-pointer group border rounded-md px-4 py-[4px] bg-[#F28322] hover:bg-[#E07604] shadow-md">
                     <div className="text-white text-2xl group-hover:text-gray-100 transition-colors">
                       <UserCircle size={26} strokeWidth={2} />
                     </div>

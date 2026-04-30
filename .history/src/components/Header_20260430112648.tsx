@@ -17,7 +17,7 @@ interface HeaderProps {
 
 export default function Header({
   isLoggedIn = false,
-  userName = "Filipe Xavier",
+  userName = "Usuário",
 }: HeaderProps) {
   return (
     <header className="flex flex-col w-full">
@@ -36,11 +36,11 @@ export default function Header({
               </button>
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <div className="flex items-center gap-2 cursor-pointer group border rounded-md px-4 py-1.5 bg-[#F28322] hover:bg-[#E07604] shadow-md">
-                    <div className="text-white text-2xl group-hover:text-gray-100 transition-colors">
-                      <UserCircle size={26} strokeWidth={2} />
+                  <div className="flex items-center gap-2 cursor-pointer group border rounded-md p-2 bg-[#F28322]">
+                    <div className="text-white group-hover:text-[#35577D] transition-colors">
+                      <UserCircle size={26} strokeWidth={1.5} />
                     </div>
-                    <span className="font-bold text-white text-md hidden sm:block">
+                    <span className="font-semibold text-white hidden sm:block group-hover:text-[#35577D] transition-colors ">
                       {userName}
                     </span>
                   </div>

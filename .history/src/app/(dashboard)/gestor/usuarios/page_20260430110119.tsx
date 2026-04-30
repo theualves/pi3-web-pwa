@@ -83,7 +83,7 @@ export default async function UsuariosPage() {
       </div>
 
       <div className="flex gap-2 ">
-        <Button className="bg-[#004A8D] hover:bg-[#003666] text-white flex items-center gap-2 shadow-md">
+        <Button className="bg-[#004A8D] hover:bg-[#003666] text-white flex items-center gap-2">
           <Plus className="size-4" />
           Novo Usuário
         </Button>
