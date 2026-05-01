@@ -17,7 +17,7 @@ interface HeaderProps {
 
 export default function Header({
   isLoggedIn = false,
-  userName = "Filipe Xavier",
+  userName = "Usuário",
 }: HeaderProps) {
   return (
     <header className="flex flex-col w-full">

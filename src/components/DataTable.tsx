@@ -28,20 +28,34 @@ export function DataTable({ columns, data, onViewClick }: DataTableProps) {
     switch (status) {
       case "Aprovado":
         return (
-          <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border-none">
+          <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-300 border-none shadow-xs">
             Aprovado
           </Badge>
         );
       case "Pendente":
         return (
-          <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200 border-none">
+          <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200 border-none shadow-xs">
             Pendente
           </Badge>
         );
       case "Recusado":
         return (
-          <Badge className="bg-red-100 text-red-800 hover:bg-red-200 border-none">
+          <Badge className="bg-red-100 text-red-800 hover:bg-red-200 border-none shadow-xs">
             Recusado
+          </Badge>
+        );
+
+      case "Ativo":
+        return (
+          <Badge className="bg-green-100 text-green-700 hover:bg-green-200 border-none shadow-xs">
+            Ativo
+          </Badge>
+        );
+
+      case "Inativo":
+        return (
+          <Badge className="bg-white text-gray-600 hover:bg-gray-300 border-none shadow-xs">
+            Inativo
           </Badge>
         );
       default:
@@ -75,7 +89,7 @@ export function DataTable({ columns, data, onViewClick }: DataTableProps) {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="bg-white text-slate-500 text-slate-500 hover:text-[#004A8D]"
+                          className="bg-white text-slate-500 text-slate-500 hover:text-[#004A8D] shadow-xs"
                           onClick={() => onViewClick && onViewClick(row)}
                         >
                           <Eye className="size-4 mr-2" />

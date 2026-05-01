@@ -20,7 +20,7 @@ const links = {
   coordenador: [
     { title: "Visão Geral", url: "/coordenador/home", icon: Home },
     { title: "Atividades", url: "/coordenador/atividades", icon: FileCheck },
-    { title: "Estudante", url: "/coordenador/estudante", icon: FileCheck },
+    { title: "Estudantes", url: "/coordenador/estudante", icon: FileCheck },
     { title: "Relatórios", url: "/coordenador/relatorios", icon: BookOpen },
   ],
   gestor: [

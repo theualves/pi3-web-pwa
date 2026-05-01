@@ -32,6 +32,12 @@ export default async function RelatoriosPage() {
           description="-5% em relação ao mês anterior"
         />
       </div>
+      <div>
+        <br />
+        <h1 className="text-lg font-medium text-slate-8000">
+          Lista de Relatórios
+        </h1>
+      </div>
     </div>
   );
 }
