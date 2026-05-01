@@ -1,8 +1,7 @@
 import { KpiCard } from "@/components/KpiCard";
-import { Users, CheckCircle2, AlertTriangle, Plus } from "lucide-react";
+import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
 import { buscarDadosUsuarios } from "@/services/usuariosService";
-import { DataTable } from "@/components/DataTable";
-import { Button } from "@/components/ui/button";
+import { TabelaUsuarios } from "@/components/TabelaUsuarios";
 
 export default async function UsuariosPage() {
   const stats = await buscarDadosUsuarios();
@@ -16,38 +15,15 @@ export default async function UsuariosPage() {
   ];
 
   const usuariosMock = [
-    {
-      id: "1",
-      nome: "Matheus Silva",
-      email: "matheus@senac.br",
-      perfil: "Coordenador",
-      status: "Ativo",
-    },
-    {
-      id: "2",
-      nome: "Ana Souza",
-      email: "ana.souza@aluno.senac.br",
-      perfil: "Aluno",
-      status: "Ativo",
-    },
-    {
-      id: "3",
-      nome: "Carlos Eduardo",
-      email: "carlos.ed@aluno.senac.br",
-      perfil: "Aluno",
-      status: "Inativo",
-    },
-    {
-      id: "4",
-      nome: "Prof. Marcos",
-      email: "marcos@senac.br",
-      perfil: "Coordenador",
-      status: "Ativo",
-    },
+    { id: "1", nome: "Matheus Silva", email: "matheus@senac.br", perfil: "Coordenador", status: "Ativo" },
+    { id: "2", nome: "Ana Souza", email: "ana.souza@aluno.senac.br", perfil: "Aluno", status: "Ativo" },
+    { id: "3", nome: "Carlos Eduardo", email: "carlos.ed@aluno.senac.br", perfil: "Aluno", status: "Inativo" },
+    { id: "4", nome: "Prof. Marcos", email: "marcos@senac.br", perfil: "Coordenador", status: "Ativo" },
   ];
 
   return (
     <div className="flex flex-col gap-6">
+      
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">
@@ -82,16 +58,7 @@ export default async function UsuariosPage() {
         />
       </div>
 
-      <div className="flex gap-2 ">
-        <Button className="bg-[#004A8D] hover:bg-[#003666] text-white flex items-center gap-2 shadow-md">
-          <Plus className="size-4" />
-          Novo Usuário
-        </Button>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200">
-        <DataTable columns={colunas} data={usuariosMock} />
-      </div>
+      <TabelaUsuarios colunas={colunas} dadosMockados={usuariosMock} />
     </div>
   );
 }
