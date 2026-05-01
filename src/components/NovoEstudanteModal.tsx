@@ -1,58 +1,108 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BookPlus } from "lucide-react"; // Dica: Um ícone de UserPlus combinaria bem aqui também!
+import { ModalBase } from "@/components/ModalBase";
 
-export default function NovoEstudanteModal() {
+// 1. Recebemos o isOpen e onClose do componente pai (a página)
+interface NovoEstudanteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function NovoEstudanteModal({ isOpen, onClose }: NovoEstudanteModalProps) {
+  // 2. Criamos os estados para capturar o que o usuário digitar
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [curso, setCurso] = useState("");
+  const [periodo, setPeriodo] = useState("");
+
+  const handleSalvar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Aqui no futuro entrará o seu fetch("http://localhost:3001/api/estudantes", ...)
+    console.log("Dados prontos para o backend:", { nome, email, cpf, curso, periodo });
+    
+    // Limpa e fecha após salvar
+    onClose();
+  };
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="senac">Adicionar Estudante</Button>
-      </DialogTrigger>
+    <ModalBase
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Cadastrar aluno"
+      description="Preencha os dados abaixo para registrar um novo estudante no sistema."
+      icon={<BookPlus className="h-6 w-6" />}
+      submitText="Cadastrar"
+      onSubmit={handleSalvar}
+    >
+      {/* --- O RECHEIO DO MODAL (children) --- */}
+      
+      <div className="space-y-2">
+        <Label htmlFor="nome" className="text-slate-700">Nome</Label>
+        <Input 
+          id="nome" 
+          value={nome} 
+          onChange={(e) => setNome(e.target.value)} 
+          required 
+          className="h-11"
+        />
+      </div>
 
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle className="text-xl text-slate-800">Cadastrar aluno</DialogTitle>
-        </DialogHeader>
+      <div className="space-y-2">
+        <Label htmlFor="email" className="text-slate-700">Email</Label>
+        <Input 
+          id="email" 
+          type="email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+          required 
+          className="h-11"
+        />
+      </div>
 
-        <div className="gap-4 py-4 grid">
-          <div className="gap-4">
-            <Label htmlFor="nome" className="text-right text-slate-600 mb-2">Nome</Label>
-            <Input id="nome" />
-          </div>
-          <div>
-            <Label htmlFor="email" className="text-right text-slate-600 mb-2">Email</Label>
-            <Input id="email" />
-          </div>
-          <div>
-            <Label htmlFor="curso" className="text-right text-slate-600 mb-2">Curso</Label>
-            <Input id="curso" />
-          </div>
-           <div>
-            <Label htmlFor="periodo" className="text-right text-slate-600 mb-2">Periodo</Label>
-            <Input id="periodo" />
-          </div>
-          <div>
-            <Label htmlFor="ch" className="text-right text-slate-600 mb-2">Carga horária exigida</Label>
-            <Input id="ch" />
-          </div>
+      <div className="space-y-2">
+        <Label htmlFor="cpf" className="text-slate-700">CPF</Label>
+        <Input 
+          id="cpf" 
+          value={cpf} 
+          onChange={(e) => setCpf(e.target.value)} 
+          required 
+          className="h-11"
+          placeholder="000.000.000-00"
+        />
+      </div>
+
+      {/* Coloquei Curso e Período lado a lado para economizar espaço e ficar mais bonito */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="curso" className="text-slate-700">Curso</Label>
+          <Input 
+            id="curso" 
+            value={curso} 
+            onChange={(e) => setCurso(e.target.value)} 
+            required 
+            className="h-11"
+          />
         </div>
 
-        <DialogFooter>
-          <Button variant="senac" type="submit">Cadastrar</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        <div className="space-y-2">
+          <Label htmlFor="periodo" className="text-slate-700">Período</Label>
+          <Input 
+            id="periodo" 
+            value={periodo} 
+            onChange={(e) => setPeriodo(e.target.value)} 
+            required 
+            className="h-11"
+            placeholder="Ex: 1º Semestre"
+          />
+        </div>
+      </div>
+      
+    </ModalBase>
   );
 }

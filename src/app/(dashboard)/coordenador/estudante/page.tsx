@@ -1,7 +1,8 @@
-import { DataTable } from "@/components/DataTable";
 import { buscarEstudantes } from "@/services/estudanteService";
-import  NovoEstudanteModal  from "@/components/NovoEstudanteModal";
+// Importe o componente que acabamos de criar
+import { TabelaEstudantes } from "@/components/TabelaEstudantes";
 
+// Como não tem "use client", podemos usar o async livremente!
 export default async function EstudantePage() {
   const estudantes = await buscarEstudantes();
 
@@ -11,21 +12,13 @@ export default async function EstudantePage() {
     { header: "Período", accessor: "periodo" },
     { header: "Horas Registradas", accessor: "horasRegistradas" },
     { header: "Status", accessor: "status" },
-    { header: "Ações", accessor: "acoes" }, 
+    { header: "Ações", accessor: "acoes" },
   ];
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">Estudantes</h1>
-        </div>
-        <NovoEstudanteModal />
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
-        <DataTable columns={colunas} data={estudantes} />
-      </div>
+    <div className="p-8">
+      {/* Passamos os dados do servidor para o componente do cliente */}
+      <TabelaEstudantes estudantes={estudantes} colunas={colunas} />
     </div>
   );
 }

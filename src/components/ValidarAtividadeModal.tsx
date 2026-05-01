@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { FileText, User, Calendar, Clock, Paperclip } from "lucide-react";
+import { FileText, User, Calendar, Clock } from "lucide-react";
 
 interface ValidarAtividadeModalProps {
   isOpen: boolean;
