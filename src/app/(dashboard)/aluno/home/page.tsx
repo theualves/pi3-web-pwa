@@ -1,7 +1,8 @@
 import { KpiCard } from "@/components/KpiCard";
-import { Users, CheckCircle2, AlertTriangle, Plus } from "lucide-react";
+import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
 import { buscarDadosRelatorio } from "@/services/relatorioService";
-import { Button } from "@/components/ui/button";
+import { BotaoNovaAtividade } from "@/components/BotaoNovaAtividade";
+
 
 export default async function AlunoHome() {
   const stats = await buscarDadosRelatorio();
@@ -15,10 +16,7 @@ export default async function AlunoHome() {
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Olá, pobre!</h1>
         </div>
-        <Button className="bg-[#004A8D] hover:bg-[#003666] text-white flex items-center gap-2 w-full sm:w-auto">
-          <Plus className="size-4" />
-          Adicionar nova atividade
-        </Button>
+        <BotaoNovaAtividade />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard

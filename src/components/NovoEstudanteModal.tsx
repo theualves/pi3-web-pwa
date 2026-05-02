@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BookPlus } from "lucide-react"; // Dica: Um ícone de UserPlus combinaria bem aqui também!
+import { BookPlus } from "lucide-react"; 
 import { ModalBase } from "@/components/ModalBase";
 
 // 1. Recebemos o isOpen e onClose do componente pai (a página)
@@ -40,7 +40,6 @@ export function NovoEstudanteModal({ isOpen, onClose }: NovoEstudanteModalProps)
       submitText="Cadastrar"
       onSubmit={handleSalvar}
     >
-      {/* --- O RECHEIO DO MODAL (children) --- */}
       
       <div className="space-y-2">
         <Label htmlFor="nome" className="text-slate-700">Nome</Label>

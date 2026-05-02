@@ -3,6 +3,7 @@ import { buscarDadosDashboard } from "@/services/dashboardService";
 import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
 import { DashboardCharts } from "@/components/DashboardCharts";
 
+
 export default async function HomePage() {
   const stats = await buscarDadosDashboard();
 
