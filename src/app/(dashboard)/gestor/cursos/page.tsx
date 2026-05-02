@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
-import { Plus, RefreshCw, Search } from "lucide-react"; // <-- Adicionei o ícone Search
+import { Plus, RefreshCw, Search } from "lucide-react"; 
 import { ModalCriarCurso } from "@/components/ModalCriarCurso"; 
 
 export default function CursosPage() {
@@ -32,7 +32,6 @@ export default function CursosPage() {
     carregarCursos();
   }, []);
 
-  // 2. Filtra os cursos em tempo real com base no que foi digitado
   const cursosFiltrados = cursos.filter((curso: any) =>
     curso.nome.toLowerCase().includes(termoBusca.toLowerCase())
   );
@@ -50,16 +49,11 @@ export default function CursosPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      
-      {/* Cabeçalho */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">
             Gestão de Cursos
           </h1>
-          <p className="text-slate-500 text-sm mt-1">
-            Visualize e gerencie os programas acadêmicos do banco de dados.
-          </p>
         </div>
 
         {/* 3. Área de Controles: Busca + Botões */}
@@ -77,7 +71,6 @@ export default function CursosPage() {
             />
           </div>
 
-          {/* Botões de Ação */}
           <div className="flex gap-2 w-full sm:w-auto">
             <Button 
               variant="outline" 
@@ -99,17 +92,13 @@ export default function CursosPage() {
         </div>
       </div>
 
-      {/* Tabela de Dados */}
       <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
-        
-        {/* 4. Trocamos 'data={cursos}' para 'data={cursosFiltrados}' */}
         <DataTable 
           columns={colunas} 
           data={cursosFiltrados} 
           onViewClick={handleVisualizarCurso} 
         />
         
-        {/* 5. Avisos Dinâmicos */}
         {!carregando && cursos.length === 0 && (
           <div className="p-8 text-center text-slate-500">
             Nenhum curso encontrado no banco de dados.

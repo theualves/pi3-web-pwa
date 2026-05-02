@@ -23,9 +23,8 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
         onClick={() => setExpandido(!expandido)}
         className="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 transition-colors"
       >
-        <div className="flex items-center gap-8 p-4 cursor-pointer hover:bg-slate-50 transition-colors w-full">
+        <div className="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 transition-colors w-full">
           <div className="flex items-center gap-4 min-w-[250px]">
-            {" "}
             <div className="bg-[#378bf8] p-4 rounded-full text-[#004A8D]">
               <FileText className="size-5" />
             </div>
