@@ -15,7 +15,7 @@ interface ModalBaseProps {
   title: string;
   description?: string;
   icon?: React.ReactNode;
-  submitText?: string;    
+  submitText?: string;
   onSubmit: (e: React.FormEvent) => void;
   children: React.ReactNode; //os inputs específicos de cada tela
 }
@@ -34,7 +34,7 @@ export function ModalBase({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[550px]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl text-[#004A8D]">
+          <DialogTitle className="flex items-center gap-2 font-bold text-2xl text-[#004A8D]">
             {icon && icon}
             {title}
           </DialogTitle>
@@ -45,7 +45,11 @@ export function ModalBase({
           )}
         </DialogHeader>
 
-        <form id="form-modal-generico" onSubmit={onSubmit} className="grid gap-6 py-4">
+        <form
+          id="form-modal-generico"
+          onSubmit={onSubmit}
+          className="grid gap-6 py-4"
+        >
           {children}
         </form>
 
@@ -67,7 +71,6 @@ export function ModalBase({
             {submitText}
           </Button>
         </DialogFooter>
-
       </DialogContent>
     </Dialog>
   );
