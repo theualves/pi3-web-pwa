@@ -1,8 +1,6 @@
 import { buscarEstudantes } from "@/services/estudanteService";
-// Importe o componente que acabamos de criar
 import { TabelaEstudantes } from "@/components/TabelaEstudantes";
 
-// Como não tem "use client", podemos usar o async livremente!
 export default async function EstudantePage() {
   const estudantes = await buscarEstudantes();
 
@@ -16,8 +14,7 @@ export default async function EstudantePage() {
   ];
 
   return (
-    <div className="p-8">
-      {/* Passamos os dados do servidor para o componente do cliente */}
+    <div className="">
       <TabelaEstudantes estudantes={estudantes} colunas={colunas} />
     </div>
   );
