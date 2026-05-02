@@ -1,7 +1,7 @@
 import { KpiCard } from "@/components/KpiCard"; 
 import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
 import { buscarDadosRelatorio } from "@/services/relatorioService";
-import { CardRelatorio } from "@/components/CardRelatorio";
+import { CardRelatorio } from "@/components/CardRelatorio"; 
 
 export default async function RelatoriosPage() {
   const stats = await buscarDadosRelatorio();

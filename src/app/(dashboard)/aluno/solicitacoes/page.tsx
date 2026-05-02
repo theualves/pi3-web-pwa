@@ -1,3 +1,6 @@
 export default function AlunoSolicitacoes() {
-  return <div> </div>;
+  return 
+  <div>
+    
+  </div>;
 }
