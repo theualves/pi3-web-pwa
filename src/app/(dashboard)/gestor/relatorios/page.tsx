@@ -1,4 +1,4 @@
-import { KpiCard } from "@/components/KpiCard";
+import { KpiCard } from "@/components/KpiCard"; 
 import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
 import { buscarDadosRelatorio } from "@/services/relatorioService";
 import { CardRelatorio } from "@/components/CardRelatorio";
