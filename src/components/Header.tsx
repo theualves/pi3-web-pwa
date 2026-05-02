@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { IconeSenac } from "./IconeSenac";
 import { Bell, ChevronDown, LogOut } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -21,6 +24,17 @@ export default function Header({
   isLoggedIn = false,
   userName = "Usuário",
 }: HeaderProps) {
+  const pathname = usePathname();
+
+  let perfil = "Usuário";
+
+  if (pathname?.includes("/gestor")) {
+    perfil = "Gestor";
+  } else if (pathname?.includes("/coordenador")) {
+    perfil = "Coordenador";
+  } else if (pathname?.includes("/aluno") || pathname?.includes("/home")) {
+    perfil = "Aluno";
+  }
   return (
     <header className="flex flex-col w-full">
       <div className="max-w-[1440px] mx-auto w-full flex py-3 px-8 justify-between items-center">
@@ -52,7 +66,7 @@ export default function Header({
                         {userName}
                       </span>
                       <span className="text-[10px] uppercase tracking-wider font-bold text-gray-500 group-hover:text-orange-100 transition-colors">
-                        Aluno
+                        {perfil}
                       </span>
                     </span>
 
