@@ -29,6 +29,11 @@ const links = {
     { title: "Usuários", url: "/gestor/usuarios", icon: Users },
     { title: "Relatórios", url: "/gestor/relatorios", icon: FileCheck },
   ],
+  aluno: [
+    { title: "Visão Geral", url: "/aluno/home", icon: Home },
+    { title: "Cursos", url: "/aluno/cursos", icon: Users },
+    { title: "Solicitações", url: "/aluno/solicitacoes", icon: BookOpen },
+  ],
 };
 
 export default function AppSidebar() {

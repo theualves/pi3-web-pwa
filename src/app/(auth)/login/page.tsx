@@ -61,7 +61,7 @@ export default function Login() {
       } else if (usuario.role === "gestor") {
         router.push("/gestor/home");
       } else if (usuario.role === "aluno") {
-        router.push("/aluno/dashboard"); 
+        router.push("/aluno/home"); 
       }
     } else {
       setErro("Dados incorretos. Verifique seu perfil, login ou senha.");
