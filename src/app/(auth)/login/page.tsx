@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
+import Loading from "@/components/Loading";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,7 +39,9 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro("");
 
@@ -45,6 +49,10 @@ export default function Login() {
       setErro("Por favor, selecione o seu perfil.");
       return;
     }
+
+    setIsAuthenticating(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const usuario = usuariosMock.find(
       (u) => u.login === login && u.senha === senha && u.role === perfil
@@ -64,12 +72,16 @@ export default function Login() {
         router.push("/aluno/home"); 
       }
     } else {
+      setIsAuthenticating(false);
       setErro("Dados incorretos. Verifique seu perfil, login ou senha.");
     }
   };
 
   return (
-    <div className="bg-[#004A8D] flex flex-col w-full min-h-screen">
+    <div className="bg-[#004A8D] flex flex-col w-full min-h-screen relative">
+      
+      {isAuthenticating && <Loading />}
+
       <div className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg border-slate-200">
           <CardHeader className="flex flex-col items-center justify-center text-center">
@@ -87,10 +99,9 @@ export default function Login() {
           </CardHeader>
           
           <CardContent>
-            
             <form onSubmit={handleLogin} className="space-y-4 flex flex-col">
               <div>
-                <Select onValueChange={setPerfil} required>
+                <Select onValueChange={setPerfil} required disabled={isAuthenticating}>
                   <SelectTrigger className="w-full h-12 text-base text-slate-600">
                     <SelectValue placeholder="Selecione seu perfil" />
                   </SelectTrigger>
@@ -110,6 +121,7 @@ export default function Login() {
                   value={login}
                   onChange={(e) => setLogin(e.target.value)}
                   required
+                  disabled={isAuthenticating}
                 />
               </div>
 
@@ -122,6 +134,7 @@ export default function Login() {
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   required
+                  disabled={isAuthenticating}
                 />
               </div>
 
@@ -131,7 +144,7 @@ export default function Login() {
                 </div>
               )}
 
-              <Button type="submit" variant="senac" className="w-full h-12 mt-4 text-lg">
+              <Button type="submit" variant="senac" className="w-full h-12 mt-4 text-lg" disabled={isAuthenticating}>
                 Entrar
               </Button>
 

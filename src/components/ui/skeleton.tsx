@@ -1,10 +1,14 @@
+// components/ui/skeleton.tsx
 import { cn } from "@/lib/utils"
 
-function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
+function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      data-slot="skeleton"
-      className={cn("animate-pulse rounded-md bg-muted", className)}
+      // Mudei de 'bg-muted' para 'bg-slate-200' para forçar a visibilidade
+      className={cn("animate-pulse rounded-md bg-slate-200", className)}
       {...props}
     />
   )
