@@ -76,7 +76,7 @@
   --sidebar: oklch(0.496 0.135 248.48);
 
   --sidebar-foreground: oklch(0.985 0 0); /* Texto Branco */
-  --sidebar-primary: oklch(0.627 0.194 40.8); /* Laranja para destaque */
+  --sidebar-primary: oklch(0.66 0.25 43.3);
   --sidebar-primary-foreground: oklch(0.985 0 0); /* Texto Branco no destaque */
   --sidebar-accent: oklch(0.718 0.202 61.98); /* Azul levemente mais claro para o hover */
 

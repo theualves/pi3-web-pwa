@@ -1,6 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Home, Settings, User, Bell, BookOpen, FileCheck, Users} from "lucide-react";
+import {
+  Home,
+  Settings,
+  User,
+  Bell,
+  BookOpen,
+  FileCheck,
+  Users,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarHeader,
@@ -64,11 +72,19 @@ export default function AppSidebar() {
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
-                      className="text-base rounded-none h-14 w-full font-semibold px-6 group-data-[collapsible=icon]:hidden"
+                      className={`text-sm rounded-none h-10 w-full px-4 transition-all 
+            group-data-[collapsible=icon]:!w-full 
+            group-data-[collapsible=icon]:!h-10 
+            group-data-[collapsible=icon]:!p-0 
+            group-data-[collapsible=icon]:justify-center
+            ${isActive ? "font-semibold bg-[#F78C21] text-white" : "font-medium text-sidebar-foreground/70"}
+          `}
                     >
                       <Link href={item.url}>
-                        <item.icon className="size-5" />
-                        <span>{item.title}</span>
+                        <item.icon className="shrink-0 size-4" />
+                        <span className="group-data-[collapsible=icon]:!hidden">
+                          {item.title}
+                        </span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
