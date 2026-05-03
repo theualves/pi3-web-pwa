@@ -2,16 +2,15 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { IconeSenac } from "./IconeSenac";
-import { Bell, ChevronDown, LogOut } from "lucide-react";
+import { Bell, BellRing, ChevronDown, LogOut } from "lucide-react"; 
 import { usePathname } from "next/navigation";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -26,6 +25,9 @@ export default function Header({
 }: HeaderProps) {
   const pathname = usePathname();
 
+  const [notificacoes, setNotificacoes] = useState(["Aviso 1", "Aviso 2"]);
+  const hasNotificacoes = notificacoes.length > 0;
+
   let perfil = "Usuário";
 
   if (pathname?.includes("/gestor")) {
@@ -35,6 +37,7 @@ export default function Header({
   } else if (pathname?.includes("/aluno") || pathname?.includes("/home")) {
     perfil = "Aluno";
   }
+  
   return (
     <header className="flex flex-col w-full">
       <div className="max-w-[1440px] mx-auto w-full flex py-3 px-8 justify-between items-center">
@@ -47,20 +50,55 @@ export default function Header({
         <nav className="flex items-center">
           {isLoggedIn ? (
             <div className="flex items-center gap-6">
-              <button className="">
-                <Bell size={24} />
-              </button>
+              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="flex items-center gap-3 cursor-pointer group shadow-sm border border[#DEDEDE] rounded-lg px-3 py-2 bg-gray-50 hover:bg-[#F5ECE5] hover:border-[#F6BF87]  transition-all duration-200">
+                  {/* O "relative" aqui é crucial para o balãozinho vermelho grudar no sino */}
+                  <button className="relative text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full hover:bg-gray-100">
+                    {hasNotificacoes ? (
+                      <>
+                        <BellRing size={24} className="text-[#004A8D]" />
+                        <span className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full">
+                          {notificacoes.length > 9 ? "9+" : notificacoes.length}
+                        </span>
+                      </>
+                    ) : (
+                      <Bell size={24} />
+                    )}
+                  </button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent className="w-64 p-2 mt-2" align="end">
+                  <div className="px-2 py-1.5 font-semibold text-sm border-b mb-1">
+                    Notificações
+                  </div>
+                  
+                  {hasNotificacoes ? (
+                    // Se tem notificações, faz um loop para mostrar
+                    notificacoes.map((nota, index) => (
+                      <DropdownMenuItem key={index} className="cursor-pointer text-sm py-2">
+                        {nota}
+                      </DropdownMenuItem>
+                    ))
+                  ) : (
+                    // Se NÃO tem notificações, mostra essa mensagem
+                    <div className="py-4 text-center text-sm text-gray-500">
+                      Você não tem novas notificações.
+                    </div>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="flex items-center gap-3 cursor-pointer group shadow-sm border border-[#DEDEDE] rounded-lg px-3 py-2 bg-gray-50 hover:bg-[#F5ECE5] hover:border-[#F6BF87] transition-all duration-200">
                     <div className="flex items-center justify-center bg-white px-1 py-2 rounded-md shadow-sm group-hover:scale-105 transition-transform">
                       <IconeSenac
                         style={{ width: "24px", height: "16px" }}
                         className="text-[#004A8D]"
                       />
                     </div>
-
-                    {/* Texto: Melhor hierarquia entre Nome e Cargo */}
                     <span className="flex flex-col leading-tight hidden sm:flex">
                       <span className="font-semibold text-gray-800 text-sm transition-colors">
                         {userName}
@@ -69,13 +107,11 @@ export default function Header({
                         {perfil}
                       </span>
                     </span>
-
-                    {/* Opcional: Um ícone de setinha para indicar o dropdown */}
-                    <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
+                    <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
                   </div>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent className="w-48 mt-2">
+                <DropdownMenuContent className="w-48 mt-2" align="end">
                   <DropdownMenuItem
                     asChild
                     className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
