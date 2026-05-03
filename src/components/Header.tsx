@@ -52,7 +52,7 @@ export default function Header({
               </button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="flex items-center gap-3 cursor-pointer group border border-gray-200 rounded-lg px-3 py-2 bg-gray-50 hover:bg-[#E07604] hover:border-[#E07604] shadow-sm transition-all duration-200">
+                  <div className="flex items-center gap-3 cursor-pointer group shadow-sm border border[#DEDEDE] rounded-lg px-3 py-2 bg-gray-50 hover:bg-[#F5ECE5] hover:border-[#F6BF87]  transition-all duration-200">
                     <div className="flex items-center justify-center bg-white px-1 py-2 rounded-md shadow-sm group-hover:scale-105 transition-transform">
                       <IconeSenac
                         style={{ width: "24px", height: "16px" }}
@@ -62,10 +62,10 @@ export default function Header({
 
                     {/* Texto: Melhor hierarquia entre Nome e Cargo */}
                     <span className="flex flex-col leading-tight hidden sm:flex">
-                      <span className="font-semibold text-gray-800 text-sm group-hover:text-white transition-colors">
+                      <span className="font-semibold text-gray-800 text-sm transition-colors">
                         {userName}
                       </span>
-                      <span className="text-[10px] uppercase tracking-wider font-bold text-gray-500 group-hover:text-orange-100 transition-colors">
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-gray-500 transition-colors">
                         {perfil}
                       </span>
                     </span>

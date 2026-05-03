@@ -70,7 +70,7 @@ export default function ModalNovaAtividade({
       onClose={onClose}
       title="Cadastrar nova atividade"
       description="Preencha os dados e anexe o certificado para validação."
-      icon={<IconeSenac className="h-6 w-6 text-[#004A8D]" />}
+      icon={<IconeSenac className="h-12 w-12 text-[#004A8D]" />}
       submitText="Cadastrar"
       onSubmit={handleSalvar}
     >
