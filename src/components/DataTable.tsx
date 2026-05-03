@@ -21,9 +21,12 @@ interface DataTableProps {
   columns: Column[];
   data: any[];
   onViewClick?: (row: any) => void;
+  // 👇 NOVAS PROPS OPCIONAIS PARA NÃO QUEBRAR O SISTEMA
+  onEditClick?: (row: any) => void;
+  onDeleteClick?: (row: any) => void;
 }
 
-export function DataTable({ columns, data, onViewClick }: DataTableProps) {
+export function DataTable({ columns, data, onViewClick, onEditClick, onDeleteClick }: DataTableProps) {
   const renderStatusBadge = (status: string) => {
     switch (status) {
       case "Aprovado":
@@ -44,14 +47,12 @@ export function DataTable({ columns, data, onViewClick }: DataTableProps) {
             Recusado
           </Badge>
         );
-
       case "Ativo":
         return (
           <Badge className="bg-green-100 text-green-700 hover:bg-green-200 border-none shadow-xs">
             Ativo
           </Badge>
         );
-
       case "Inativo":
         return (
           <Badge className="bg-white text-gray-600 hover:bg-gray-300 border-none shadow-xs">
@@ -86,15 +87,46 @@ export function DataTable({ columns, data, onViewClick }: DataTableProps) {
                   <TableCell key={col.accessor} className="py-4 align-middle">
                     {col.accessor === "acoes" ? (
                       <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="bg-white text-slate-500 text-slate-500 hover:text-[#004A8D] shadow-xs"
-                          onClick={() => onViewClick && onViewClick(row)}
-                        >
-                          <Eye className="size-4 mr-2" />
-                          Visualizar
-                        </Button>
+                        
+                        {/* Botão Visualizar: Aparece se a prop onViewClick for passada */}
+                        {onViewClick && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="bg-white text-slate-500 hover:text-[#004A8D] shadow-xs"
+                            onClick={() => onViewClick(row)}
+                          >
+                            <Eye className="size-4 mr-2" />
+                            Visualizar
+                          </Button>
+                        )}
+
+                        {/* Botão Editar: Só aparece se onEditClick for passado E status for "Recusado" */}
+                        {onEditClick && row.status === "Recusado" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="bg-white text-slate-500 hover:text-amber-600 shadow-xs"
+                            onClick={() => onEditClick(row)}
+                          >
+                            <Pencil className="size-4 mr-2" />
+                            Editar
+                          </Button>
+                        )}
+
+                        {/* Botão Excluir: Só aparece se onDeleteClick for passado E status for "Recusado" */}
+                        {onDeleteClick && row.status === "Recusado" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="bg-white text-slate-500 hover:text-red-600 shadow-xs"
+                            onClick={() => onDeleteClick(row)}
+                          >
+                            <Trash2 className="size-4 mr-2" />
+                            Excluir
+                          </Button>
+                        )}
+
                       </div>
                     ) : col.accessor === "status" ? (
                       renderStatusBadge(row[col.accessor])
