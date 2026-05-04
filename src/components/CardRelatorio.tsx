@@ -26,7 +26,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
         <div className="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 transition-colors w-full">
           <div className="flex items-center gap-4 min-w-[250px]">
             <div className="bg-[#378bf8] p-4 rounded-full text-[#004A8D]">
-              <FileText className="size-5" />
+              <FileText className="size-8"  />
             </div>
             <div>
               <h3 className="text-xl font-bold text-slate-800">
@@ -42,19 +42,19 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
           </div>
           <div>
             <h3 className="text-md font-semibold text-slate-800">
-              Curso: {relatorio.curso}
+              <span className="text-blue-500">Curso:</span> {relatorio.curso}
             </h3>
             <h3 className="text-md font-semibold text-slate-800">
-              Atividade: {relatorio.curso}
+              <span className="text-blue-500">Atividade:</span> {relatorio.curso}
             </h3>
           </div>
 
           <div>
             <h3 className="text-md font-semibold text-slate-800">
-              Coordenador: {relatorio.nomeCoordenador}
+              <span className="text-blue-500">Coordenador:</span> {relatorio.nomeCoordenador}
             </h3>
             <h3 className="text-md font-semibold text-slate-800">
-              Data: {relatorio.dataEnvio}
+              <span className="text-blue-500">Data:</span> {relatorio.dataEnvio}
             </h3>
           </div>
         </div>
