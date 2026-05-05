@@ -25,12 +25,6 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-const usuariosMock = [
-  { login: "aluno", senha: "123", role: "aluno", nome: "João Silva" },
-  { login: "coordenador", senha: "123", role: "coordenador", nome: "Prof. Carlos Eduardo" },
-  { login: "gestor", senha: "123", role: "gestor", nome: "Secretaria Acadêmica" }
-];
-
 export default function Login() {
   const router = useRouter();
   
@@ -52,28 +46,55 @@ export default function Login() {
 
     setIsAuthenticating(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      // Fazendo a requisição real para o backend
+      const response = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // O backend espera "email", então mapeamos o estado "login" para "email"
+        body: JSON.stringify({ email: login, senha }), 
+      });
 
-    const usuario = usuariosMock.find(
-      (u) => u.login === login && u.senha === senha && u.role === perfil
-    );
+      if (!response.ok) {
+        setIsAuthenticating(false);
+        setErro("Dados incorretos. Verifique seu login ou senha.");
+        return;
+      }
 
-    if (usuario) {
+      // Recebendo e formatando os dados da API
+      const data = await response.json();
+      const usuario = data.usuario;
+      const perfilBackend = usuario.tipo.toLowerCase(); // Ex: "GESTOR" vira "gestor"
+
+      // Opcional: Valida se o perfil que o usuário escolheu no Select bate com o do banco de dados
+      if (perfil !== perfilBackend) {
+        setIsAuthenticating(false);
+        setErro(`O perfil selecionado está incorreto. Este usuário é um(a) ${perfilBackend}.`);
+        return;
+      }
+
+      // Salvando no localStorage para o Sidebar e o Header lerem
       localStorage.setItem("usuarioLogado", JSON.stringify({
+        id: usuario.id,
         nome: usuario.nome,
-        role: usuario.role,
+        role: perfilBackend,
       }));
 
-      if (usuario.role === "coordenador") {
+      // Redirecionamento dinâmico baseado no banco de dados
+      if (perfilBackend === "coordenador") {
         router.push("/coordenador/home");
-      } else if (usuario.role === "gestor") {
+      } else if (perfilBackend === "gestor") {
         router.push("/gestor/home");
-      } else if (usuario.role === "aluno") {
+      } else {
         router.push("/aluno/home"); 
       }
-    } else {
+
+    } catch (error) {
+      console.error("Erro ao comunicar com a API:", error);
       setIsAuthenticating(false);
-      setErro("Dados incorretos. Verifique seu perfil, login ou senha.");
+      setErro("Erro de conexão com o servidor. Tente novamente mais tarde.");
     }
   };
 
@@ -116,7 +137,7 @@ export default function Login() {
               <div>
                 <Input 
                   id="login" 
-                  placeholder="Login" 
+                  placeholder="Login (E-mail)" 
                   className="h-12" 
                   value={login}
                   onChange={(e) => setLogin(e.target.value)}
