@@ -17,21 +17,21 @@ export default async function RelatoriosCoordenador() {
           title="Coordenadores"
           value={stats.totalCoordenadores}
           icon={Users}
-          bgClass=""
+          bgClass="bg-[#F28322]"
           description="+12 novos este mês"
         />
         <KpiCard
           title="Novos esse mês"
           value={`${stats.novosUsuariosMes}%`}
           icon={CheckCircle2}
-          bgClass=""
+          bgClass="bg-[#18B14E]"
           description="+8% em relação ao mês anterior"
         />
         <KpiCard
-          title="Inativos"
+          title="Horas restantes"
           value={`${stats.usuariosInativos}%`}
           icon={AlertTriangle}
-          bgClass=""
+          bgClass="bg-[#E52121]"
           description="-5% em relação ao mês anterior"
         />
       </div>
