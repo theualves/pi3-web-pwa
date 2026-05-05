@@ -34,21 +34,24 @@ async function EstatisticasAsync() {
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
-          title="Coordenadores"
+          title="Horas aprovadas"
           value={stats.totalCoordenadores}
           icon={Users}
+          bgClass="bg-[#18B14E]"
           description="+12 novos este mês"
         />
         <KpiCard
-          title="Novos esse mês"
+          title="Horas em análise"
           value={`${stats.novosUsuariosMes}%`}
           icon={CheckCircle2}
+          bgClass="bg-[#F28322]"
           description="+8% em relação ao mês anterior"
         />
         <KpiCard
-          title="Inativos"
+          title="Horas rejeitadas"
           value={`${stats.usuariosInativos}%`}
           icon={AlertTriangle}
+          bgClass="bg-[#E52121]"
           description="-5% em relação ao mês anterior"
         />
       </div>

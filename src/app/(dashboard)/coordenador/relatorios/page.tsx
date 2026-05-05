@@ -14,14 +14,14 @@ export default async function RelatoriosCoordenador() {
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
-          title="Coordenadores"
+          title="Total de horas"
           value={stats.totalCoordenadores}
           icon={Users}
           bgClass="bg-[#F28322]"
           description="+12 novos este mês"
         />
         <KpiCard
-          title="Novos esse mês"
+          title="Horas aprovadas"
           value={`${stats.novosUsuariosMes}%`}
           icon={CheckCircle2}
           bgClass="bg-[#18B14E]"

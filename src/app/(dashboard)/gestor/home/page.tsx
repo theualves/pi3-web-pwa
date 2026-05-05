@@ -61,21 +61,21 @@ export default async function GestorDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
-          title="Coordenadores"
+          title=" Coodernadores ativos"
           value={stats.totalCoordenadores}
           icon={Users}
           bgClass="bg-[#21598E]"
           description="+12 novos este mês"
         />
         <KpiCard
-          title="Novos esse mês"
+          title="Relatórios Recebidos"
           value={`${stats.novosUsuariosMes}%`}
           icon={CheckCircle2}
           bgClass="bg-[#DA761F]"
           description="+8% em relação ao mês anterior"
         />
         <KpiCard
-          title="Inativos"
+          title="Horas Aprovadas"
           value={`${stats.usuariosInativos}%`}
           icon={AlertTriangle}
           bgClass="bg-[#210367]"
