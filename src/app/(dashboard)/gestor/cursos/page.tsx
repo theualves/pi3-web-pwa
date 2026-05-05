@@ -32,13 +32,16 @@ export default function CursosPage() {
     carregarCursos();
   }, []);
 
-  const cursosFiltrados = cursos.filter((curso: any) =>
-    curso.nome.toLowerCase().includes(termoBusca.toLowerCase())
-  );
+    const cursosFiltrados = Array.isArray(cursos) 
+    ? cursos.filter((curso: any) => {
+        const nomeSeguro = curso.nome || ""; 
+        return nomeSeguro.toLowerCase().includes(termoBusca.toLowerCase());
+      })
+    : []; // Se não for array, devolve vazio para não quebrar a tela
 
   const colunas = [
     { header: "Nome do Curso", accessor: "nome" },
-    { header: "Tipo", accessor: "tipo" },
+    { header: "Tipo", accessor: "tipoCurso" },
     { header: "Status", accessor: "status" },
     { header: "Ações", accessor: "acoes" }, 
   ];
