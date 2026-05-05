@@ -41,6 +41,7 @@ export default function Header({
   return (
     <header className="flex flex-col w-full">
       <div className="max-w-[1440px] mx-auto w-full flex py-3 px-8 justify-between items-center">
+        
         <div className="">
           <Link href="/home" className="">
             <Image src="/logo.svg" alt="Logo" width={80} height={80} />

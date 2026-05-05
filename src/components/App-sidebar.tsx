@@ -56,7 +56,7 @@ export default function AppSidebar() {
   const items = role ? links[role as keyof typeof links] : [];
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="">
       <SidebarHeader className="flex justify-center h-[64px] border-b border-sidebar-border/20">
         <SidebarTrigger className="text-white hover:bg-white/10 hover:text-white" />
       </SidebarHeader>

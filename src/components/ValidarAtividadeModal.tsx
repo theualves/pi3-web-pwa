@@ -23,16 +23,16 @@ export function ValidarAtividadeModal({ isOpen, onClose, atividade }: ValidarAti
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[650px]">
+      <DialogContent className="w-[95vw] max-h-[90vh] overflow-y-auto sm:max-w-[650px]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl text-[#004A8D]">
-            <FileText className="h-6 w-6" />
+          <DialogTitle className="flex items-center gap-2 pt-6 sm:pt-0 text-lg sm:text-lg text-[#004A8D]">
+            <FileText className="h-5 w-5 sm:h-6 sm:w-6" />
             Análise de Atividade Complementar
           </DialogTitle>
         </DialogHeader>
 
         <div className="grid gap-6 py-4">
-          <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-slate-50 border border-slate-200 rounded-lg">
             <div className="flex flex-col gap-1">
               <span className="text-xs text-slate-500 font-semibold uppercase">Estudante</span>
               <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
@@ -75,20 +75,20 @@ export function ValidarAtividadeModal({ isOpen, onClose, atividade }: ValidarAti
           </div>
 
           <div className="space-y-2">
-            <h4 className="text-sm font-semibold text-slate-700">Parecer do Coordenador <span className="text-red-500">*</span></h4>
+            <h4 className="text-sm font-semibold sm:text-slate-700">Parecer do Coordenador <span className="text-red-500">*</span></h4>
             <Textarea 
-              placeholder="Digite o seu feedback ou a justificativa em caso de recusa..." 
-              className="resize-none h-24"
+              placeholder="Digite o seu feedback ou a justificativa em caso de recusa..."
+              className="text-sm resize-none h-24"
             />
           </div>
         </div>
 
-        <DialogFooter className="flex justify-between sm:justify-between w-full border-t border-slate-100 pt-4">
-          <Button variant="outline" onClick={onClose} className="text-slate-500">
+        <DialogFooter className="flex flex-col-reverse sm:justify-between w-full border-t border-slate-100 pt-4">
+          <Button variant="outline" onClick={onClose} className="mt-4 my-2 sm:mt-0 sm:my-0 text-slate-500">
             Cancelar
           </Button>
           
-          <div className="flex gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 flex gap-2">
             <Button variant="destructive" onClick={onClose}>Recusar</Button>
             <Button variant="outline" className="border-amber-500 text-amber-600 hover:bg-amber-50" onClick={onClose}>
               Pedir Ajuste
