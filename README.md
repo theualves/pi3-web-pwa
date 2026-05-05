@@ -1,35 +1,170 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📊 Sistema de Gerenciamento de Atividades Acadêmicas (PWA)
 
-## Getting Started
+Este projeto é uma aplicação web desenvolvida como um **Progressive Web App (PWA)** utilizando **Next.js com App Router**.
 
-First, run the development server:
+O sistema tem como objetivo gerenciar atividades acadêmicas, permitindo a visualização de dados, organização de informações e geração de relatórios através de uma interface moderna e responsiva.
+
+---
+
+## 🚀 Funcionalidades
+
+* 📈 Dashboard com visualização de dados
+* 👨‍🎓 Gerenciamento de alunos
+* 📝 Controle de atividades acadêmicas
+* 📊 Relatórios integrados com backend
+* 🔐 Separação de rotas públicas e privadas (login/painel)
+* 📱 Interface responsiva
+* ⚡ Instalação como aplicativo (PWA)
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+* Next.js (App Router)
+* React
+* TypeScript
+* Tailwind CSS *(utilizado na estilização)*
+* ShadCN UI *(biblioteca de componentes)*
+* PWA (Progressive Web App)
+
+---
+
+## 📁 Estrutura do Projeto
+
+```bash
+api3-web-pwa/
+│
+├── app/                          # Rotas e páginas (App Router)
+│   ├── layout.tsx                # Layout global (HTML base)
+│   │
+│   ├── (auth)/                   # Grupo de rotas de autenticação
+│   │   └── login/
+│   │       └── page.tsx          # /login
+│   │
+│   ├── (painel)/                 # Grupo de rotas do sistema (privadas)
+│   │   ├── layout.tsx            # Layout compartilhado (Header + Sidebar)
+│   │   │
+│   │   ├── aluno/
+│   │   │   └── page.tsx          # /aluno
+│   │   │
+│   │   └── coordenador/
+│   │       └── page.tsx          # /coordenador
+│
+├── components/                   # Componentes reutilizáveis
+│   ├── ui/                       # Componentes do ShadCN
+│   ├── Header.tsx                # Cabeçalho global
+│   ├── KpiCard.tsx               # Card de indicadores (KPIs)
+│   └── ...
+│
+├── services/                     # Comunicação com backend (API)
+│   ├── relatorioService.ts       # Requisições de relatórios
+│   ├── atividadeService.ts       # Requisições de atividades
+│   └── ...
+│
+├── public/                       # Arquivos estáticos
+│   └── logo.svg
+│
+├── lib/ ou utils/                # Funções auxiliares
+│   └── utils.ts
+```
+
+---
+
+## 🧠 Arquitetura do Projeto
+
+O projeto utiliza o conceito de **Route Groups do Next.js**, onde:
+
+* `(auth)` → rotas públicas (ex: login)
+* `(painel)` → rotas internas do sistema
+* O layout dentro de `(painel)` permite reaproveitar elementos como:
+
+  * Header
+  * Sidebar
+
+👉 Isso melhora organização e reutilização de código.
+
+---
+
+## 🔌 Integração com Backend
+
+A pasta `services/` funciona como uma camada de abstração para comunicação com a API.
+
+Exemplo:
+
+* `relatorioService.ts` → busca dados de relatórios
+* `atividadeService.ts` → operações com atividades
+
+👉 Esses arquivos fazem requisições HTTP para o backend (API REST).
+
+---
+
+## ▶️ Como executar o projeto
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+```
+
+---
+
+### 2. Acessar a pasta
+
+```bash
+cd api3-web-pwa
+```
+
+---
+
+### 3. Instalar dependências
+
+```bash
+npm install
+```
+
+---
+
+### 4. Rodar o projeto
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 5. Acessar no navegador
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+http://localhost:3000
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📱 Sobre o PWA
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A aplicação pode ser instalada como um app no dispositivo.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Benefícios:
 
-## Deploy on Vercel
+* Acesso direto pela tela inicial
+* Melhor experiência mobile
+* Possível suporte offline (dependendo da configuração)
+
+---
+
+## ⚠️ Observações
+
+* Este projeto é o **frontend**, depende de um backend para funcionar completamente
+* As rotas e dados são carregados via API
+* Certifique-se de configurar corretamente as URLs nos `services`
+
+---
+
+## 👩‍💻 Autoria
+
+Projeto desenvolvido para fins acadêmicos.
+
+---
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
