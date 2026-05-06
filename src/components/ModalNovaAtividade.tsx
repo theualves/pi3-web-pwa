@@ -45,23 +45,58 @@ export default function ModalNovaAtividade({
   const handleSalvar = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const usuarioStorage = localStorage.getItem("usuarioLogado");
+    const usuarioLogado = usuarioStorage ? JSON.parse(usuarioStorage) : null;
+
+    const alunoId = usuarioLogado?.id;
+
+    if (!alunoId) {
+      alert("Erro: ID do aluno não encontrado na sessão. Faça login novamente.");
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("nome", nome);
+    formData.append("titulo", nome);
     formData.append("categoria", categoria);
     formData.append("dataInicio", dataInicio);
     formData.append("cargaHoraria", cargaHoraria);
     formData.append("descricao", descricao);
 
     if (arquivo) {
-      formData.append("certificado", arquivo);
+      formData.append("comprovante", arquivo);
     }
 
-    console.log("Dados empacotados para o backend:");
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}:`, pair[1]);
-    }
+    try {
+      const url = `http://localhost:3001/api/aluno-portal/${alunoId}/solicitacoes`;
 
-    onClose();
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const erroBackend = await response.json();
+        console.error("🚨 O BACKEND RECUSOU. MOTIVO:", erroBackend);
+        alert(`Erro do servidor: ${erroBackend.error || erroBackend.message || "Verifique o console"}`);
+        return; // Para a execução aqui
+      }
+
+      const dadosSalvos = await response.json();
+      console.log("Sucesso! O backend devolveu:", dadosSalvos);
+
+      setNome("");
+      setCategoria("");
+      setDataInicio("");
+      setCargaHoraria("");
+      setDescricao("");
+      setArquivo(null);
+      
+      onClose();
+
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+      alert("Erro ao enviar a atividade. Tente novamente.");
+    }
   };
 
   return (
