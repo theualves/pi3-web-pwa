@@ -7,6 +7,8 @@ import { IconeSenac } from "./IconeSenac";
 import { Bell, BellRing, ChevronDown, LogOut } from "lucide-react"; 
 import { usePathname } from "next/navigation";
 
+import { SidebarTrigger } from "@/components/ui/sidebar";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,7 +44,12 @@ export default function Header({
     <header className="flex flex-col w-full">
       <div className="max-w-[1440px] mx-auto w-full flex py-3 px-8 justify-between items-center">
         
-        <div className="">
+
+        <div className="flex items-center gap-4">
+          {isLoggedIn && (
+            <SidebarTrigger className="lg:hidden"/>
+          )}
+
           <Link href="/home" className="">
             <Image src="/logo.svg" alt="Logo" width={80} height={80} />
           </Link>
