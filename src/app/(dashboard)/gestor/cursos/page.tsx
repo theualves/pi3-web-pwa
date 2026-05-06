@@ -71,7 +71,7 @@ export default function CursosPage() {
             />
           </div>
 
-          <div className="flex gap-2 w-full sm:w-auto">
+          <div className="flex gap-2 w-full w-full sm:w-auto justify-end">
             <Button 
               variant="outline" 
               onClick={carregarCursos}
@@ -83,7 +83,7 @@ export default function CursosPage() {
 
             <Button 
               onClick={() => setModalAberto(true)} 
-              className="bg-[#004A8D] hover:bg-[#003666] text-white flex items-center gap-2 w-full sm:w-auto"
+              className="bg-[#004A8D] hover:bg-[#003666] text-white flex items-center justify-center gap-2 flex-1 sm:flex-none"
             >
               <Plus className="size-4" />
               Novo Curso

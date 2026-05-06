@@ -60,7 +60,11 @@ export function ValidarAtividadeModal({ isOpen, onClose, atividade }: ValidarAti
             <div className="flex flex-col gap-1">
               <span className="text-xs text-slate-500 font-semibold uppercase">Status Atual</span>
               <div>
-                <Badge variant={atividade.status === "Aprovado" ? "default" : "secondary"} className="bg-amber-100 text-amber-800 border-none">
+                <Badge variant={atividade.status === "Aprovado" ? "default" : "secondary"} 
+                className={ atividade.status === "Aprovado" ? "bg-green-100 text-green-700 border-none"
+                  : atividade.status === "reprovado" ? "bg-red-100 text-red-700 border-none"
+                  : "bg-amber-100 text-amber-800 border-none"
+                }>
                   {atividade.status || "Pendente"}
                 </Badge>
               </div>

@@ -23,7 +23,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
         onClick={() => setExpandido(!expandido)}
         className="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 transition-colors"
       >
-        <div className="flex items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 transition-colors w-full">
+        <div className="flex flex-wrap sm:items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 transition-colors w-full">
           <div className="flex items-center gap-4 min-w-[250px]">
             <div className="bg-[#378bf8] p-4 rounded-full text-[#004A8D]">
               <FileText className="size-8"  />
@@ -41,7 +41,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
             </div>
           </div>
           <div>
-            <h3 className="text-md font-semibold text-slate-800">
+            <h3 className="text-md font-semibold text-slate-800 mt-2 sm:mt-0">
               <span className="text-blue-500">Curso:</span> {relatorio.curso}
             </h3>
             <h3 className="text-md font-semibold text-slate-800">
@@ -79,7 +79,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
             </p>
           </div>
 
-          <div className="flex gap-3 mt-4">
+          <div className="grid grid-cols-1 sm:flex gap-3 mt-4">
             <Button className="bg-[#004A8D] hover:bg-[#003666] text-white flex gap-2">
               <Eye className="size-4" />
               Visualizar
