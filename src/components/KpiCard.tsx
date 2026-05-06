@@ -6,11 +6,10 @@ interface KpiCardProps {
   value: string | number;
   description?: string;
   icon: LucideIcon;
-  bgClass?: string; // Nova prop para o fundo
+  bgClass?: string;
 }
 
 export function KpiCard({ title, value, description, icon: Icon, bgClass }: KpiCardProps) {
-  // Se houver bgClass, usamos texto branco. Se não, usamos o padrão slate.
   const isCustomBg = !!bgClass;
 
   return (
