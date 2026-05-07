@@ -6,6 +6,7 @@ import { BookPlus, Paperclip } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IconeSenac } from "./IconeSenac";
+import { useRouter } from "next/navigation";
 
 interface ModalNovaAtividadeProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export default function ModalNovaAtividade({
   isOpen,
   onClose,
 }: ModalNovaAtividadeProps) {
+  const router = useRouter();
   const [nome, setNome] = useState("");
   const [categoria, setCategoria] = useState("");
   const [dataInicio, setDataInicio] = useState("");
@@ -92,6 +94,8 @@ export default function ModalNovaAtividade({
       setArquivo(null);
       
       onClose();
+
+      router.push("/aluno/solicitacoes");
 
     } catch (error) {
       console.error("Erro na requisição:", error);
