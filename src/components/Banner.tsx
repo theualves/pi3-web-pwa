@@ -14,9 +14,9 @@ const openSans = Open_Sans({
 
 export default function Banner() {
   return (
-    <section className="w-full bg-gradient-to-b from-[#FFFFFF] to-[#CACACA] overflow-hidden min-h-[500px] lg:min-h-[700px] flex">
+    <section className="w-full bg-gradient-to-b from-[#FFFFFF] to-[#CACACA] overflow-hidden min-h-fit lg:min-h-[700px] flex">
       <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-stretch">
-        <div className="w-full lg:w-1/3 text-white flex flex-col justify-center items-center text-center lg:items-start lg:text-left py-12 z-10">
+        <div className="w-full lg:w-1/3 text-white flex flex-col justify-center items-center text-center lg:items-start lg:text-left py-8 lg:py-12 z-10">
           <h1
             className={`flex flex-col items-center lg:items-start mb-6 uppercase text-[#005594] tracking-wide ${anton.className}`}
           >
@@ -46,8 +46,8 @@ export default function Banner() {
           </Button>
         </div>
 
-        <div className="w-full  relative flex items-end justify-center lg:justify-end mt-8 lg:mt-0">
-          <div className="relative w-full h-[400px] md:h-[500px] lg:h-[650px] lg:-mr-20 xl:-mr-40">
+        <div className="w-full  relative flex items-end justify-center lg:justify-end mt-4 lg:mt-0">
+          <div className="relative w-full h-[300px] md:h-[500px] lg:h-[650px] lg:-mr-20 xl:-mr-40">
             <Image
               src="/image-banner.png"
               alt="Conexão Acadêmica"
