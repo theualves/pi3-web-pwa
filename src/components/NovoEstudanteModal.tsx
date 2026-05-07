@@ -47,7 +47,7 @@ export function NovoEstudanteModal({
       }
 
       // 3. Chamamos a rota específica que você passou, injetando o ID do coordenador
-      const urlCursos = `http://localhost:3001/api/cursos?coordenadorId=${coordenadorId}`;
+      const urlCursos = `https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${coordenadorId}`;
 
       fetch(urlCursos)
         .then((res) => res.json())
