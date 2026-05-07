@@ -21,7 +21,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
         className="flex flex-col md:flex-row items-start md:items-center justify-between p-6 cursor-pointer hover:bg-slate-50 transition-colors gap-4"
       >
         <div className="flex flex-wrap sm:items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 transition-colors w-full">
-          <div className="flex items-center gap-4 min-w-[250px]">
+          <div className="flex items-center gap-4 min-w-0">
             <div className="bg-[#378bf8] p-4 rounded-full text-[#004A8D]">
               <FileText className="size-8"  />
             </div>
@@ -31,7 +31,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
               </h3>
               <p className="text-sm text-slate-500">
                 Id:{" "}
-                <span className="font-medium text-slate-700">
+                <span className="font-medium text-slate-700 break-all">
                   {relatorio.id}
                 </span>
               </p>
@@ -68,7 +68,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <h4 className="text-xs font-bold text-slate-400 uppercase mb-2">Descrição da Atividade</h4>
-              <p className="text-sm text-slate-600 leading-relaxed bg-white p-3 rounded-md border border-slate-200">
+              <p className="text-sm text-slate-600 leading-relaxed bg-white p-3 md:min-h-[120px] rounded-md border border-slate-200">
                 {relatorio.descricao || "Sem descrição informada."}
               </p>
             </div>
@@ -88,7 +88,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 flex gap-3">
                 <a 
                   href={`https://api-horas-complementares.onrender.com/${relatorio.comprovante}`} 
                   target="_blank" 
