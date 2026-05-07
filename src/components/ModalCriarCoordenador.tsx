@@ -25,7 +25,7 @@ export function ModalCriarCoordenador({ isOpen, onClose, onSuccess }: ModalCriar
   // Busca a lista de cursos para o Select
   useEffect(() => {
     if (isOpen) {
-      fetch("http://localhost:3001/api/cursos")
+      fetch("https://api-horas-complementares.onrender.com/api/cursos")
         .then((res) => res.json())
         .then((data) => setCursos(data))
         .catch((err) => console.error("Erro ao carregar cursos:", err));
