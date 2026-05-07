@@ -23,7 +23,7 @@ export default async function HomePage() {
         />
 
         <KpiCard
-          title="% de alunos em risco(<50%)"
+          title="% de alunos com horas completas"
           value={`${stats.porcentagemCompletas}%`}
           icon={CheckCircle2}
           bgClass="bg-[#F28322]"
@@ -31,7 +31,7 @@ export default async function HomePage() {
         />
 
         <KpiCard
-          title="% de alunos em Risco"
+          title="% de alunos em risco(<50%)"
           value={`${stats.porcentagemRisco}%`}
           icon={AlertTriangle}
           bgClass="bg-[#F28322]"
