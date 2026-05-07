@@ -22,9 +22,6 @@ export default async function RelatoriosPage() {
   return (
     <div className="flex flex-col gap-6 p-2">
       <div className="flex items-center gap-3">
-        <div className="bg-[#004A8D] p-2 rounded-lg">
-          <FileBarChart2 className="text-white size-6" />
-        </div>
         <h1 className="text-2xl font-bold text-slate-800">Dashboard de Relatórios</h1>
       </div>
 
