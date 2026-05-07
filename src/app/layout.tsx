@@ -14,9 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="pt-br" className={cn("font-urbanist", urbanist.variable)}
+      lang="pt-br" suppressHydrationWarning className={cn("font-urbanist", urbanist.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>{children}</body>
     </html>
   );
 }

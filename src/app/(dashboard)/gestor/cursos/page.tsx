@@ -75,14 +75,6 @@ export default function CursosPage() {
           </div>
 
           <div className="flex gap-2 w-full sm:w-auto">
-            <Button 
-              variant="outline" 
-              onClick={carregarCursos}
-              disabled={carregando}
-              className="px-3"
-            >
-              <RefreshCw className={`size-4 ${carregando ? "animate-spin" : ""}`} />
-            </Button>
 
             <Button 
               onClick={() => setModalAberto(true)} 
