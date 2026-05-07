@@ -29,7 +29,7 @@ export function TabelaEstudantes({ colunas }: any) {
       }
 
       // 2. A SACADA DE MESTRE: Descobrimos o curso batendo na API de cursos!
-      const resCursos = await fetch(`http://localhost:3001/api/cursos?coordenadorId=${meuid}`);
+      const resCursos = await fetch(`https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${meuid}`);
       
       if (!resCursos.ok) throw new Error("Erro ao buscar os cursos do coordenador.");
       

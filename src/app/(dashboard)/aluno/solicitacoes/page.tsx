@@ -32,7 +32,7 @@ export default function AlunoSolicitacoes() {
         return;
       }
 
-      const url = `http://localhost:3001/api/aluno-portal/${alunoId}/solicitacoes`;
+      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes`;
       const response = await fetch(url);
       
       if (!response.ok) throw new Error("Erro ao buscar.");
@@ -82,7 +82,7 @@ export default function AlunoSolicitacoes() {
       const usuario = usuarioStorage ? JSON.parse(usuarioStorage) : null;
       const alunoId = usuario?.idAluno || usuario?.aluno?.id || usuario?.id;
 
-      const url = `http://localhost:3001/api/aluno-portal/${alunoId}/solicitacoes/${row.id}`;
+      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes/${row.id}`;
       
       // Manda o DELETE para a API
       const response = await fetch(url, { method: "DELETE" });

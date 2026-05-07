@@ -92,7 +92,7 @@ export function NovoEstudanteModal({
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/usuarios/aluno", {
+      const response = await fetch("https://api-horas-complementares.onrender.com/api/usuarios/aluno", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

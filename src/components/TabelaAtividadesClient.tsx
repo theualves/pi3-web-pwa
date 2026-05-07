@@ -29,8 +29,7 @@ export function TabelaAtividadesClient() {
         return;
       }
 
-      // 2. Descobrimos qual é o curso desse coordenador batendo na API de Cursos
-      const resCursos = await fetch(`http://localhost:3001/api/cursos?coordenadorId=${meuid}`);
+      const resCursos = await fetch(`https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${meuid}`);
       if (!resCursos.ok) throw new Error("Erro ao buscar os cursos do coordenador.");
       
       const cursos = await resCursos.json();

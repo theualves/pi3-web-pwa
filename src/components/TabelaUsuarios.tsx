@@ -19,7 +19,7 @@ export function TabelaUsuarios({ colunas }: any) {
     setCarregando(true);
     try {
       const response = await fetch(
-        "http://localhost:3001/api/usuarios?tipo=COORDENADOR",
+        "https://api-horas-complementares.onrender.com/api/usuarios?tipo=COORDENADOR",
       );
       if (!response.ok) throw new Error("Erro ao buscar coordenadores.");
 
@@ -54,7 +54,7 @@ export function TabelaUsuarios({ colunas }: any) {
     if (confirmou) {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/usuarios/${id}`,
+          `https://api-horas-complementares.onrender.com/api/usuarios/${id}`,
           {
             method: "DELETE",
           },

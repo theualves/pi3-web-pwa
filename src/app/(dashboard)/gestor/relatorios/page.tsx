@@ -5,7 +5,7 @@ import { CardRelatorio } from "@/components/CardRelatorio";
 
 // Função para buscar os dados da API (Rodando no Servidor)
 async function getAtividadesProcessadas() {
-  const res = await fetch("http://localhost:3001/api/atividades?processadas=true", {
+  const res = await fetch("https://api-horas-complementares.onrender.com/api/atividades?processadas=true", {
     cache: "no-store", // Garante que sempre pegue dados novos
   });
   if (!res.ok) return [];

@@ -63,7 +63,7 @@ export function ModalEditarAtividade({ isOpen, onClose, atividade, onSuccess }: 
       }
 
       // Rota com ID do aluno e ID da atividade
-      const url = `http://localhost:3001/api/aluno-portal/${alunoId}/solicitacoes/${atividade.id}`;
+      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes/${atividade.id}`;
 
       const response = await fetch(url, {
         method: "PUT", // ⚠️ Confirme se seu backend espera PUT ou PATCH para edição

@@ -12,13 +12,12 @@ export default function CursosPage() {
   const [cursos, setCursos] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
-  // 1. Estado para armazenar o que o usuário está buscando
   const [termoBusca, setTermoBusca] = useState("");
 
   const carregarCursos = async () => {
     try {
       setCarregando(true);
-      const response = await fetch("http://localhost:3001/api/cursos");
+      const response = await fetch("https://api-horas-complementares.onrender.com/api/cursos");
       const dados = await response.json();
       setCursos(dados);
     } catch (error) {
@@ -37,7 +36,7 @@ export default function CursosPage() {
         const nomeSeguro = curso.nome || ""; 
         return nomeSeguro.toLowerCase().includes(termoBusca.toLowerCase());
       })
-    : []; // Se não for array, devolve vazio para não quebrar a tela
+    : []; 
 
   const colunas = [
     { header: "Nome do Curso", accessor: "nome" },
@@ -59,10 +58,8 @@ export default function CursosPage() {
           </h1>
         </div>
 
-        {/* 3. Área de Controles: Busca + Botões */}
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-center">
           
-          {/* Campo de Busca com ícone embutido */}
           <div className="relative w-full sm:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
             <input

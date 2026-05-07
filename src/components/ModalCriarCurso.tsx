@@ -40,7 +40,7 @@ export function ModalCriarCurso({ isOpen, onClose }: ModalCriarCursoProps) {
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/cursos", {
+      const response = await fetch("https://api-horas-complementares.onrender.com/api/cursos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

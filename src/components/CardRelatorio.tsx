@@ -90,7 +90,7 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
 
               <div className="flex gap-3">
                 <a 
-                  href={`http://localhost:3001/${relatorio.comprovante}`} 
+                  href={`https://api-horas-complementares.onrender.com/${relatorio.comprovante}`} 
                   target="_blank" 
                   rel="noreferrer"
                   className="flex-1"

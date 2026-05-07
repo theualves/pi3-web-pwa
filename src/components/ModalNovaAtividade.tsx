@@ -67,7 +67,7 @@ export default function ModalNovaAtividade({
     }
 
     try {
-      const url = `http://localhost:3001/api/aluno-portal/${alunoId}/solicitacoes`;
+      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes`;
 
       const response = await fetch(url, {
         method: "POST",

@@ -153,7 +153,7 @@ export function ValidarAtividadeModal({
             <div className="space-y-2">
               <h4 className="text-sm font-semibold text-slate-700">Comprovante</h4>
               <a 
-                href={`http://localhost:3001/${atividade.comprovante}`} 
+                href={`https://api-horas-complementares.onrender.com/${atividade.comprovante}`} 
                 target="_blank" 
                 rel="noreferrer"
                 className="text-sm text-blue-600 hover:underline inline-flex items-center gap-1"
