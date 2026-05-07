@@ -32,7 +32,7 @@ export function ModalBase({
 }: ModalBaseProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[550px]">
+      <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 font-bold text-2xl text-[#004A8D]">
             {icon && icon}
