@@ -54,7 +54,7 @@ export default function EsqueciSenha() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/api/auth/recuperar", {
+      const response = await fetch("https://api-horas-complementares.onrender.com/api/auth/recuperar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // O backend pediu apenas o email no JSON, então enviamos apenas ele

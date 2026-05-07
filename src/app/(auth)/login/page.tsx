@@ -47,13 +47,11 @@ export default function Login() {
     setIsAuthenticating(true);
 
     try {
-      // Fazendo a requisição real para o backend
-      const response = await fetch("http://localhost:3001/api/auth/login", {
+      const response = await fetch("https://api-horas-complementares.onrender.com/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // O backend espera "email", então mapeamos o estado "login" para "email"
         body: JSON.stringify({ email: login, senha }), 
       });
 
