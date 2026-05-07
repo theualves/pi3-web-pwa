@@ -63,7 +63,7 @@ export default function Header({
 
         <div className="flex items-center gap-4">
           {isLoggedIn && (
-            <SidebarTrigger className="lg:hidden"/>
+            <SidebarTrigger className="md:hidden"/>
           )}
 
           <Link href="/home" className="">
@@ -160,7 +160,7 @@ export default function Header({
               </DropdownMenu>
             </div>
           ) : (
-            <Link href="/" className="text-xl">
+            <Link href="https://faculdadesenacpe.edu.br/contato" target="_blank" rel="noopener noreferrer" className="text-xl">
               Contato
             </Link>
           )}
