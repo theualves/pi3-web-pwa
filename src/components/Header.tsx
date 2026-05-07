@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IconeSenac } from "./IconeSenac";
-import { Bell, BellRing, ChevronDown, LogOut } from "lucide-react"; 
+import { Bell, BellRing, ChevronDown, LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -30,6 +30,22 @@ export default function Header({
   const [notificacoes, setNotificacoes] = useState(["Aviso 1", "Aviso 2"]);
   const hasNotificacoes = notificacoes.length > 0;
 
+  const [nomeReal, setNomeReal] = useState(userName);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const storage = localStorage.getItem("usuarioLogado");
+      if (storage) {
+        const usuarioLogado = JSON.parse(storage);
+        const nome = usuarioLogado?.nome || usuarioLogado?.usuario?.nome;
+        
+        if (nome) {
+          setNomeReal(nome);
+        }
+      }
+    }
+  }, [isLoggedIn]);
+
   let perfil = "Usuário";
 
   if (pathname?.includes("/gestor")) {
@@ -39,7 +55,7 @@ export default function Header({
   } else if (pathname?.includes("/aluno") || pathname?.includes("/home")) {
     perfil = "Aluno";
   }
-  
+
   return (
     <header className="flex flex-col w-full">
       <div className="max-w-[1440px] mx-auto w-full flex py-3 px-8 justify-between items-center">
@@ -51,14 +67,20 @@ export default function Header({
           )}
 
           <Link href="/home" className="">
-            <Image src="/logo.svg" alt="Logo" width={80} height={80} />
+            <Image
+              src="/logo.svg"
+              alt="Logo"
+              width={80}
+              height={80}
+              style={{ width: "80px", height: "auto" }}
+              priority
+            />
           </Link>
         </div>
 
         <nav className="flex items-center">
           {isLoggedIn ? (
             <div className="flex items-center gap-6">
-              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   {/* O "relative" aqui é crucial para o balãozinho vermelho grudar no sino */}
@@ -80,11 +102,14 @@ export default function Header({
                   <div className="px-2 py-1.5 font-semibold text-sm border-b mb-1">
                     Notificações
                   </div>
-                  
+
                   {hasNotificacoes ? (
                     // Se tem notificações, faz um loop para mostrar
                     notificacoes.map((nota, index) => (
-                      <DropdownMenuItem key={index} className="cursor-pointer text-sm py-2">
+                      <DropdownMenuItem
+                        key={index}
+                        className="cursor-pointer text-sm py-2"
+                      >
                         {nota}
                       </DropdownMenuItem>
                     ))
@@ -97,7 +122,6 @@ export default function Header({
                 </DropdownMenuContent>
               </DropdownMenu>
 
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center gap-3 cursor-pointer group shadow-sm border border-[#DEDEDE] rounded-lg px-3 py-2 bg-gray-50 hover:bg-[#F5ECE5] hover:border-[#F6BF87] transition-all duration-200">
@@ -109,7 +133,7 @@ export default function Header({
                     </div>
                     <span className="flex flex-col leading-tight hidden sm:flex">
                       <span className="font-semibold text-gray-800 text-sm transition-colors">
-                        {userName}
+                        {nomeReal}
                       </span>
                       <span className="text-[10px] uppercase tracking-wider font-bold text-gray-500 transition-colors">
                         {perfil}

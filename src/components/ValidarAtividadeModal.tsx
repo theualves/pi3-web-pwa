@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,16 +11,90 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { FileText, User, Calendar, Clock } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { FileText, User, Calendar, Clock, CheckCircle } from "lucide-react";
 
 interface ValidarAtividadeModalProps {
   isOpen: boolean;
   onClose: () => void;
   atividade: any | null;
+  onSuccess: () => void; // 👈 Adicionado aqui
 }
 
-export function ValidarAtividadeModal({ isOpen, onClose, atividade }: ValidarAtividadeModalProps) {
+export function ValidarAtividadeModal({ 
+  isOpen, 
+  onClose, 
+  atividade, 
+  onSuccess // 👈 Recebido aqui
+}: ValidarAtividadeModalProps) {
+  const [motivo, setMotivo] = useState("");
+  const [horasAprovadas, setHorasAprovadas] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (atividade) {
+      setHorasAprovadas(atividade.horasSolicitadas?.toString() || "0");
+      setMotivo(""); 
+    }
+  }, [atividade]);
+
   if (!atividade) return null;
+
+  const handleValidar = async (status: "APROVADA" | "REJEITADA") => {
+    if (status === "REJEITADA" && !motivo.trim()) {
+      alert("Para recusar ou pedir ajuste, você precisa preencher o Parecer/Motivo.");
+      return;
+    }
+
+    if (status === "APROVADA" && (Number(horasAprovadas) <= 0 || isNaN(Number(horasAprovadas)))) {
+      alert("Para aprovar, informe uma quantidade válida de horas.");
+      return;
+    }
+
+    const usuarioStorage = localStorage.getItem("usuarioLogado");
+    const usuarioLogado = usuarioStorage ? JSON.parse(usuarioStorage) : null;
+    const validadorId = usuarioLogado?.id;
+
+    if (!validadorId) {
+      alert("Sessão expirada. Faça login novamente.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const payload = {
+      status: status,
+      horasAprovadas: status === "APROVADA" ? Number(horasAprovadas) : 0,
+      motivo: status === "REJEITADA" ? motivo : null,
+      validadorId: validadorId,
+    };
+
+    try {
+      // ⚠️ Usando a rota específica de validação que você indicou
+      const url = `http://localhost:3001/api/atividades/${atividade.id}/validar`;
+
+      const response = await fetch(url, {
+        method: "PUT", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error("Erro ao validar atividade.");
+
+      alert(`Atividade ${status.toLowerCase()} com sucesso!`);
+      
+      onSuccess(); // 👈 CHAMA A ATUALIZAÇÃO DA TABELA AQUI
+      onClose();   // FECHA O MODAL
+
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+      alert("Erro de conexão ao tentar validar.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -37,34 +112,30 @@ export function ValidarAtividadeModal({ isOpen, onClose, atividade }: ValidarAti
               <span className="text-xs text-slate-500 font-semibold uppercase">Estudante</span>
               <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <User className="h-4 w-4 text-slate-400" />
-                {atividade.estudante || "Nome não informado"}
+                {atividade.estudante || atividade.aluno?.usuario?.nome}
               </div>
             </div>
             
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-slate-500 font-semibold uppercase">Categoria / Horas</span>
+              <span className="text-xs text-slate-500 font-semibold uppercase">Categoria / Solicitado</span>
               <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <Clock className="h-4 w-4 text-slate-400" />
-                {atividade.categoriaCarga || `${atividade.categoria} - ${atividade.cargaHoraria}h`}
+                {atividade.categoriaCarga || `${atividade.categoria} - ${atividade.horasSolicitadas}h`}
               </div>
             </div>
 
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-slate-500 font-semibold uppercase">Período Letivo</span>
+              <span className="text-xs text-slate-500 font-semibold uppercase">Período</span>
               <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
                 <Calendar className="h-4 w-4 text-slate-400" />
-                {atividade.periodo || "Não informado"}
+                {atividade.periodo}
               </div>
             </div>
 
             <div className="flex flex-col gap-1">
               <span className="text-xs text-slate-500 font-semibold uppercase">Status Atual</span>
               <div>
-                <Badge variant={atividade.status === "Aprovado" ? "default" : "secondary"} 
-                className={ atividade.status === "Aprovado" ? "bg-green-100 text-green-700 border-none"
-                  : atividade.status === "reprovado" ? "bg-red-100 text-red-700 border-none"
-                  : "bg-amber-100 text-amber-800 border-none"
-                }>
+                <Badge variant={atividade.status === "APROVADA" ? "default" : "secondary"}>
                   {atividade.status || "Pendente"}
                 </Badge>
               </div>
@@ -73,17 +144,47 @@ export function ValidarAtividadeModal({ isOpen, onClose, atividade }: ValidarAti
 
           <div className="space-y-2">
             <h4 className="text-sm font-semibold text-slate-700">Descrição do Estudante</h4>
-            <div className="p-3 bg-white border border-slate-200 rounded-md text-sm text-slate-600 min-h-[80px]">
-              {atividade.descricao || "Descrição da atividade enviada pelo aluno..."}
+            <div className="p-3 bg-white border border-slate-200 rounded-md text-sm text-slate-600">
+              {atividade.descricao || "Sem descrição."}
             </div>
           </div>
 
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold sm:text-slate-700">Parecer do Coordenador <span className="text-red-500">*</span></h4>
-            <Textarea 
-              placeholder="Digite o seu feedback ou a justificativa em caso de recusa..."
-              className="text-sm resize-none h-24"
-            />
+          {atividade.comprovante && (
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold text-slate-700">Comprovante</h4>
+              <a 
+                href={`http://localhost:3001/${atividade.comprovante}`} 
+                target="_blank" 
+                rel="noreferrer"
+                className="text-sm text-blue-600 hover:underline inline-flex items-center gap-1"
+              >
+                <FileText className="h-4 w-4" /> Ver arquivo anexo
+              </a>
+            </div>
+          )}
+
+          {/* ÁREA DE VALIDAÇÃO */}
+          <div className="grid grid-cols-3 gap-4 border-t pt-4">
+            <div className="col-span-1 space-y-2">
+              <h4 className="text-sm font-semibold text-slate-700">Horas a Aprovar</h4>
+              <Input 
+                type="number" 
+                value={horasAprovadas}
+                onChange={(e) => setHorasAprovadas(e.target.value)}
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <div className="col-span-2 space-y-2">
+              <h4 className="text-sm font-semibold text-slate-700">Parecer / Motivo</h4>
+              <Textarea 
+                placeholder="Obrigatório para recusas..." 
+                className="h-16"
+                value={motivo}
+                onChange={(e) => setMotivo(e.target.value)}
+                disabled={isSubmitting}
+              />
+            </div>
           </div>
         </div>
 
@@ -91,16 +192,21 @@ export function ValidarAtividadeModal({ isOpen, onClose, atividade }: ValidarAti
           <Button variant="outline" onClick={onClose} className="mt-4 my-2 sm:mt-0 sm:my-0 text-slate-500">
             Cancelar
           </Button>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 flex gap-2">
-            <Button variant="destructive" onClick={onClose}>Recusar</Button>
-            <Button variant="outline" className="border-amber-500 text-amber-600 hover:bg-amber-50" onClick={onClose}>
-              Pedir Ajuste
-            </Button>
-            <Button className="bg-[#004A8D] hover:bg-[#003666] text-white" onClick={onClose}>
-              Aprovar Horas
-            </Button>
-          </div>
+          <Button 
+            variant="destructive" 
+            onClick={() => handleValidar("REJEITADA")}
+            disabled={isSubmitting}
+          >
+            Recusar
+          </Button>
+          <Button 
+            className="bg-[#004A8D] hover:bg-[#003666] text-white"
+            onClick={() => handleValidar("APROVADA")}
+            disabled={isSubmitting}
+          >
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Aprovar
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

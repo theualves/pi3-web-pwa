@@ -4,15 +4,12 @@ import { useState, useEffect } from "react";
 import { DataTable } from "@/components/DataTable";
 import { NovoEstudanteModal } from "@/components/NovoEstudanteModal";
 import { Button } from "@/components/ui/button";
-import { Plus, RefreshCw } from "lucide-react"; // Adicionado ícone de recarregar
+import { Plus, RefreshCw } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 
-// 1. Removemos 'estudantes' das propriedades. Agora a tabela busca os próprios dados!
 export function TabelaEstudantes({ colunas }: any) {
   const [modalAberto, setModalAberto] = useState(false);
   const [termoBusca, setTermoBusca] = useState("");
-
-  // 2. Criamos os estados para guardar os alunos que vêm do banco
   const [estudantes, setEstudantes] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
@@ -20,23 +17,53 @@ export function TabelaEstudantes({ colunas }: any) {
     try {
       setCarregando(true);
       
-      const response = await fetch("http://localhost:3001/api/usuarios?tipo=ALUNO");
-      const dados = await response.json();
+      // 1. Quem está logado?
+      const storage = localStorage.getItem("usuarioLogado");
+      const sessao = storage ? JSON.parse(storage) : null;
+      const meuid = sessao?.id;
+
+      if (!meuid) {
+        console.error("Erro: Usuário não está logado.");
+        setCarregando(false);
+        return;
+      }
+
+      // 2. A SACADA DE MESTRE: Descobrimos o curso batendo na API de cursos!
+      const resCursos = await fetch(`http://localhost:3001/api/cursos?coordenadorId=${meuid}`);
       
-      // A MÁGICA ACONTECE AQUI: Vamos mapear e "achatar" os dados do Prisma!
-      const dadosFormatados = dados.map((usuario: any) => ({
+      if (!resCursos.ok) throw new Error("Erro ao buscar os cursos do coordenador.");
+      
+      const cursos = await resCursos.json();
+
+      // Se o backend devolver uma lista vazia, significa que o Vitor não tem curso.
+      if (!cursos || cursos.length === 0) {
+        console.warn("Nenhum curso vinculado a este coordenador.");
+        setEstudantes([]);
+        setCarregando(false);
+        return;
+      }
+
+      // Pegamos o ID do primeiro curso retornado (no seu Postman é o "ccf8...")
+      const cursoIdDoVitor = cursos[0].id;
+      const nomeDoCurso = cursos[0].nome;
+
+      // 3. A BUSCA FINAL: Trazemos os alunos ricos (com CPF e Período) daquele curso
+      const urlAlunos = `http://localhost:3001/api/usuarios?tipo=ALUNO&cursoId=${cursoIdDoVitor}`;
+      
+      const resAlunos = await fetch(urlAlunos);
+      const alunos = await resAlunos.json();
+      
+      // 4. Formatação para a tabela
+      const dadosFormatados = alunos.map((usuario: any) => ({
         id: usuario.id,
         nome: usuario.nome,
         email: usuario.email,
         status: usuario.status || "Ativo",
-        // Puxa o CPF e Período de dentro da relação "aluno"
         cpf: usuario.aluno?.cpf || "Sem CPF",
         periodo: usuario.aluno?.periodo || "-",
-        // Puxa o nome do Curso de dentro da relação "curso"
-        curso: usuario.curso?.nome || "Sem curso" 
+        curso: usuario.curso?.nome || nomeDoCurso 
       }));
       
-      // Salvamos no estado os dados já limpos e formatados!
       setEstudantes(dadosFormatados);
 
     } catch (error) {
@@ -46,19 +73,16 @@ export function TabelaEstudantes({ colunas }: any) {
     }
   };
 
-  // 4. Executa a busca automaticamente quando a tela é aberta
   useEffect(() => {
     carregarEstudantes();
   }, []);
 
-  // 5. Blindagem de segurança caso o backend mande vazio
   const listaSegura = Array.isArray(estudantes) ? estudantes : [];
 
   const estudantesFiltrados = listaSegura.filter((estudante: any) => {
     const nome = estudante.nome?.toLowerCase() || "";
     const cpf = estudante.cpf?.toLowerCase() || "";
     const busca = termoBusca.toLowerCase();
-
     return nome.includes(busca) || cpf.includes(busca);
   });
 
@@ -66,7 +90,8 @@ export function TabelaEstudantes({ colunas }: any) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Estudantes</h1>
+          <h1 className="text-2xl font-bold text-slate-800">Estudantes do Curso</h1>
+          <p className="text-sm text-slate-500">Listando alunos vinculados ao seu curso.</p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
@@ -76,16 +101,13 @@ export function TabelaEstudantes({ colunas }: any) {
             placeholder="Buscar por nome ou CPF..."
           />
 
-          {/* Botão extra para recarregar a tabela manualmente (ótimo para UX) */}
           <Button
             variant="outline"
             onClick={carregarEstudantes}
             disabled={carregando}
             className="px-3 hidden sm:flex"
           >
-            <RefreshCw
-              className={`size-4 ${carregando ? "animate-spin" : ""}`}
-            />
+            <RefreshCw className={`size-4 ${carregando ? "animate-spin" : ""}`} />
           </Button>
 
           <Button
@@ -99,28 +121,29 @@ export function TabelaEstudantes({ colunas }: any) {
 
         <NovoEstudanteModal
           isOpen={modalAberto}
-          onClose={() => {
+          onClose={(sucesso) => {
             setModalAberto(false);
-            // 6. A MÁGICA: Assim que o modal fechar, a tabela atualiza sozinha!
-            carregarEstudantes();
+            // Só recarrega se o estudante foi realmente criado
+            if (sucesso === true) carregarEstudantes();
           }}
         />
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
-        <DataTable columns={colunas} data={estudantesFiltrados} />
-
-        {carregando && (
-          <div className="p-8 text-center text-slate-500">
-            Carregando estudantes...
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden min-h-[200px]">
+        {carregando ? (
+          <div className="p-20 text-center text-slate-500">
+            <RefreshCw className="size-8 animate-spin mx-auto mb-4 text-[#004A8D]" />
+            Carregando estudantes do seu curso...
           </div>
-        )}
-
-        {!carregando && estudantesFiltrados.length === 0 && (
-          <div className="p-8 text-center text-slate-500">
-            Nenhum estudante encontrado{" "}
-            {termoBusca ? `para "${termoBusca}"` : "no banco de dados"}.
-          </div>
+        ) : (
+          <>
+            <DataTable columns={colunas} data={estudantesFiltrados} />
+            {estudantesFiltrados.length === 0 && (
+              <div className="p-12 text-center text-slate-500">
+                Nenhum estudante encontrado {termoBusca ? `para "${termoBusca}"` : "neste curso"}.
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

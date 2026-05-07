@@ -1,27 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp, FileText, Download, Eye } from "lucide-react";
+import { ChevronDown, ChevronUp, FileText, Download, Eye, Calendar, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface CardRelatorioProps {
-  relatorio: {
-    id: string;
-    nomeCoordenador: string;
-    curso: string;
-    dataEnvio: string;
-    descricao: string;
-  };
+  relatorio: any; // Usando any para facilitar o acesso ao JSON aninhado
 }
 
 export function CardRelatorio({ relatorio }: CardRelatorioProps) {
   const [expandido, setExpandido] = useState(false);
 
+  // Formatação de data simples
+  const dataFormatada = new Date(relatorio.createdAt).toLocaleDateString("pt-BR");
+
   return (
-    <div className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden mb-4 transition-all duration-200">
+    <div className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden mb-4 transition-all duration-200 hover:shadow-md">
       <div
         onClick={() => setExpandido(!expandido)}
-        className="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 transition-colors"
+        className="flex flex-col md:flex-row items-start md:items-center justify-between p-6 cursor-pointer hover:bg-slate-50 transition-colors gap-4"
       >
         <div className="flex flex-wrap sm:items-center gap-4 p-4 cursor-pointer hover:bg-slate-50 transition-colors w-full">
           <div className="flex items-center gap-4 min-w-[250px]">
@@ -40,6 +37,9 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
               </p>
             </div>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
           <div>
             <h3 className="text-md font-semibold text-slate-800 mt-2 sm:mt-0">
               <span className="text-blue-500">Curso:</span> {relatorio.curso}
@@ -48,49 +48,62 @@ export function CardRelatorio({ relatorio }: CardRelatorioProps) {
               <span className="text-blue-500">Atividade:</span> {relatorio.curso}
             </h3>
           </div>
-
           <div>
-            <h3 className="text-md font-semibold text-slate-800">
-              <span className="text-blue-500">Coordenador:</span> {relatorio.nomeCoordenador}
-            </h3>
-            <h3 className="text-md font-semibold text-slate-800">
-              <span className="text-blue-500">Data:</span> {relatorio.dataEnvio}
-            </h3>
+            <p className="text-blue-600 font-bold uppercase text-[10px] tracking-wider">Validado por</p>
+            <p className="font-semibold text-slate-700">{relatorio.validadaPor?.nome}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center ml-auto">
           {expandido ? (
-            <ChevronUp className="size-5 text-slate-400" />
+            <ChevronUp className="size-6 text-slate-400" />
           ) : (
-            <ChevronDown className="size-5 text-slate-400" />
+            <ChevronDown className="size-6 text-slate-400" />
           )}
         </div>
       </div>
 
       {expandido && (
-        <div className="p-4 border-t border-slate-100 bg-slate-50">
-          <div className="mb-4">
-            <h4 className="text-sm font-semibold text-slate-700 mb-1">
-              Descrição do Relatório:
-            </h4>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              {relatorio.descricao}
-            </p>
-          </div>
+        <div className="p-6 border-t border-slate-100 bg-slate-50 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-xs font-bold text-slate-400 uppercase mb-2">Descrição da Atividade</h4>
+              <p className="text-sm text-slate-600 leading-relaxed bg-white p-3 rounded-md border border-slate-200">
+                {relatorio.descricao || "Sem descrição informada."}
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-xs font-bold text-slate-400 uppercase mb-2">Detalhes Técnicos</h4>
+                <div className="flex gap-4">
+                   <div className="bg-white p-2 rounded border border-slate-200 flex-1">
+                      <p className="text-[10px] text-slate-400 uppercase">Horas Aprovadas</p>
+                      <p className="text-lg font-bold text-emerald-600">{relatorio.horasAprovadas}h</p>
+                   </div>
+                   <div className="bg-white p-2 rounded border border-slate-200 flex-1">
+                      <p className="text-[10px] text-slate-400 uppercase">Categoria</p>
+                      <p className="text-lg font-bold text-slate-700">{relatorio.categoria}</p>
+                   </div>
+                </div>
+              </div>
 
-          <div className="grid grid-cols-1 sm:flex gap-3 mt-4">
-            <Button className="bg-[#004A8D] hover:bg-[#003666] text-white flex gap-2">
-              <Eye className="size-4" />
-              Visualizar
-            </Button>
-            <Button
-              variant="outline"
-              className="flex gap-2 text-slate-700 border-slate-300"
-            >
-              <Download className="size-4" />
-              Baixar PDF
-            </Button>
+              <div className="flex gap-3">
+                <a 
+                  href={`http://localhost:3001/${relatorio.comprovante}`} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="flex-1"
+                >
+                  <Button className="w-full bg-[#004A8D] hover:bg-[#003666] text-white flex gap-2">
+                    <Eye className="size-4" /> Visualizar Comprovante
+                  </Button>
+                </a>
+                <Button variant="outline" className="flex-1 gap-2 text-slate-700 border-slate-300 bg-white">
+                  <Download className="size-4" /> Baixar PDF
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}
