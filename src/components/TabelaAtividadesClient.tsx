@@ -43,7 +43,7 @@ export function TabelaAtividadesClient() {
 
       const cursoIdDoCoordenador = cursos[0].id;
 
-      // 3. Agora sim! Buscamos as atividades usando a chave do curso confirmada!
+
       const url = `https://api-horas-complementares.onrender.com/api/atividades?cursoId=${cursoIdDoCoordenador}`;
       const response = await fetch(url);
       

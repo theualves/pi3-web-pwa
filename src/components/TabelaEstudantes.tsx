@@ -28,14 +28,13 @@ export function TabelaEstudantes({ colunas }: any) {
         return;
       }
 
-      // 2. A SACADA DE MESTRE: Descobrimos o curso batendo na API de cursos!
+      // 2. Buscando o curso na nuvem (Render)
       const resCursos = await fetch(`https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${meuid}`);
       
       if (!resCursos.ok) throw new Error("Erro ao buscar os cursos do coordenador.");
       
       const cursos = await resCursos.json();
 
-      // Se o backend devolver uma lista vazia, significa que o Vitor não tem curso.
       if (!cursos || cursos.length === 0) {
         console.warn("Nenhum curso vinculado a este coordenador.");
         setEstudantes([]);
@@ -43,12 +42,11 @@ export function TabelaEstudantes({ colunas }: any) {
         return;
       }
 
-      // Pegamos o ID do primeiro curso retornado (no seu Postman é o "ccf8...")
       const cursoIdDoVitor = cursos[0].id;
       const nomeDoCurso = cursos[0].nome;
 
-      // 3. A BUSCA FINAL: Trazemos os alunos ricos (com CPF e Período) daquele curso
-      const urlAlunos = `http://localhost:3001/api/usuarios?tipo=ALUNO&cursoId=${cursoIdDoVitor}`;
+      // 3. A BUSCA FINAL: Arrumamos a URL para apontar para o Render também!
+      const urlAlunos = `https://api-horas-complementares.onrender.com/api/usuarios?tipo=ALUNO&cursoId=${cursoIdDoVitor}`;
       
       const resAlunos = await fetch(urlAlunos);
       const alunos = await resAlunos.json();
