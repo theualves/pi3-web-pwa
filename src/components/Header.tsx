@@ -27,7 +27,7 @@ export default function Header({
 }: HeaderProps) {
   const pathname = usePathname();
 
-  const [notificacoes, setNotificacoes] = useState(["Aviso 1", "Aviso 2"]);
+  const [notificacoes, setNotificacoes] = useState([]);
   const hasNotificacoes = notificacoes.length > 0;
 
   const [nomeReal, setNomeReal] = useState(userName);
@@ -91,7 +91,6 @@ export default function Header({
             <div className="flex items-center gap-6">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  {/* O "relative" aqui é crucial para o balãozinho vermelho grudar no sino */}
                   <button className="relative text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full hover:bg-gray-100">
                     {hasNotificacoes ? (
                       <>

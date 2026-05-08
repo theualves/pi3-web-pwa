@@ -5,16 +5,14 @@ import { TabelaUsuarios } from "@/components/TabelaUsuarios";
 
 
 export default async function UsuariosPage() {
-  // Mantemos as estatísticas (KPIs) vindo do servidor
+
   const stats = await buscarDadosUsuarios();
 
   const colunas = [
     { header: "Nome", accessor: "nome" },
     { header: "E-mail", accessor: "email" },
-    // No seu JSON do banco, o campo é "tipo", mas na tabela você quer exibir "Perfil"
     { header: "Perfil", accessor: "tipo" }, 
     { header: "Status", accessor: "status" },
-    // "cursoNome" é a chave que criamos dentro da TabelaUsuarios para facilitar a leitura
     { header: "Curso", accessor: "cursoNome" }, 
     { header: "Ações", accessor: "acoes" },
   ];
@@ -35,7 +33,7 @@ export default async function UsuariosPage() {
           value={stats.totalCoordenadores}
           icon={Users}
           bgClass=""
-          description="+12 novos este mês"
+          description=""
         />
 
         <KpiCard
@@ -43,7 +41,7 @@ export default async function UsuariosPage() {
           value={`${stats.novosUsuariosMes}%`}
           icon={CheckCircle2}
           bgClass=""
-          description="+8% em relação ao mês anterior"
+          description=""
         />
 
         <KpiCard
@@ -51,13 +49,11 @@ export default async function UsuariosPage() {
           value={`${stats.usuariosInativos}%`}
           icon={AlertTriangle}
           bgClass=""
-          description="-5% em relação ao mês anterior"
+          description=""
         />
       </div>
 
-      {/* A TabelaUsuarios agora não precisa mais de dadosMockados.
-         Ela vai fazer o fetch automaticamente ao carregar.
-      */}
+
       <TabelaUsuarios colunas={colunas} />
     </div>
   );

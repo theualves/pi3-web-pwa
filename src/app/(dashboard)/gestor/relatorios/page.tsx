@@ -3,17 +3,16 @@ import { Users, CheckCircle2, AlertTriangle, FileBarChart2 } from "lucide-react"
 import { buscarDadosRelatorio } from "@/services/relatorioService";
 import { CardRelatorio } from "@/components/CardRelatorio";
 
-// Função para buscar os dados da API (Rodando no Servidor)
 async function getAtividadesProcessadas() {
   const res = await fetch("https://api-horas-complementares.onrender.com/api/atividades?processadas=true", {
-    cache: "no-store", // Garante que sempre pegue dados novos
+    cache: "no-store", 
   });
   if (!res.ok) return [];
   return res.json();
 }
 
 export default async function RelatoriosPage() {
-  // Busca simultânea: Stats e Relatórios Reais
+
   const [stats, relatoriosReais] = await Promise.all([
     buscarDadosRelatorio(),
     getAtividadesProcessadas()
@@ -25,7 +24,6 @@ export default async function RelatoriosPage() {
         <h1 className="text-2xl font-bold text-slate-800">Dashboard de Relatórios</h1>
       </div>
 
-      {/* Cards de Estatísticas */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
           title="Coordenadores"
@@ -50,7 +48,6 @@ export default async function RelatoriosPage() {
         />
       </div>
 
-      {/* Seção de Relatórios Reais */}
       <div className="mt-4">
         <div className="flex justify-between items-end mb-4">
           <h2 className="text-lg font-bold text-slate-800">

@@ -65,25 +65,25 @@ export default async function GestorDashboard() {
           value={stats.totalCoordenadores}
           icon={Users}
           bgClass="bg-[#21598E]"
-          description="+12 novos este mês"
+          description=""
         />
         <KpiCard
           title="Relatórios Recebidos"
           value={`${stats.novosUsuariosMes}%`}
           icon={CheckCircle2}
           bgClass="bg-[#DA761F]"
-          description="+8% em relação ao mês anterior"
+          description=""
         />
         <KpiCard
           title="Horas Aprovadas"
           value={`${stats.usuariosInativos}%`}
           icon={AlertTriangle}
           bgClass="bg-[#210367]"
-          description="-5% em relação ao mês anterior"
+          description=""
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-2">
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mt-2">
         <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
           <div className="flex items-center gap-2 mb-6">
             <h2 className="text-lg font-bold text-slate-800">
@@ -112,10 +112,6 @@ export default async function GestorDashboard() {
               Nenhum relatório enviado recentemente.
             </p>
           )}
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 flex items-center justify-center border-dashed">
-          <p className="text-slate-400 text-sm">Vai Corinthians!</p>
         </div>
       </div>
       <div className="flex-1 overflow-hidden border border-slate-100 rounded-md my-8">
