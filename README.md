@@ -163,9 +163,13 @@ Benefícios:
 ## 👥 Equipe
 
 Arthur Filipe Rodrigues da Silva
+
 Filipe Xavier dos Santos
+
 Maria Cecília de Lima e Silva
+
 Maria Clara Moutinho Albuquerque Silva
+
 Matheus Alves de Arruda
 
 ---
