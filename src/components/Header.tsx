@@ -56,6 +56,14 @@ export default function Header({
     perfil = "Aluno";
   }
 
+  const homeLink = pathname?.startsWith("/coordenador")
+  ? "/coordenador/home"
+  : pathname?.startsWith("/gestor")
+  ? "/gestor/home"
+  : pathname?.startsWith("/aluno")
+  ? "/aluno/home"
+  : "https://www.pe.senac.br/";
+
   return (
     <header className="flex flex-col w-full">
       <div className="max-w-[1440px] mx-auto w-full flex py-3 px-8 justify-between items-center">
@@ -66,7 +74,7 @@ export default function Header({
             <SidebarTrigger className="md:hidden"/>
           )}
 
-          <Link href="/home" className="">
+          <Link href={homeLink} target={!homeLink.startsWith("/") ? "_blank" : undefined} rel={!homeLink.startsWith("/") ? "noopener noreferrer" : undefined}>
             <Image
               src="/logo.svg"
               alt="Logo"
