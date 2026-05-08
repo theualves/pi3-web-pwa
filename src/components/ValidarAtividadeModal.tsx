@@ -71,7 +71,7 @@ export function ValidarAtividadeModal({
 
     try {
       // ⚠️ Usando a rota específica de validação que você indicou
-      const url = `http://localhost:3001/api/atividades/${atividade.id}/validar`;
+      const url = `https://api-horas-complementares.onrender.com/api/atividades/${atividade.id}/validar`;
 
       const response = await fetch(url, {
         method: "PUT", 
