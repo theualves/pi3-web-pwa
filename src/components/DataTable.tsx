@@ -79,7 +79,6 @@ export function DataTable({ columns, data, onViewClick, onEditClick, onDeleteCli
                     {col.accessor === "acoes" ? (
                       <div className="flex items-center gap-2">
                         
-                        {/* Botão Visualizar */}
                         {onViewClick && (
                           <Button
                             variant="ghost"
@@ -92,8 +91,6 @@ export function DataTable({ columns, data, onViewClick, onEditClick, onDeleteCli
                           </Button>
                         )}
 
-                        {/* Botão Editar: Agora ele aparece se onEditClick existir, 
-                            OU se as travas de aluno (podeEditar) permitirem */}
                         {onEditClick && (row.podeEditar !== false) && (
                           <Button
                             variant="ghost"
@@ -106,7 +103,6 @@ export function DataTable({ columns, data, onViewClick, onEditClick, onDeleteCli
                           </Button>
                         )}
 
-                        {/* Botão Excluir: Mesma lógica, liberado para Gestão de Usuários */}
                         {onDeleteClick && (row.podeExcluir !== false) && (
                           <Button
                             variant="ghost"

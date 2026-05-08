@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserPlus } from "lucide-react";
 import { ModalBase } from "@/components/ModalBase";
+import { IconeSenac } from "./IconeSenac";
 
 interface ModalCriarCoordenadorProps {
   isOpen: boolean;
@@ -84,7 +85,7 @@ export function ModalCriarCoordenador({ isOpen, onClose, onSuccess }: ModalCriar
       onClose={onClose}
       title="Cadastrar Novo Coordenador"
       description="Informe os dados básicos e vincule o coordenador a um curso específico."
-      icon={<UserPlus className="h-6 w-6" />}
+      icon={<IconeSenac className="h-12 w-12 text-[#004A8D]" />}
       submitText={isSubmitting ? "Cadastrando..." : "Salvar Coordenador"}
       onSubmit={handleSalvar}
     >

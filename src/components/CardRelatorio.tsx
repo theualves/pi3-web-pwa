@@ -5,13 +5,12 @@ import { ChevronDown, ChevronUp, FileText, Download, Eye, Calendar, User } from 
 import { Button } from "@/components/ui/button";
 
 interface CardRelatorioProps {
-  relatorio: any; // Usando any para facilitar o acesso ao JSON aninhado
+  relatorio: any; 
 }
 
 export function CardRelatorio({ relatorio }: CardRelatorioProps) {
   const [expandido, setExpandido] = useState(false);
 
-  // Formatação de data simples
   const dataFormatada = new Date(relatorio.createdAt).toLocaleDateString("pt-BR");
 
   return (

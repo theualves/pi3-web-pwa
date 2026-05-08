@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { DataTable } from "@/components/DataTable";
-import { Plus, Pencil, Trash2 } from "lucide-react"; // Importamos os ícones
+import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/SearchInput";
 import { ModalCriarCoordenador } from "@/components/ModalCriarCoordenador";
@@ -14,7 +14,6 @@ export function TabelaUsuarios({ colunas }: any) {
 
   const [modalAberto, setModalAberto] = useState(false);
 
-  // 1. Função para carregar os dados do banco
   const carregarCoordenadores = async () => {
     setCarregando(true);
     try {
@@ -25,12 +24,9 @@ export function TabelaUsuarios({ colunas }: any) {
 
       const data = await response.json();
 
-      // Formata os dados para a tabela conseguir ler (curso e botões)
       const dadosFormatados = data.map((usuario: any) => ({
         ...usuario,
         cursoNome: usuario.curso?.nome || "Não vinculado",
-        // Passamos as ações como parte do objeto para o DataTable renderizar,
-        // ou deixamos o DataTable criar baseado nos IDs.
       }));
 
       setUsuarios(dadosFormatados);
@@ -45,7 +41,6 @@ export function TabelaUsuarios({ colunas }: any) {
     carregarCoordenadores();
   }, []);
 
-  // 2. Lógica para DELETAR (usando a rota que você passou)
   const handleExcluir = async (id: string, nome: string) => {
     const confirmou = confirm(
       `Tem certeza que deseja excluir o coordenador ${nome}?`,
@@ -61,7 +56,6 @@ export function TabelaUsuarios({ colunas }: any) {
         );
 
         if (response.ok) {
-          // Remove da lista local para a interface atualizar instantaneamente
           setUsuarios((prev) => prev.filter((user) => user.id !== id));
           alert("Coordenador removido com sucesso!");
         } else {
@@ -73,13 +67,10 @@ export function TabelaUsuarios({ colunas }: any) {
     }
   };
 
-  // 3. Lógica para EDITAR (Skeleton)
   const handleEditar = (usuario: any) => {
-    // Aqui você integraria com o seu modal de edição
     alert(`Editando coordenador: ${usuario.nome}`);
   };
 
-  // 4. Filtro de busca
   const usuariosFiltrados = usuarios.filter((usuario: any) => {
     const busca = termoBusca.toLowerCase();
     return (
@@ -123,7 +114,7 @@ export function TabelaUsuarios({ colunas }: any) {
       <ModalCriarCoordenador
         isOpen={modalAberto}
         onClose={() => setModalAberto(false)}
-        onSuccess={carregarCoordenadores} // Recarrega a tabela após criar!
+        onSuccess={carregarCoordenadores} 
       />
     </div>
   );

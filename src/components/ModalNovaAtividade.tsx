@@ -80,7 +80,7 @@ export default function ModalNovaAtividade({
         const erroBackend = await response.json();
         console.error("🚨 O BACKEND RECUSOU. MOTIVO:", erroBackend);
         alert(`Erro do servidor: ${erroBackend.error || erroBackend.message || "Verifique o console"}`);
-        return; // Para a execução aqui
+        return; 
       }
 
       const dadosSalvos = await response.json();
@@ -114,7 +114,6 @@ export default function ModalNovaAtividade({
       onSubmit={handleSalvar}
     >
       <div className="flex flex-col gap-5 pt-2">
-        {/* BLOCO 1: Informações Gerais */}
         <div className="flex flex-col gap-4">
           <div className="space-y-1.5">
             <Label
@@ -193,9 +192,7 @@ export default function ModalNovaAtividade({
 
         <div className="flex flex-col gap-4">
           
-          {/* Caixa de Upload com Borda Lateral Laranja */}
           <div className="relative space-y-2 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50/50 p-4 transition-all hover:bg-slate-50 hover:border-[#F19100]/40 overflow-hidden">
-            {/* Filete sólido na esquerda */}
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#F19100]" />
             
             <div className="flex items-center gap-2 mb-1 pl-1">

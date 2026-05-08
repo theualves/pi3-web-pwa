@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { BookPlus } from "lucide-react";
 import { ModalBase } from "@/components/ModalBase";
+import { IconeSenac } from "./IconeSenac";
 
 interface NovoEstudanteModalProps {
   isOpen: boolean;
@@ -119,7 +120,7 @@ export function NovoEstudanteModal({
       onClose={() => onClose(false)}
       title="Cadastrar aluno"
       description="Preencha os dados abaixo para registrar um novo estudante no sistema."
-      icon={<BookPlus className="h-6 w-6" />}
+      icon={<IconeSenac className="h-12 w-12 text-[#004A8D]" />}
       submitText={isSubmitting ? "Cadastrando..." : "Cadastrar"}
       onSubmit={handleSalvar}
     >

@@ -70,7 +70,6 @@ export function ValidarAtividadeModal({
     };
 
     try {
-      // ⚠️ Usando a rota específica de validação que você indicou
       const url = `https://api-horas-complementares.onrender.com/api/atividades/${atividade.id}/validar`;
 
       const response = await fetch(url, {
@@ -85,8 +84,8 @@ export function ValidarAtividadeModal({
 
       alert(`Atividade ${status.toLowerCase()} com sucesso!`);
       
-      onSuccess(); // 👈 CHAMA A ATUALIZAÇÃO DA TABELA AQUI
-      onClose();   // FECHA O MODAL
+      onSuccess(); 
+      onClose();   
 
     } catch (error) {
       console.error("Erro na requisição:", error);
@@ -163,7 +162,6 @@ export function ValidarAtividadeModal({
             </div>
           )}
 
-          {/* ÁREA DE VALIDAÇÃO */}
           <div className="grid grid-cols-3 gap-4 border-t pt-4">
             <div className="col-span-1 space-y-2">
               <h4 className="text-sm font-semibold text-slate-700">Horas a Aprovar</h4>

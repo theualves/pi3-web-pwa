@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BookPlus } from "lucide-react";
-import { ModalBase } from "@/components/ModalBase"; 
+import { ModalBase } from "@/components/ModalBase";
+import { IconeSenac } from "./IconeSenac";
 
 interface ModalCriarCursoProps {
   isOpen: boolean;
@@ -79,7 +80,7 @@ export function ModalCriarCurso({ isOpen, onClose }: ModalCriarCursoProps) {
       onClose={onClose}
       title="Cadastrar Novo Curso"
       description="Preencha os dados abaixo para registrar um novo programa acadêmico na instituição."
-      icon={<BookPlus className="h-6 w-6" />}
+      icon={<IconeSenac className="h-12 w-12 text-[#004A8D]" />}
       submitText={isSubmitting ? "Salvando..." : "Salvar Curso"}
       onSubmit={handleSalvar}
     >

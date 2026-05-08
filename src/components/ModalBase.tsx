@@ -17,7 +17,7 @@ interface ModalBaseProps {
   icon?: React.ReactNode;
   submitText?: string;
   onSubmit: (e: React.FormEvent) => void;
-  children: React.ReactNode; //os inputs específicos de cada tela
+  children: React.ReactNode; 
 }
 
 export function ModalBase({
