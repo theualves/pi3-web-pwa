@@ -1,12 +1,15 @@
 import { KpiCard } from "@/components/KpiCard";
 import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
-import { buscarDadosUsuarios } from "@/services/usuariosService";
 import { TabelaUsuarios } from "@/components/TabelaUsuarios";
 
 
 export default async function UsuariosPage() {
 
-  const stats = await buscarDadosUsuarios();
+  const stats = {
+    coordenadoresAtivos: 5, 
+    relatoriosRecebidos: 6,  
+    horasAprovadas: 120     
+  };
 
   const colunas = [
     { header: "Nome", accessor: "nome" },
@@ -30,23 +33,23 @@ export default async function UsuariosPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
           title="Coordenadores"
-          value={stats.totalCoordenadores}
+          value={stats.coordenadoresAtivos}
           icon={Users}
           bgClass=""
           description=""
         />
 
         <KpiCard
-          title="Novos esse mês"
-          value={`${stats.novosUsuariosMes}%`}
+          title="Relatórios Recebidos"
+          value={`${stats.relatoriosRecebidos}`}
           icon={CheckCircle2}
           bgClass=""
           description=""
         />
 
         <KpiCard
-          title="Inativos"
-          value={`${stats.usuariosInativos}%`}
+          title="Horas Aprovadas"
+          value={`${stats.horasAprovadas}`}
           icon={AlertTriangle}
           bgClass=""
           description=""

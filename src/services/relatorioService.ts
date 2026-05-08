@@ -1,8 +1,8 @@
 export async function buscarDadosRelatorio() {
   return {
-    totalCoordenadores: 52,
-    novosUsuariosMes: 45,
-    usuariosInativos: 12,
+    totalCoordenadores: 8,
+    novosUsuariosMes: 10,
+    usuariosInativos: 0,
 
 
     graficoAtividades: [

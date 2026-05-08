@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { KpiCard } from "@/components/KpiCard";
 import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
-import { buscarDadosRelatorio } from "@/services/relatorioService";
 import { BotaoNovaAtividade } from "@/components/BotaoNovaAtividade";
 
 import { DashboardSkeleton } from "@/components/skeletons/DashboardSkeleton";
@@ -26,7 +25,13 @@ export default function AlunoHome() {
 async function EstatisticasAsync() {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const stats = await buscarDadosRelatorio();
+  const stats = {
+    horasAprovadas: 0, 
+    horasAnalise: 0,  
+    horasRejeitadas: 0     
+  };
+
+
   const alunosEnviaram = 78;
   const alunosFaltam = 100 - alunosEnviaram;
 
@@ -35,40 +40,48 @@ async function EstatisticasAsync() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
           title="Horas aprovadas"
-          value={stats.totalCoordenadores}
+          value={`${stats.horasAprovadas}h`}
           icon={Users}
           bgClass="bg-[#18B14E]"
-          description="+12 novos este mês"
+          description=""
         />
         <KpiCard
           title="Horas em análise"
-          value={`${stats.novosUsuariosMes}%`}
+          value={`${stats.horasAnalise}h`}
           icon={CheckCircle2}
           bgClass="bg-[#F28322]"
-          description="+8% em relação ao mês anterior"
+          description=""
         />
         <KpiCard
           title="Horas rejeitadas"
-          value={`${stats.usuariosInativos}%`}
+          value={`${stats.horasRejeitadas}h`}
           icon={AlertTriangle}
           bgClass="bg-[#E52121]"
-          description="-5% em relação ao mês anterior"
+          description=""
         />
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 w-full">
         <div className="flex items-center gap-2 mb-6">
-          <h2 className="text-lg font-bold text-slate-800">Barra de progresso</h2>
+          <h2 className="text-lg font-bold text-slate-800">
+            Barra de progresso
+          </h2>
         </div>
 
         <div className="flex justify-between items-end mb-3">
           <div>
-            <p className="text-4xl font-extrabold text-[#004A8D]">{alunosEnviaram}%</p>
-            <p className="text-sm font-medium text-slate-500 mt-1">Alunos enviaram as atividades</p>
+            <p className="text-4xl font-extrabold text-[#004A8D]">
+              {alunosEnviaram}%
+            </p>
+            <p className="text-sm font-medium text-slate-500 mt-1">
+              Alunos enviaram as atividades
+            </p>
           </div>
           <div className="text-right">
             <p className="text-2xl font-bold text-amber-500">{alunosFaltam}%</p>
-            <p className="text-sm font-medium text-slate-400 mt-1">Ainda pendentes</p>
+            <p className="text-sm font-medium text-slate-400 mt-1">
+              Ainda pendentes
+            </p>
           </div>
         </div>
 
@@ -77,10 +90,7 @@ async function EstatisticasAsync() {
             className="bg-[#004A8D] h-full transition-all duration-1000 ease-out"
             style={{ width: `${alunosEnviaram}%` }}
           ></div>
-          <div
-            className="h-full"
-            style={{ width: `${alunosFaltam}%` }}
-          ></div>
+          <div className="h-full" style={{ width: `${alunosFaltam}%` }}></div>
         </div>
 
         <div className="mt-4 flex justify-between text-xs text-slate-400">

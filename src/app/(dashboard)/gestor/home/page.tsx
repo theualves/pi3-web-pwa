@@ -69,14 +69,14 @@ export default async function GestorDashboard() {
         />
         <KpiCard
           title="Relatórios Recebidos"
-          value={`${stats.novosUsuariosMes}%`}
+          value={`${stats.novosUsuariosMes}`}
           icon={CheckCircle2}
           bgClass="bg-[#DA761F]"
           description=""
         />
         <KpiCard
           title="Horas Aprovadas"
-          value={`${stats.usuariosInativos}%`}
+          value={`${stats.usuariosInativos}`}
           icon={AlertTriangle}
           bgClass="bg-[#210367]"
           description=""

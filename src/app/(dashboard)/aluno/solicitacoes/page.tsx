@@ -8,7 +8,6 @@ export default function AlunoSolicitacoes() {
   const [solicitacoes, setSolicitacoes] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
   
-  // Estados para o Modal de Edição
   const [modalEditarAberto, setModalEditarAberto] = useState(false);
   const [atividadeEditando, setAtividadeEditando] = useState<any | null>(null);
 
@@ -19,7 +18,6 @@ export default function AlunoSolicitacoes() {
     { header: "Ações", accessor: "acoes" },
   ];
 
-  // 1. EXTRAÍMOS A FUNÇÃO PARA PODERMOS CHAMAR ELA DE NOVO QUANDO ALGO FOR EXCLUÍDO OU EDITADO
   const carregarMinhasSolicitacoes = async () => {
     setCarregando(true);
     try {
@@ -52,12 +50,10 @@ export default function AlunoSolicitacoes() {
     }
   };
 
-  // Carrega ao abrir a tela
   useEffect(() => {
     carregarMinhasSolicitacoes();
   }, []);
 
-  // 2. FUNÇÃO DE EDITAR (Abre o modal)
   const handleEditar = (row: any) => {
     if (!row.podeEditar) {
       alert("Atividades Aprovadas ou validadas não podem ser editadas.");
@@ -67,7 +63,6 @@ export default function AlunoSolicitacoes() {
     setModalEditarAberto(true);
   };
 
-  // 3. FUNÇÃO DE EXCLUIR (Integração com a API)
   const handleExcluir = async (row: any) => {
     if (!row.podeExcluir) {
       alert("Atividades Aprovadas ou validadas não podem ser excluídas.");
@@ -84,13 +79,11 @@ export default function AlunoSolicitacoes() {
 
       const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes/${row.id}`;
       
-      // Manda o DELETE para a API
       const response = await fetch(url, { method: "DELETE" });
 
       if (!response.ok) throw new Error("Erro ao excluir.");
 
       alert("Atividade excluída com sucesso!");
-      // Recarrega a tabela imediatamente!
       carregarMinhasSolicitacoes(); 
 
     } catch (error) {
@@ -124,7 +117,6 @@ export default function AlunoSolicitacoes() {
         />
       )}
 
-      {/* MODAL DE EDIÇÃO PLUGADO AQUI */}
       <ModalEditarAtividade 
         isOpen={modalEditarAberto}
         onClose={() => setModalEditarAberto(false)}

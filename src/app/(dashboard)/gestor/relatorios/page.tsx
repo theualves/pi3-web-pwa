@@ -26,25 +26,25 @@ export default async function RelatoriosPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
-          title="Coordenadores"
+          title="Total de relatórios"
           value={stats.totalCoordenadores}
           icon={Users}
           bgClass=""
-          description="+12 novos este mês"
+          description=""
         />
         <KpiCard
-          title="Novos esse mês"
+          title="Aprovados"
           value={`${stats.novosUsuariosMes}%`}
           icon={CheckCircle2}
           bgClass=""
-          description="+8% em relação ao mês anterior"
+          description=""
         />
         <KpiCard
-          title="Inativos"
-          value={`${stats.usuariosInativos}%`}
+          title="pendentes"
+          value={`${stats.usuariosInativos}`}
           icon={AlertTriangle}
           bgClass=""
-          description="-5% em relação ao mês anterior"
+          description=""
         />
       </div>
 

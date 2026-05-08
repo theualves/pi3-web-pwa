@@ -1,11 +1,17 @@
 import { KpiCard } from "@/components/KpiCard";
-import { buscarDadosDashboard } from "@/services/dashboardService";
 import { Users, CheckCircle2, AlertTriangle } from "lucide-react";
 import { DashboardCharts } from "@/components/DashboardCharts";
+import { buscarDadosRelatorio } from "@/services/relatorioService";
 
 
 export default async function HomePage() {
-  const stats = await buscarDadosDashboard();
+  const stats = await buscarDadosRelatorio();
+
+  const kpis = {
+    totalAlunos: 12,
+    alunosHoraCompleta: 50,
+    alunosEmRisco: 0,
+  };
 
   return (
     <div className="flex flex-col gap-4 pb-10">
@@ -16,7 +22,7 @@ export default async function HomePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
           title="Total de Estudantes"
-          value={stats.totalEstudantes}
+          value={kpis.totalAlunos}
           icon={Users}
           bgClass="bg-[#F28322]"
           description="+12 novos este mês"
@@ -24,18 +30,18 @@ export default async function HomePage() {
 
         <KpiCard
           title="% de alunos com horas completas"
-          value={`${stats.porcentagemCompletas}%`}
+          value={`${kpis.alunosHoraCompleta}%`}
           icon={CheckCircle2}
           bgClass="bg-[#F28322]"
-          description={`${stats.totalCompletas} alunos finalizaram`}
+          description=""
         />
 
         <KpiCard
           title="% de alunos em risco(<50%)"
-          value={`${stats.porcentagemRisco}%`}
+          value={`${kpis.alunosEmRisco}%`}
           icon={AlertTriangle}
           bgClass="bg-[#F28322]"
-          description={`${stats.totalRisco} alunos com poucas horas`}
+          description=""
         />
       </div>
 
