@@ -7,6 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IconeSenac } from "./IconeSenac";
 import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ModalNovaAtividadeProps {
   isOpen: boolean;
@@ -53,7 +60,9 @@ export default function ModalNovaAtividade({
     const alunoId = usuarioLogado?.id;
 
     if (!alunoId) {
-      alert("Erro: ID do aluno não encontrado na sessão. Faça login novamente.");
+      alert(
+        "Erro: ID do aluno não encontrado na sessão. Faça login novamente.",
+      );
       return;
     }
 
@@ -79,8 +88,10 @@ export default function ModalNovaAtividade({
       if (!response.ok) {
         const erroBackend = await response.json();
         console.error("🚨 O BACKEND RECUSOU. MOTIVO:", erroBackend);
-        alert(`Erro do servidor: ${erroBackend.error || erroBackend.message || "Verifique o console"}`);
-        return; 
+        alert(
+          `Erro do servidor: ${erroBackend.error || erroBackend.message || "Verifique o console"}`,
+        );
+        return;
       }
 
       const dadosSalvos = await response.json();
@@ -92,11 +103,10 @@ export default function ModalNovaAtividade({
       setCargaHoraria("");
       setDescricao("");
       setArquivo(null);
-      
+
       onClose();
 
       router.push("/aluno/solicitacoes");
-
     } catch (error) {
       console.error("Erro na requisição:", error);
       alert("Erro ao enviar a atividade. Tente novamente.");
@@ -139,15 +149,16 @@ export default function ModalNovaAtividade({
             >
               Categoria
             </Label>
-            <Input
-              id="categoria"
-              type="text"
-              value={categoria}
-              onChange={(e) => setCategoria(e.target.value)}
-              required
-              className="h-10"
-              placeholder="Ex: Extensão"
-            />
+            <Select value={categoria} onValueChange={setCategoria} required>
+              <SelectTrigger className="h-10">
+                <SelectValue placeholder="Selecione uma categoria" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ENSINO">Ensino</SelectItem>
+                <SelectItem value="PESQUISA">Pesquisa</SelectItem>
+                <SelectItem value="EXTENSAO">Extensão</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -191,10 +202,9 @@ export default function ModalNovaAtividade({
         <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#F19100]/40 to-transparent my-1" />
 
         <div className="flex flex-col gap-4">
-          
           <div className="relative space-y-2 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50/50 p-4 transition-all hover:bg-slate-50 hover:border-[#F19100]/40 overflow-hidden">
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#F19100]" />
-            
+
             <div className="flex items-center gap-2 mb-1 pl-1">
               <Paperclip className="size-4 text-[#F19100]" />
               <Label
