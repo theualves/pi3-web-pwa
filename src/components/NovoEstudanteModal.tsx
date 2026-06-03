@@ -93,14 +93,34 @@ export function NovoEstudanteModal({
     };
 
     try {
-      const response = await fetch("https://api-horas-complementares.onrender.com/api/usuarios/aluno", {
+      const response = await fetch("https://api-horas-complementares.onrender.com/api/aluno-coordenador", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        alert("Erro ao cadastrar aluno. Verifique se o E-mail ou CPF já existem.");
+     if (!response.ok) {
+        // 1. Lê a resposta real que o backend enviou (o JSON do Zod)
+        const erroBackend = await response.json();
+
+        // 2. Se for um erro de validação do Zod (veio com 'detalhes')
+        if (erroBackend.detalhes) {
+          // Pega todas as mensagens de erro, junta em uma lista e coloca uma quebra de linha
+          const mensagens = Object.values(erroBackend.detalhes)
+            .flat()
+            .join("\n• ");
+            
+          alert(`Corrija os seguintes dados:\n\n• ${mensagens}`);
+        } 
+        // 3. Se for outro erro do backend (ex: "CPF já cadastrado")
+        else if (erroBackend.erro || erroBackend.error) {
+          alert(`Atenção: ${erroBackend.erro || erroBackend.error}`);
+        } 
+        // 4. Fallback (se a internet cair ou o erro for desconhecido)
+        else {
+          alert("Erro ao cadastrar aluno. Verifique os dados e tente novamente.");
+        }
+
         setIsSubmitting(false);
         return;
       }
