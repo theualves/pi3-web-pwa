@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus, Users, ChevronRight, Loader2 } from "lucide-react";
+import {NovaTurmaModal} from "@/components/ModalNovaTurma";
 
 export default function PaginaEstudantes() {
   const [turmas, setTurmas] = useState([]);
   const [carregando, setCarregando] = useState(true);
+  const [modalTurmaAberto, setModalTurmaAberto] = useState(false);
 
   const carregarTurmas = async () => {
     try {
@@ -23,7 +25,11 @@ export default function PaginaEstudantes() {
       const resCursos = await fetch(`https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${meuid}`);
       const cursos = await resCursos.json();
 
-      if (!cursos || cursos.length === 0) return;
+      if (!cursos || cursos.length === 0) {
+        setTurmas([]);
+        setCarregando(false);
+        return;
+      }
       const cursoIdDoVitor = cursos[0].id;
 
       // 2. Busca as Turmas desse curso na API
@@ -49,10 +55,24 @@ export default function PaginaEstudantes() {
           <h1 className="text-2xl font-bold text-slate-800">Turmas do Curso</h1>
           <p className="text-sm text-slate-500">Selecione uma turma para gerenciar os estudantes.</p>
         </div>
-        <Button className="bg-[#004A8D] hover:bg-[#003666] text-white">
+        
+        {/* Botão conectado ao estado do modal */}
+        <Button 
+          onClick={() => setModalTurmaAberto(true)}
+          className="bg-[#004A8D] hover:bg-[#003666] text-white"
+        >
           <Plus className="size-4 mr-2" /> Nova Turma
         </Button>
       </div>
+
+      {/* Modal de Nova Turma */}
+      <NovaTurmaModal 
+        isOpen={modalTurmaAberto} 
+        onClose={(sucesso) => {
+          setModalTurmaAberto(false);
+          if (sucesso) carregarTurmas(); // Atualiza a lista se salvou com sucesso
+        }}
+      />
 
       {carregando ? (
         <div className="flex justify-center p-12">
