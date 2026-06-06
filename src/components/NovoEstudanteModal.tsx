@@ -38,7 +38,7 @@ export function NovoEstudanteModal({
       // 1. Pegamos os dados do coordenador logado na mochila
       const storage = localStorage.getItem("usuarioLogado");
       const usuarioLogado = storage ? JSON.parse(storage) : null;
-      
+
       // 2. Pegamos o ID do Coordenador (que será usado no filtro da rota)
       const coordenadorId = usuarioLogado?.id;
 
@@ -54,10 +54,11 @@ export function NovoEstudanteModal({
         .then((res) => res.json())
         .then((data) => {
           setCursos(data);
-          
+
           // 4. Se a API retornar os cursos, e o coordenador tiver um cursoId principal,
           // já deixamos ele pré-selecionado para facilitar a vida dele.
-          const idDoCursoPadrao = usuarioLogado?.cursoId || usuarioLogado?.usuario?.cursoId;
+          const idDoCursoPadrao =
+            usuarioLogado?.cursoId || usuarioLogado?.usuario?.cursoId;
           if (idDoCursoPadrao) {
             setCursoId(idDoCursoPadrao);
           }
@@ -93,13 +94,16 @@ export function NovoEstudanteModal({
     };
 
     try {
-      const response = await fetch("https://api-horas-complementares.onrender.com/api/aluno-coordenador", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        "https://api-horas-complementares.onrender.com/api/aluno-coordenador",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
 
-     if (!response.ok) {
+      if (!response.ok) {
         // 1. Lê a resposta real que o backend enviou (o JSON do Zod)
         const erroBackend = await response.json();
 
@@ -109,16 +113,18 @@ export function NovoEstudanteModal({
           const mensagens = Object.values(erroBackend.detalhes)
             .flat()
             .join("\n• ");
-            
+
           alert(`Corrija os seguintes dados:\n\n• ${mensagens}`);
-        } 
+        }
         // 3. Se for outro erro do backend (ex: "CPF já cadastrado")
         else if (erroBackend.erro || erroBackend.error) {
           alert(`Atenção: ${erroBackend.erro || erroBackend.error}`);
-        } 
+        }
         // 4. Fallback (se a internet cair ou o erro for desconhecido)
         else {
-          alert("Erro ao cadastrar aluno. Verifique os dados e tente novamente.");
+          alert(
+            "Erro ao cadastrar aluno. Verifique os dados e tente novamente.",
+          );
         }
 
         setIsSubmitting(false);
@@ -147,32 +153,81 @@ export function NovoEstudanteModal({
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="nome" className="text-slate-700">Nome Completo</Label>
-            <Input id="nome" value={nome} onChange={(e) => setNome(e.target.value)} required disabled={isSubmitting} className="h-11" />
+            <Label htmlFor="nome" className="text-slate-700">
+              Nome Completo
+            </Label>
+            <Input
+              id="nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+              disabled={isSubmitting}
+              className="h-11"
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-slate-700">Email</Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isSubmitting} className="h-11" />
+            <Label htmlFor="email" className="text-slate-700">
+              Email
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isSubmitting}
+              className="h-11"
+            />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="senha" className="text-slate-700">Senha Inicial</Label>
-            <Input id="senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} required disabled={isSubmitting} className="h-11" />
+            <Label htmlFor="senha" className="text-slate-700">
+              Senha Inicial
+            </Label>
+            <Input
+              id="senha"
+              type="password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
+              disabled={isSubmitting}
+              className="h-11"
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="cpf" className="text-slate-700">CPF</Label>
-            <Input id="cpf" value={cpf} onChange={(e) => setCpf(e.target.value)} required disabled={isSubmitting} className="h-11" />
+            <Label htmlFor="cpf" className="text-slate-700">
+              CPF
+            </Label>
+            <Input
+              id="cpf"
+              value={cpf}
+              onChange={(e) => setCpf(e.target.value)}
+              required
+              disabled={isSubmitting}
+              className="h-11"
+            />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label className="text-slate-700">Curso Vinculado</Label>
-            <Select value={cursoId} onValueChange={setCursoId} disabled={isSubmitting} required>
-              <SelectTrigger className="h-11">
-                <SelectValue placeholder={cursos.length > 0 ? "Selecione o curso" : "Carregando..."} />
+            <Select
+              value={cursoId}
+              onValueChange={setCursoId}
+              disabled={isSubmitting}
+              required
+            >
+              <SelectTrigger className="h-11 w-full overflow-hidden">
+                <span className="truncate block text-left w-full pr-4">
+                  <SelectValue
+                    placeholder={
+                      cursos.length > 0 ? "Selecione o curso" : "Carregando..."
+                    }
+                  />
+                </span>
               </SelectTrigger>
               <SelectContent>
                 {cursos.map((curso) => (
@@ -185,8 +240,19 @@ export function NovoEstudanteModal({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="periodo" className="text-slate-700">Período</Label>
-            <Input id="periodo" type="number" min="1" value={periodo} onChange={(e) => setPeriodo(e.target.value)} required disabled={isSubmitting} className="h-11" />
+            <Label htmlFor="periodo" className="text-slate-700">
+              Período
+            </Label>
+            <Input
+              id="periodo"
+              type="number"
+              min="1"
+              value={periodo}
+              onChange={(e) => setPeriodo(e.target.value)}
+              required
+              disabled={isSubmitting}
+              className="h-11"
+            />
           </div>
         </div>
       </div>
