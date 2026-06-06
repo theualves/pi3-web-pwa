@@ -66,9 +66,8 @@ export default function Header({
 
   return (
     <header className="flex flex-col w-full">
-      <div className="max-w-[1440px] mx-auto w-full flex py-3 px-8 justify-between items-center">
+      <div className="max-w-[1440px] mx-auto w-full flex py-3 px-4 md:px-8 justify-between items-center">
         
-
         <div className="flex items-center gap-4">
           {isLoggedIn && (
             <SidebarTrigger className="md:hidden"/>
@@ -88,7 +87,7 @@ export default function Header({
 
         <nav className="flex items-center">
           {isLoggedIn ? (
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 md:gap-6">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="relative text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full hover:bg-gray-100">
@@ -131,7 +130,7 @@ export default function Header({
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="flex items-center gap-3 cursor-pointer group shadow-sm border border-[#DEDEDE] rounded-lg px-3 py-2 bg-gray-50 hover:bg-[#F5ECE5] hover:border-[#F6BF87] transition-all duration-200">
+                  <div className="flex items-center gap-3 cursor-pointer group md:shadow-sm md:border border-transparent md:border-[#DEDEDE] rounded-full md:rounded-lg p-1 md:px-3 md:py-2 bg-transparent md:bg-gray-50 hover:bg-gray-100 md:hover:bg-[#F5ECE5] transition-all duration-200">
                     <div className="flex items-center justify-center bg-white px-1 py-2 rounded-md shadow-sm group-hover:scale-105 transition-transform">
                       <IconeSenac
                         style={{ width: "24px", height: "16px" }}

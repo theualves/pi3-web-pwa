@@ -17,13 +17,13 @@ export default function Footer() {
           alt="Logo"
           width={300}
           height={300}
-          className="w-[150px] md:w-[300px] h-auto"
+          className="w-[200px] md:w-[300px] h-auto"
         />
       </div>
 
       <div className="flex flex-col w-full px-4 py-8 bg-[#003282]">
         <div className="max-w-[1500px] mx-auto w-full flex flex-col sm:flex-row justify-center items-center gap-4">
-          <ul className="flex items-center gap-6 md:gap-2 text-[#a7a4a4]">
+          <ul className="flex items-center gap-8 md:gap-2 text-[#a7a4a4]">
             <li>
               <a
                 href="https://www.facebook.com/senacpe/"
