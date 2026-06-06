@@ -78,7 +78,9 @@
   --sidebar-foreground: oklch(0.985 0 0); /* Texto Branco */
   --sidebar-primary: oklch(0.66 0.25 43.3);
   --sidebar-primary-foreground: oklch(0.985 0 0); /* Texto Branco no destaque */
-  --sidebar-accent: oklch(0.718 0.202 61.98); /* Azul levemente mais claro para o hover */
+  --sidebar-accent: oklch(
+    0.718 0.202 61.98
+  ); /* Azul levemente mais claro para o hover */
 
   --sidebar-accent-foreground: oklch(0.985 0 0); /* Texto Branco no hover */
   --sidebar-border: oklch(
@@ -133,5 +135,13 @@
   }
   button {
     @apply cursor-pointer;
+  }
+
+  [vw] [vw-access-button] {
+    margin-top: 80px !important; /* Empurra o botão azul do VLibras para baixo */
+  }
+
+  [vw-plugin-wrapper] {
+    margin-top: 80px !important; /* Garante que o avatar 3D também abra mais para baixo */
   }
 }

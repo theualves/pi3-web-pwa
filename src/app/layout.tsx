@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Urbanist } from "next/font/google";
 import VLibrasWrapper from "@/components/VLibrasWrapper";
+import UserWayWrapper from "@/components/UserWayWrapper";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}
          <VLibrasWrapper />
+         <UserWayWrapper />
       </body>
     </html>
   );
