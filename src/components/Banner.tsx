@@ -22,10 +22,10 @@ export default function Banner() {
           alt="logo Hora Mais - Senac"
           width={800}
           height={216}
-          className="mb-6 w-48 md:w-64 lg:w-[450px] h-auto"
+          className="mb-6 w-[280px] lg:w-[450px] h-auto"
           />
           <p
-            className={`text-base  md:text-xl text-[#656565] mb-10 max-w-lg mx-auto lg:mx-0 ${openSans.className}`}
+            className={`text-base font-semibold md:text-xl text-[#3F3F3F] mb-10 max-w-lg mx-auto lg:mx-0 ${openSans.className}`}
           >
             Um ambiente para envio, análise e validação de horas acadêmicas de
             forma ágil e segura.

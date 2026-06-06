@@ -80,7 +80,7 @@ export default function Header({
               alt="Logo"
               width={80}
               height={80}
-              style={{ width: "80px", height: "auto" }}
+              className="w-[70px] md:w-[80px] h-auto"
               priority
             />
           </Link>

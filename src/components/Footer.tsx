@@ -23,7 +23,7 @@ export default function Footer() {
 
       <div className="flex flex-col w-full px-4 py-8 bg-[#003282]">
         <div className="max-w-[1500px] mx-auto w-full flex flex-col sm:flex-row justify-center items-center gap-4">
-          <ul className="flex items-center gap-2 text-[#a7a4a4]">
+          <ul className="flex items-center gap-6 md:gap-2 text-[#a7a4a4]">
             <li>
               <a
                 href="https://www.facebook.com/senacpe/"

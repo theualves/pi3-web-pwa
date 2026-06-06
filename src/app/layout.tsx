@@ -3,20 +3,27 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Urbanist } from "next/font/google";
+import VLibrasWrapper from "@/components/VLibrasWrapper";
 
-const urbanist = Urbanist({ subsets: ["latin"], variable: '--font-urbanist'  });
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  variable: "--font-urbanist",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
-  title: "Senac - Atividades",
+  title: "Senac Horas+",
   description: "Gestão de Horas Complementares",
-  manifest: "/manifest.json", 
+  manifest: "/manifest.json",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#004A8D", 
+  themeColor: "#004A8D",
 };
-
 
 export default function RootLayout({
   children,
@@ -25,9 +32,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="pt-br" suppressHydrationWarning className={cn("font-urbanist", urbanist.variable)}
+      lang="pt-br"
+      suppressHydrationWarning
+      className={cn("font-urbanist", urbanist.variable)}
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>{children}</body>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        {children}
+         <VLibrasWrapper />
+      </body>
     </html>
   );
 }
