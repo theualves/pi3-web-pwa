@@ -167,14 +167,14 @@ export default function Header({
               </DropdownMenu>
             </div>
           ) : (
-            <Link href="https://faculdadesenacpe.edu.br/contato" target="_blank" rel="noopener noreferrer" className="text-xl">
+            <Link href="https://faculdadesenacpe.edu.br/contato" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold text-[#014A8E] hover:text-[#F19100] transition-colors duration-200">
               Contato
             </Link>
           )}
         </nav>
       </div>
 
-      <div className="h-[5px] w-full bg-[#F19100]" />
+      <div className="h-[6px] w-full bg-[#F19100]" />
     </header>
   );
 }

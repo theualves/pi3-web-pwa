@@ -14,21 +14,18 @@ const openSans = Open_Sans({
 
 export default function Banner() {
   return (
-    <section className="w-full bg-gradient-to-b from-[#FFFFFF] to-[#CACACA] overflow-hidden min-h-fit lg:min-h-[700px] flex">
+    <section className="w-full bg-[#A9D400] overflow-hidden min-h-fit lg:min-h-[700px] flex">
       <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-stretch">
-        <div className="w-full lg:w-1/3 text-white flex flex-col justify-center items-center text-center lg:items-start lg:text-left py-8 lg:py-12 z-10">
-          <h1
-            className={`flex flex-col items-center lg:items-start mb-6 uppercase text-[#005594] tracking-wide ${anton.className}`}
-          >
-            <span className="text-4xl md:text-5xl lg:text-5xl leading-none">
-              CONEXÃO ACADÊMICA
-            </span>
-            <span className="text-[#FFDE59] bg-[#5B89A6] text-5xl md:text-6xl lg:text-8xl mt-2 md:mt-2 leading-none w-fit px-4 py-2">
-              INTELIGENTE
-            </span>
-          </h1>
+        <div className="w-full lg:w-1/2 text-white flex flex-col justify-center items-center text-center lg:items-start lg:text-left py-12 lg:py-12 z-10">
+          <Image
+          src="/horaMais.svg"
+          alt="logo Hora Mais - Senac"
+          width={800}
+          height={216}
+          className="mb-6 w-48 md:w-64 lg:w-[450px] h-auto"
+          />
           <p
-            className={`text-lg md:text-xl text-[#656565] mb-10 max-w-lg mx-auto lg:mx-0 ${openSans.className}`}
+            className={`text-base  md:text-xl text-[#656565] mb-10 max-w-lg mx-auto lg:mx-0 ${openSans.className}`}
           >
             Um ambiente para envio, análise e validação de horas acadêmicas de
             forma ágil e segura.
@@ -46,10 +43,10 @@ export default function Banner() {
           </Button>
         </div>
 
-        <div className="w-full  relative flex items-end justify-center lg:justify-end mt-4 lg:mt-0">
-          <div className="relative w-full h-[300px] md:h-[500px] lg:h-[650px] lg:-mr-20 xl:-mr-40">
+        <div className="w-full relative flex items-end justify-center md:pt-4 lg:pt-12 lg:mt-0">
+          <div className="relative w-full h-[280px] md:h-[650px] lg:h-[730px] lg:-mr-20 xl:-mr-40">
             <Image
-              src="/image-banner.png"
+              src="/banner-image.png"
               alt="Conexão Acadêmica"
               fill
               sizes="(max-width: 1024px) 100vw, 60vw"
