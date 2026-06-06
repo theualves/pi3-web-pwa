@@ -138,10 +138,10 @@
   }
 
   [vw] [vw-access-button] {
-    margin-top: 80px !important; /* Empurra o botão azul do VLibras para baixo */
+    margin-top: 200px !important; /* Empurra o botão azul do VLibras para baixo */
   }
 
   [vw-plugin-wrapper] {
-    margin-top: 80px !important; /* Garante que o avatar 3D também abra mais para baixo */
+    margin-top: 200px !important; /* Garante que o avatar 3D também abra mais para baixo */
   }
 }

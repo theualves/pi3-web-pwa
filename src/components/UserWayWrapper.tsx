@@ -13,7 +13,7 @@ export default function UserWayWrapper() {
     
     // 👇 Substitua pelo seu ID
     script.setAttribute("data-account", "ELpy0GsUYO"); 
-    script.setAttribute("data-position", "2"); // 2 = Middle Right
+    script.setAttribute("data-position", "3"); // 2 = Middle Right
     
     // Configuração para forçar a posição no Centro-Esquerda (espelhando o VLibras)
     
