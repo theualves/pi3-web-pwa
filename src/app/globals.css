@@ -144,13 +144,4 @@
   [vw-plugin-wrapper] {
     margin-top: 80px !important; /* Garante que o avatar 3D também abra mais para baixo */
   }
-
-@media screen and (max-width: 768px) {
-  body .uwy.userway_p2,
-  body .userway.userway_p2,
-  div[id^="userway"] {
-    top: 25% !important;    
-    margin-top: 0 !important; 
-  }
-}
 }
