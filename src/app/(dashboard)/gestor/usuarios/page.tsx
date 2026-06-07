@@ -23,12 +23,10 @@ export default function UsuariosPage() {
     const carregarCoordenadores = async () => {
       setCarregando(true);
       try {
-        // ⚠️ Ajuste essa rota para o endpoint real do seu backend que lista os usuários/coordenadores
         const res = await api("/api/usuarios?tipo=COORDENADOR");
         
         if (res.ok) {
           const dados = await res.json();
-          // Ajuste caso o seu backend retorne dentro de um objeto (ex: dados.usuarios)
           setCoordenadores(Array.isArray(dados) ? dados : dados.usuarios || []);
         } else {
           console.error("Erro ao buscar coordenadores.");
@@ -43,9 +41,8 @@ export default function UsuariosPage() {
     carregarCoordenadores();
   }, []);
 
-  // 👉 CÁLCULO DOS KPIs REAIS EM TEMPO DE EXECUÇÃO
+
   const totalCoordenadores = coordenadores.length;
-  // Ajuste "ATIVO" ou "INATIVO" para bater com o nome exato do status no seu banco de dados
   const ativos = coordenadores.filter((c) => c.status?.toUpperCase() === "ATIVO").length;
   const inativos = coordenadores.filter((c) => c.status?.toUpperCase() !== "ATIVO").length;
 
@@ -62,7 +59,6 @@ export default function UsuariosPage() {
         </div>
       </div>
 
-      {/* 👉 KPIs DINÂMICOS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KpiCard
           title="Total Cadastrados"
@@ -95,7 +91,6 @@ export default function UsuariosPage() {
             <p className="font-medium">Carregando lista de coordenadores...</p>
           </div>
         ) : (
-          // Passamos os dados que buscamos na página direto para a tabela renderizar
           <TabelaUsuarios colunas={colunas} data={coordenadores} />
         )}
 
