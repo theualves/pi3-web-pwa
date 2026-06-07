@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { ModalBase } from "@/components/ModalBase";
 import { IconeSenac } from "./IconeSenac";
+import { api } from "@/lib/api";
 
 interface NovoEstudanteModalProps {
   isOpen: boolean;
@@ -50,9 +51,10 @@ export function NovoEstudanteModal({
 
       if (!coordenadorId) return;
 
-      const urlCursos = `https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${coordenadorId}`;
 
-      fetch(urlCursos)
+      const urlCursos = `/api/cursos?coordenadorId=${coordenadorId}`;
+
+      api(urlCursos)
         .then((res) => res.json())
         .then((data) => {
           setCursos(data);
@@ -74,8 +76,8 @@ export function NovoEstudanteModal({
   // 2. CARREGAR TURMAS E AUTO-PREENCHER PERÍODO (Se veio da página da turma)
   useEffect(() => {
     if (cursoId) {
-      fetch(
-        `https://api-horas-complementares.onrender.com/api/turmas?cursoId=${cursoId}`,
+      api(
+        `/api/turmas?cursoId=${cursoId}`,
       )
         .then((res) => res.json())
         .then((data) => {
@@ -106,11 +108,10 @@ export function NovoEstudanteModal({
     setTurmaId(novoTurmaId);
 
     if (novoTurmaId === "sem-turma") {
-      setPeriodo(""); // Libera o campo para o coordenador digitar o período livremente
+      setPeriodo(""); 
       return;
     }
 
-    // Acha a turma escolhida e puxa o período dela
     const turmaSelecionada = turmas.find((t) => t.id === novoTurmaId);
     if (turmaSelecionada && turmaSelecionada.periodo) {
       setPeriodo(String(turmaSelecionada.periodo));
@@ -138,8 +139,8 @@ export function NovoEstudanteModal({
     };
 
     try {
-      const response = await fetch(
-        "https://api-horas-complementares.onrender.com/api/aluno-coordenador",
+      const response = await api( 
+        "/api/aluno-coordenador",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ModalBase } from "@/components/ModalBase";
 import { IconeSenac } from "./IconeSenac";
+import { api } from "@/lib/api";
 
 interface EditarEstudanteModalProps {
   isOpen: boolean;
@@ -18,7 +19,6 @@ export function EditarEstudanteModal({ isOpen, onClose, estudante }: EditarEstud
   const [periodo, setPeriodo] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Preenche o formulário quando o modal abre
   useEffect(() => {
     if (estudante && isOpen) {
       setNome(estudante.nome || "");
@@ -39,8 +39,8 @@ export function EditarEstudanteModal({ isOpen, onClose, estudante }: EditarEstud
     };
 
     try {
-      // Ajuste o endpoint "/api/alunos" se a sua rota no Render for um nome diferente
-      const response = await fetch(`https://api-horas-complementares.onrender.com/api/aluno-coordenador/alunos/${estudante.alunoId}`, {
+      
+      const response = await api(`/api/aluno-coordenador/alunos/${estudante.alunoId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -53,7 +53,7 @@ export function EditarEstudanteModal({ isOpen, onClose, estudante }: EditarEstud
         return;
       }
 
-      onClose(true); // Sucesso! Fecha e atualiza a tabela
+      onClose(true); 
     } catch (error) {
       alert("Erro de conexão com o servidor.");
     } finally {

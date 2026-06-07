@@ -13,19 +13,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { FileText, User, Calendar, Clock, CheckCircle } from "lucide-react";
+import { api} from "@/lib/api";
 
 interface ValidarAtividadeModalProps {
   isOpen: boolean;
   onClose: () => void;
   atividade: any | null;
-  onSuccess: () => void; // 👈 Adicionado aqui
+  onSuccess: () => void; 
 }
 
 export function ValidarAtividadeModal({ 
   isOpen, 
   onClose, 
   atividade, 
-  onSuccess // 👈 Recebido aqui
+  onSuccess 
 }: ValidarAtividadeModalProps) {
   const [motivo, setMotivo] = useState("");
   const [horasAprovadas, setHorasAprovadas] = useState("");
@@ -70,9 +71,9 @@ export function ValidarAtividadeModal({
     };
 
     try {
-      const url = `https://api-horas-complementares.onrender.com/api/atividades/${atividade.id}/validar`;
+      const url = `/api/atividades/${atividade.id}/validar`;
 
-      const response = await fetch(url, {
+      const response = await api(url, {
         method: "PUT", 
         headers: {
           "Content-Type": "application/json",

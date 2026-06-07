@@ -8,6 +8,7 @@ import { ExcluirEstudanteModal } from "@/components/ExcluirEstudanteModal";
 import { Button } from "@/components/ui/button";
 import { Plus, RefreshCw } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
+import { api } from "@/lib/api";
 
 // 1. Recebemos o turmaId como prop opcional
 export function TabelaEstudantes({ colunas, turmaId }: any) {
@@ -30,7 +31,8 @@ export function TabelaEstudantes({ colunas, turmaId }: any) {
 
       if (!meuid) return;
 
-      const resCursos = await fetch(`https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${meuid}`);
+      
+      const resCursos = await api(`/api/cursos?coordenadorId=${meuid}`);
       if (!resCursos.ok) throw new Error("Erro ao buscar os cursos.");
       const cursos = await resCursos.json();
 
@@ -45,12 +47,12 @@ export function TabelaEstudantes({ colunas, turmaId }: any) {
 
       let urlAlunos = "";
       if (turmaId) {
-        urlAlunos = `https://api-horas-complementares.onrender.com/api/aluno-coordenador?turmaId=${turmaId}`;
+        urlAlunos = `/api/aluno-coordenador?turmaId=${turmaId}`;
       } else {
-        urlAlunos = `https://api-horas-complementares.onrender.com/api/usuarios?tipo=ALUNO&cursoId=${cursoIdDoVitor}`;
+        urlAlunos = `/api/usuarios?tipo=ALUNO&cursoId=${cursoIdDoVitor}`;
       }
       
-      const resAlunos = await fetch(urlAlunos);
+      const resAlunos = await api(urlAlunos);
       const alunos = await resAlunos.json();
       
       // 3. Formatação ajustada para lidar com as duas rotas

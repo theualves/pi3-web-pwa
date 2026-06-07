@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus, Users, ChevronRight, Loader2 } from "lucide-react";
 import {NovaTurmaModal} from "@/components/ModalNovaTurma";
+import { api } from "@/lib/api";
 
 export default function PaginaEstudantes() {
   const [turmas, setTurmas] = useState([]);
@@ -20,10 +21,10 @@ export default function PaginaEstudantes() {
       const meuid = sessao?.id;
 
       if (!meuid) return;
-
+ 
       // 1. Busca o curso do Coordenador
-      const resCursos = await fetch(`https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${meuid}`);
-      const cursos = await resCursos.json();
+      const resCursos = await api(`/api/cursos?coordenadorId=${meuid}`);
+      const cursos = await resCursos.json(); 
 
       if (!cursos || cursos.length === 0) {
         setTurmas([]);
@@ -33,7 +34,7 @@ export default function PaginaEstudantes() {
       const cursoIdDoVitor = cursos[0].id;
 
       // 2. Busca as Turmas desse curso na API
-      const resTurmas = await fetch(`https://api-horas-complementares.onrender.com/api/turmas?cursoId=${cursoIdDoVitor}`);
+      const resTurmas = await api(`/api/turmas?cursoId=${cursoIdDoVitor}`);
       const dadosTurmas = await resTurmas.json();
       
       setTurmas(dadosTurmas);

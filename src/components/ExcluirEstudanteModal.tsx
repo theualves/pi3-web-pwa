@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { ModalBase } from "@/components/ModalBase";
 import { AlertTriangle } from "lucide-react";
+import { api } from "@/lib/api";
+
 
 interface ExcluirEstudanteModalProps {
   isOpen: boolean;
@@ -18,8 +20,8 @@ export function ExcluirEstudanteModal({ isOpen, onClose, estudante }: ExcluirEst
     setIsSubmitting(true);
 
     try {
-      // Método DELETE apontando para o ID do aluno
-      const response = await fetch(`https://api-horas-complementares.onrender.com/api/aluno-coordenador/alunos/${estudante.alunoId}`, {
+      
+      const response = await api(`/api/aluno-coordenador/alunos/${estudante.alunoId}`, {
         method: "DELETE",
       });
 
@@ -29,7 +31,7 @@ export function ExcluirEstudanteModal({ isOpen, onClose, estudante }: ExcluirEst
         return;
       }
 
-      onClose(true); // Excluiu com sucesso!
+      onClose(true); 
     } catch (error) {
       alert("Erro de conexão com o servidor.");
     } finally {

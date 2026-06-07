@@ -24,7 +24,9 @@ export default function Header() {
   const hasNotificacoes = notificacoes.length > 0;
 
   // Estado unificado do usuário para evitar misturar variáveis soltas
-  const [usuario, setUsuario] = useState<{ nome: string; role: string } | null>(null);
+  const [usuario, setUsuario] = useState<{ nome: string; role: string } | null>(
+    null,
+  );
 
   useEffect(() => {
     // Busca os dados do localStorage apenas no lado do cliente (navegador)
@@ -34,7 +36,7 @@ export default function Header() {
         const usuarioLogado = JSON.parse(storage);
         const nome = usuarioLogado?.nome || "Usuário";
         const role = usuarioLogado?.role || "aluno";
-        
+
         setUsuario({ nome, role });
       } catch (error) {
         console.error("Erro ao decodificar JSON do usuário:", error);
@@ -51,7 +53,7 @@ export default function Header() {
   };
 
   // Define o crachá do perfil com base na URL atual
-  let perfilExibido = "Usuário"; 
+  let perfilExibido = "Usuário";
   if (pathname?.includes("/gestor")) {
     perfilExibido = "Gestor";
   } else if (pathname?.includes("/coordenador")) {
@@ -63,10 +65,10 @@ export default function Header() {
   const homeLink = pathname?.startsWith("/coordenador")
     ? "/coordenador/home"
     : pathname?.startsWith("/gestor")
-    ? "/gestor/home"
-    : pathname?.startsWith("/aluno")
-    ? "/aluno/home"
-    : "https://www.pe.senac.br/";
+      ? "/gestor/home"
+      : pathname?.startsWith("/aluno")
+        ? "/aluno/home"
+        : "https://www.pe.senac.br/";
 
   // Consideramos logado se encontramos os dados do usuário no estado do cliente
   const estaAutenticado = !!usuario;
@@ -74,13 +76,16 @@ export default function Header() {
   return (
     <header className="flex flex-col w-full">
       <div className="max-w-[1440px] mx-auto w-full flex py-3 px-4 md:px-8 justify-between items-center">
-        
         <div className="flex items-center gap-4">
-          {estaAutenticado && (
-            <SidebarTrigger className="md:hidden"/>
+          {estaAutenticado && pathname !== "/" && (
+            <SidebarTrigger className="md:hidden" />
           )}
 
-          <Link href={homeLink} target={!homeLink.startsWith("/") ? "_blank" : undefined} rel={!homeLink.startsWith("/") ? "noopener noreferrer" : undefined}>
+          <Link
+            href={homeLink}
+            target={!homeLink.startsWith("/") ? "_blank" : undefined}
+            rel={!homeLink.startsWith("/") ? "noopener noreferrer" : undefined}
+          >
             <Image
               src="/logo.svg"
               alt="Logo"
@@ -95,7 +100,6 @@ export default function Header() {
         <nav className="flex items-center">
           {estaAutenticado ? (
             <div className="flex items-center gap-3 md:gap-6">
-              
               {/* Menu de Notificações */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -163,14 +167,20 @@ export default function Header() {
                     className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50 flex items-center w-full"
                   >
                     <LogOut className="mr-2 h-4 w-4 text-red-600" />
-                    <span className="text-red-600 font-medium">Sair do sistema</span>
+                    <span className="text-red-600 font-medium">
+                      Sair do sistema
+                    </span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-
             </div>
           ) : (
-            <Link href="https://faculdadesenacpe.edu.br/contato" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold text-[#014A8E] hover:text-[#F19100] transition-colors duration-200">
+            <Link
+              href="https://faculdadesenacpe.edu.br/contato"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xl font-semibold text-[#014A8E] hover:text-[#F19100] transition-colors duration-200"
+            >
               Contato
             </Link>
           )}

@@ -6,6 +6,7 @@ import { ValidarAtividadeModal } from "@/components/ValidarAtividadeModal";
 import { SearchInput } from "@/components/SearchInput";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {api} from "@/lib/api";
 
 export function TabelaAtividadesClient() {
   const [atividades, setAtividades] = useState<any[]>([]);
@@ -29,7 +30,7 @@ export function TabelaAtividadesClient() {
         return;
       }
 
-      const resCursos = await fetch(`https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${meuid}`);
+      const resCursos = await api(`/api/cursos?coordenadorId=${meuid}`);
       if (!resCursos.ok) throw new Error("Erro ao buscar os cursos do coordenador.");
       
       const cursos = await resCursos.json();
@@ -43,9 +44,8 @@ export function TabelaAtividadesClient() {
 
       const cursoIdDoCoordenador = cursos[0].id;
 
-
-      const url = `https://api-horas-complementares.onrender.com/api/atividades?cursoId=${cursoIdDoCoordenador}`;
-      const response = await fetch(url);
+      
+      const response = await api(`/api/atividades?cursoId=${cursoIdDoCoordenador}`);
       
       if (!response.ok) throw new Error("Erro ao buscar atividades");
       
@@ -90,7 +90,6 @@ export function TabelaAtividadesClient() {
     setModalAberto(true);
   };
 
-  // 3. LÓGICA DE FILTRO (Busca local na lista do curso)
   const atividadesFiltradas = atividadesFormatadas.filter((atv) => {
     const busca = termoBusca.toLowerCase();
     return (
@@ -115,7 +114,6 @@ export function TabelaAtividadesClient() {
             placeholder="Buscar por estudante ou categoria..."
           />
           
-          {/* Adicionei um botão de recarregar manual para facilitar a vida do Coordenador */}
           <Button
             variant="outline"
             onClick={buscarAtividades}
