@@ -1,11 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  Home,
-  BookOpen,
-  FileCheck,
-  Users,
-} from "lucide-react";
+import { Home, BookOpen, FileCheck, Users } from "lucide-react";
 import {
   Sidebar,
   SidebarHeader,
@@ -97,7 +92,7 @@ export default function AppSidebar() {
       <SidebarHeader className="flex justify-center h-[64px] border-b border-sidebar-border/20">
         <SidebarTrigger className="text-white hover:bg-white/10 hover:text-white" />
       </SidebarHeader>
-      
+
       <SidebarContent
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -108,7 +103,8 @@ export default function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu className="gap-0">
               {items.map((item) => {
-                const isActive = pathname === item.url;
+                const isActive =
+                  pathname === item.url || pathname.startsWith(item.url + "/");
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
@@ -122,7 +118,10 @@ export default function AppSidebar() {
                         ${isActive ? "font-semibold bg-[#F78C21] text-white" : "font-medium text-sidebar-foreground/70"}
                       `}
                     >
-                      <Link href={item.url} onClick={() => isMobile && setOpenMobile(false)}>
+                      <Link
+                        href={item.url}
+                        onClick={() => isMobile && setOpenMobile(false)}
+                      >
                         <item.icon className="shrink-0 size-4" />
                         <span className="group-data-[collapsible=icon]:!hidden">
                           {item.title}

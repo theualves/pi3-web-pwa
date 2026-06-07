@@ -42,7 +42,18 @@ export function NovoEstudanteModal({
     typeof turmaIdPreSelecionada === "string" &&
     turmaIdPreSelecionada.trim() !== "";
 
-  // 1. CARREGAR CURSOS
+  const aplicarMascaraCpf = (valor: string) => {
+    let v = valor.replace(/\D/g, ""); 
+    
+    if (v.length > 11) v = v.substring(0, 11);
+
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    
+    setCpf(v);
+  };
+
   useEffect(() => {
     if (isOpen) {
       const storage = localStorage.getItem("usuarioLogado");
@@ -50,7 +61,6 @@ export function NovoEstudanteModal({
       const coordenadorId = usuarioLogado?.id;
 
       if (!coordenadorId) return;
-
 
       const urlCursos = `/api/cursos?coordenadorId=${coordenadorId}`;
 
@@ -73,12 +83,9 @@ export function NovoEstudanteModal({
     }
   }, [isOpen]);
 
-  // 2. CARREGAR TURMAS E AUTO-PREENCHER PERÍODO (Se veio da página da turma)
   useEffect(() => {
     if (cursoId) {
-      api(
-        `/api/turmas?cursoId=${cursoId}`,
-      )
+      api(`/api/turmas?cursoId=${cursoId}`)
         .then((res) => res.json())
         .then((data) => {
           setTurmas(data);
@@ -86,7 +93,6 @@ export function NovoEstudanteModal({
           if (isTurmaPreSelecionada) {
             setTurmaId(turmaIdPreSelecionada);
 
-            // 👉 LÓGICA NOVA: Acha a turma pre-selecionada e já injeta o período dela
             const turmaEncontrada = data.find(
               (t: any) => t.id === turmaIdPreSelecionada,
             );
@@ -103,7 +109,6 @@ export function NovoEstudanteModal({
     }
   }, [cursoId, isTurmaPreSelecionada, turmaIdPreSelecionada]);
 
-  // 👉 3. NOVA FUNÇÃO: Gerencia a troca de turma manualmente no Select
   const handleTurmaChange = (novoTurmaId: string) => {
     setTurmaId(novoTurmaId);
 
@@ -132,7 +137,7 @@ export function NovoEstudanteModal({
       nome,
       email,
       senha,
-      cpf: cpf.replace(/\D/g, ""),
+      cpf: cpf.replace(/\D/g, ""), // Continua limpando perfeitamente para o backend
       cursoId,
       turmaId: turmaId === "sem-turma" ? undefined : turmaId,
       periodo: parseInt(periodo, 10),
@@ -238,7 +243,9 @@ export function NovoEstudanteModal({
             <Input
               id="cpf"
               value={cpf}
-              onChange={(e) => setCpf(e.target.value)}
+              onChange={(e) => aplicarMascaraCpf(e.target.value)}
+              maxLength={14}
+              placeholder="000.000.000-00"
               required
               disabled={isSubmitting}
               className="h-11"
@@ -278,7 +285,7 @@ export function NovoEstudanteModal({
             <Label className="text-slate-700">Turma (Opcional)</Label>
             <Select
               value={turmaId || undefined}
-              onValueChange={handleTurmaChange} // 👉 Agora usamos a função que auto-preenche o período
+              onValueChange={handleTurmaChange}
               disabled={isSubmitting || isTurmaPreSelecionada}
             >
               <SelectTrigger className="h-11 w-full overflow-hidden bg-white disabled:bg-slate-50 disabled:opacity-80">
@@ -318,7 +325,6 @@ export function NovoEstudanteModal({
               value={periodo}
               onChange={(e) => setPeriodo(e.target.value)}
               required
-              // 👉 SÓ BLOQUEIA SE A TURMA EXISTIR *E* A API TIVER DEVOLVIDO O PERÍODO DELA!
               disabled={
                 isSubmitting ||
                 (turmaId !== "sem-turma" &&

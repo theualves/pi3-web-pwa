@@ -19,7 +19,8 @@ export default function AlunoHome() {
         const usuarioStorage = localStorage.getItem("usuarioLogado");
         if (usuarioStorage) {
           const usuario = JSON.parse(usuarioStorage);
-          setNomeAluno(usuario.nome || "aluno");
+          const primeiroNome = usuario.nome ? usuario.nome.split(" ")[0] : "Aluno";
+          setNomeAluno(primeiroNome);
         }
 
         const response = await api("/api/aluno-portal/dashboard");

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ModalBase } from "@/components/ModalBase";
 import { api } from "@/lib/api";
-import { Settings, Trash2, X } from "lucide-react";
+import { Settings, Trash2, X, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface GerenciarTurmaModalProps {
@@ -23,18 +23,31 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
   const [confirmacaoNome, setConfirmacaoNome] = useState("");
   const [mostrarZonaPerigo, setMostrarZonaPerigo] = useState(false);
 
+  // 👉 NOVO: Estado para a trava de edição
+  const [cienteAlteracao, setCienteAlteracao] = useState(false);
+  
+  // 👉 Verifica automaticamente se o nome digitado é diferente do original
+  const nomeAlterado = turma && nome.trim() !== turma.nome;
+
   useEffect(() => {
     if (isOpen && turma) {
       setNome(turma.nome);
       setPeriodo(turma.periodo?.toString() || "1");
       setConfirmacaoNome(""); 
       setMostrarZonaPerigo(false); 
+      setCienteAlteracao(false); // Reseta a trava ao abrir
     }
   }, [isOpen, turma]);
 
   const handleAtualizar = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!nome) return;
+
+    // 👉 NOVO: Trava a submissão se o nome mudou mas ele não marcou o checkbox
+    if (nomeAlterado && !cienteAlteracao) {
+      alert("Por favor, marque a caixa de confirmação para alterar o nome da turma.");
+      return;
+    }
 
     setIsSubmitting(true);
     
@@ -96,7 +109,6 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
       onSubmit={handleAtualizar}
     >
       <div className="space-y-4">
-        {/* 👉 Ajuste 1: Grid responsivo (1 coluna no celular, 2 no PC) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="edit-nome" className="text-slate-700">Nome da Turma</Label>
@@ -125,6 +137,34 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
           </div>
         </div>
 
+        {/* 👉 NOVO: Zona de Atenção (Aparece apenas se ele digitar um nome diferente) */}
+        {nomeAlterado && (
+          <div className="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-md animate-in fade-in slide-in-from-top-2">
+            <div className="flex gap-3">
+              <AlertTriangle className="size-5 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-bold text-amber-800">Atenção à mudança de nome</h4>
+                <p className="text-xs text-amber-700 mt-1 leading-relaxed">
+                  Você está alterando o nome de <strong className="bg-amber-100 px-1 rounded">{turma.nome}</strong> para <strong className="bg-amber-100 px-1 rounded">{nome}</strong>. Esta alteração será refletida no portal de todos os estudantes vinculados a ela.
+                </p>
+                <label className="flex items-center gap-2 mt-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={cienteAlteracao}
+                    onChange={(e) => setCienteAlteracao(e.target.checked)}
+                    disabled={isSubmitting || isDeleting}
+                    className="size-4 rounded border-amber-400 text-amber-600 focus:ring-amber-500 disabled:opacity-50"
+                  />
+                  <span className="text-sm font-semibold text-amber-900 select-none">
+                    Estou ciente e confirmo a alteração
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        )}
+
         {!mostrarZonaPerigo ? (
           <div className="mt-6 pt-4 border-t border-slate-100 flex justify-end">
             <Button
@@ -138,10 +178,7 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
             </Button>
           </div>
         ) : (
-          /* 👉 Ajuste 2: Container relativo e padding responsivo */
           <div className="mt-6 pt-4 border-t border-red-100 flex flex-col gap-4 bg-red-50 p-3 sm:p-4 rounded-md animate-in fade-in slide-in-from-top-2 relative">
-            
-            {/* 👉 Ajuste 3: Botão 'X' absoluto para não amassar o texto no celular */}
             <button 
               type="button" 
               onClick={() => {
@@ -154,7 +191,6 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
               <X className="size-5" />
             </button>
 
-            {/* pr-8 garante que o texto não passe por baixo do 'X' */}
             <div className="pr-8">
               <h4 className="text-sm font-semibold text-red-800">Zona de Perigo</h4>
               <p className="text-xs text-red-600 mt-1">
@@ -163,7 +199,6 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
             </div>
 
             <div className="space-y-2">
-              {/* 👉 Ajuste 4: leading-relaxed e inline-block para o nome da turma quebrar linha sem estragar o fundo */}
               <Label htmlFor="confirmar-exclusao" className="text-xs font-medium text-red-700 block leading-relaxed">
                 Para confirmar, digite <span className="font-bold bg-red-100 px-1.5 py-0.5 rounded text-red-900 mx-1 inline-block">{turma?.nome}</span> abaixo:
               </Label>
@@ -178,7 +213,6 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
               />
             </div>
 
-            {/* 👉 Ajuste 5: h-auto e whitespace-normal caso o texto do botão precise de 2 linhas em celulares muito pequenos */}
             <Button
               type="button"
               variant="destructive"

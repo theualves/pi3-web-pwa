@@ -10,10 +10,9 @@ import { Plus, RefreshCw } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { api } from "@/lib/api";
 
-// 1. Recebemos o turmaId como prop opcional
 export function TabelaEstudantes({ colunas, turmaId }: any) {
   const [modalAberto, setModalAberto] = useState(false);
-  
+  const [nomeTurma, setNomeTurma] = useState("");
   const [estudanteEditando, setEstudanteEditando] = useState<any>(null);
   const [estudanteExcluindo, setEstudanteExcluindo] = useState<any>(null);
 
@@ -30,7 +29,6 @@ export function TabelaEstudantes({ colunas, turmaId }: any) {
       const meuid = sessao?.id;
 
       if (!meuid) return;
-
       
       const resCursos = await api(`/api/cursos?coordenadorId=${meuid}`);
       if (!resCursos.ok) throw new Error("Erro ao buscar os cursos.");
@@ -42,29 +40,39 @@ export function TabelaEstudantes({ colunas, turmaId }: any) {
         return;
       }
 
-      const cursoIdDoVitor = cursos[0].id;
+      const idDoCurso = cursos[0].id;
       const nomeDoCurso = cursos[0].nome;
 
       let urlAlunos = "";
       if (turmaId) {
         urlAlunos = `/api/aluno-coordenador?turmaId=${turmaId}`;
+        
+        const resTurmas = await api(`/api/turmas?cursoId=${idDoCurso}`);
+        if (resTurmas.ok) {
+          const turmasArray = await resTurmas.json();
+          const turmaEncontrada = turmasArray.find((t: any) => t.id === turmaId);
+          if (turmaEncontrada) {
+            setNomeTurma(turmaEncontrada.nome);
+          }
+        }
+        
       } else {
-        urlAlunos = `/api/usuarios?tipo=ALUNO&cursoId=${cursoIdDoVitor}`;
+        urlAlunos = `/api/usuarios?tipo=ALUNO&cursoId=${idDoCurso}`;
+        setNomeTurma(""); // Limpa o nome se for a visão geral
       }
       
       const resAlunos = await api(urlAlunos);
       const alunos = await resAlunos.json();
       
-      // 3. Formatação ajustada para lidar com as duas rotas
       const dadosFormatados = alunos.map((item: any) => ({
         id: item.id,
-        alunoId: item.aluno?.id || item.id, // IDs para exclusão/edição
+        alunoId: item.aluno?.id || item.id,
         nome: item.usuario?.nome || item.nome,
         email: item.usuario?.email || item.email,
         status: item.usuario?.status || item.status || "Ativo",
         cpf: item.cpf || item.aluno?.cpf || "Sem CPF",
         periodo: item.periodo || item.aluno?.periodo || "",
-        cursoId: item.cursoId || cursoIdDoVitor,
+        cursoId: item.cursoId || idDoCurso,
         curso: item.curso?.nome || nomeDoCurso,
         turma: item.turmaId || item.aluno?.turma || "",
         cargaExigida: item.cargaExigida || item.aluno?.cargaExigida || "",
@@ -96,8 +104,9 @@ export function TabelaEstudantes({ colunas, turmaId }: any) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Estudantes do Curso</h1>
-          <p className="text-sm text-slate-500">Listando alunos vinculados.</p>
+          <h1 className="text-2xl font-bold text-slate-800">
+            {turmaId ? (nomeTurma ? `Estudantes: ${nomeTurma}` : "Estudantes da Turma") : "Estudantes do Curso"}
+          </h1>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">

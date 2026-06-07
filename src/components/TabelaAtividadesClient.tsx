@@ -104,7 +104,6 @@ export function TabelaAtividadesClient() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Atividades Submetidas</h1>
-          <p className="text-sm text-slate-500">Exibindo atividades dos alunos do seu curso.</p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
