@@ -1,19 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DataTable } from "@/components/DataTable"; 
+import { DataTable } from "@/components/DataTable";
 import { ModalEditarAtividade } from "@/components/ModalEditarAtividade";
+import { api } from "@/lib/api";
+import { BotaoNovaAtividade } from "@/components/BotaoNovaAtividade";
 
 export default function AlunoSolicitacoes() {
   const [solicitacoes, setSolicitacoes] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
-  
+
   const [modalEditarAberto, setModalEditarAberto] = useState(false);
   const [atividadeEditando, setAtividadeEditando] = useState<any | null>(null);
 
   const columns = [
     { header: "Atividades Enviadas", accessor: "titulo" },
-    { header: "Data de Envio", accessor: "dataEnvioFormatada" }, 
+    { header: "Data de Envio", accessor: "dataEnvioFormatada" },
     { header: "Status", accessor: "status" },
     { header: "Ações", accessor: "acoes" },
   ];
@@ -23,23 +25,36 @@ export default function AlunoSolicitacoes() {
     try {
       const usuarioStorage = localStorage.getItem("usuarioLogado");
       const usuarioLogado = usuarioStorage ? JSON.parse(usuarioStorage) : null;
-      const alunoId = usuarioLogado?.idAluno || usuarioLogado?.aluno?.id || usuarioLogado?.id;
+      const alunoId =
+        usuarioLogado?.idAluno || usuarioLogado?.aluno?.id || usuarioLogado?.id;
 
       if (!alunoId) {
         setCarregando(false);
         return;
       }
 
-      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes`;
-      const response = await fetch(url);
-      
-      if (!response.ok) throw new Error("Erro ao buscar.");
+      const url = `/api/aluno-portal/solicitacoes`;
+      console.log("🔍 URL chamada:", url); // Para termos certeza que o ID do aluno não está undefined
+
+      const response = await api(url);
+
+      if (!response.ok) {
+        // Capturamos o texto do erro que o servidor enviou antes de quebrar
+        const textoErro = await response.text();
+        console.error(
+          `🚨 Falha na API (Status ${response.status}):`,
+          textoErro,
+        );
+        throw new Error(`Erro ${response.status}: Não foi possível buscar.`);
+      }
 
       const data = await response.json();
 
       const dadosFormatados = data.solicitacoes.map((item: any) => ({
         ...item,
-        dataEnvioFormatada: new Date(item.dataEnvio).toLocaleDateString("pt-BR"),
+        dataEnvioFormatada: new Date(item.dataEnvio).toLocaleDateString(
+          "pt-BR",
+        ),
       }));
 
       setSolicitacoes(dadosFormatados);
@@ -68,8 +83,10 @@ export default function AlunoSolicitacoes() {
       alert("Atividades Aprovadas ou validadas não podem ser excluídas.");
       return;
     }
-    
-    const confirmar = confirm(`Tem certeza que deseja excluir permanentemente a atividade "${row.titulo}"?`);
+
+    const confirmar = confirm(
+      `Tem certeza que deseja excluir permanentemente a atividade "${row.titulo}"?`,
+    );
     if (!confirmar) return;
 
     try {
@@ -77,15 +94,14 @@ export default function AlunoSolicitacoes() {
       const usuario = usuarioStorage ? JSON.parse(usuarioStorage) : null;
       const alunoId = usuario?.idAluno || usuario?.aluno?.id || usuario?.id;
 
-      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes/${row.id}`;
-      
-      const response = await fetch(url, { method: "DELETE" });
+      const url = `/api/aluno-portal/solicitacoes/${row.id}`;
+
+      const response = await api(url, { method: "DELETE" });
 
       if (!response.ok) throw new Error("Erro ao excluir.");
 
       alert("Atividade excluída com sucesso!");
-      carregarMinhasSolicitacoes(); 
-
+      carregarMinhasSolicitacoes();
     } catch (error) {
       console.error(error);
       alert("Erro de conexão ao tentar excluir. Tente novamente.");
@@ -98,6 +114,7 @@ export default function AlunoSolicitacoes() {
         <h1 className="text-2xl md:text-3xl font-bold text-[#004A8D]">
           Minhas Solicitações
         </h1>
+        <BotaoNovaAtividade />
       </div>
 
       {carregando && solicitacoes.length === 0 ? (
@@ -117,11 +134,11 @@ export default function AlunoSolicitacoes() {
         />
       )}
 
-      <ModalEditarAtividade 
+      <ModalEditarAtividade
         isOpen={modalEditarAberto}
         onClose={() => setModalEditarAberto(false)}
         atividade={atividadeEditando}
-        onSuccess={carregarMinhasSolicitacoes} 
+        onSuccess={carregarMinhasSolicitacoes}
       />
     </div>
   );

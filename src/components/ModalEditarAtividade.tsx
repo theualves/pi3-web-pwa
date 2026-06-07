@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertCircle, FileEdit, UploadCloud, Trash2 } from "lucide-react";
+import { api } from "@/lib/api";
 
 interface ModalEditarProps {
   isOpen: boolean;
@@ -79,9 +80,9 @@ export function ModalEditarAtividade({
         data.append("comprovante", arquivo);
       }
 
-      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes/${atividade.id}`;
+      const url = `/api/aluno-portal/solicitacoes/${atividade.id}`;
 
-      const response = await fetch(url, {
+      const response = await api(url, {
         method: "PUT", 
         body: data,
       });
@@ -126,9 +127,9 @@ export function ModalEditarAtividade({
         return;
       }
 
-      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes/${atividade.id}`;
+      const url = `/api/aluno-portal/solicitacoes/${atividade.id}`;
 
-      const response = await fetch(url, {
+      const response = await api(url, {
         method: "DELETE",
       });
 

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IconeSenac } from "./IconeSenac";
 import { useRouter } from "next/navigation";
+import {api} from "@/lib/api";
 import {
   Select,
   SelectContent,
@@ -78,9 +79,9 @@ export default function ModalNovaAtividade({
     }
 
     try {
-      const url = `https://api-horas-complementares.onrender.com/api/aluno-portal/${alunoId}/solicitacoes`;
+      const url = `/api/aluno-portal/solicitacoes`;
 
-      const response = await fetch(url, {
+      const response = await api(url, {
         method: "POST",
         body: formData,
       });
