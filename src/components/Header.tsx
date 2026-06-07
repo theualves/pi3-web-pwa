@@ -91,7 +91,7 @@ export default function Header() {
               alt="Logo"
               width={80}
               height={80}
-              className="w-[70px] md:w-[80px] h-auto"
+              className="w-[70px] md:w-[90px] h-auto"
               priority
             />
           </Link>
@@ -187,7 +187,7 @@ export default function Header() {
         </nav>
       </div>
 
-      <div className="h-[6px] w-full bg-[#F19100]" />
+      <div className="h-[4px] w-full bg-[#F19100]" />
     </header>
   );
 }

@@ -71,7 +71,6 @@ export default function Login() {
       const usuario = data.usuario;
       const perfilBackend = usuario.tipo.toLowerCase(); // Ex: "GESTOR" vira "gestor"
 
-      // Opcional: Valida se o perfil que o usuário escolheu no Select bate com o do banco de dados
       if (perfil !== perfilBackend) {
         setIsAuthenticating(false);
         setErro(`O perfil selecionado está incorreto. Este usuário é um(a) ${perfilBackend}.`);
@@ -80,7 +79,6 @@ export default function Login() {
 
       localStorage.setItem("token", data.token);
 
-      // Salvando no localStorage para o Sidebar e o Header lerem
       localStorage.setItem("usuarioLogado", JSON.stringify({
         id: usuario.id,
         nome: usuario.nome,

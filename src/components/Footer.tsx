@@ -10,8 +10,8 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="w-full flex flex-col">
-      <div className="max-w-[1500px] mx-auto w-full justify-center flex items-center py-16">
+    <footer className="w-full flex flex-col bg-[#F3F3F7]">
+      <div className="max-w-[1500px] mx-auto w-full justify-center flex items-center py-16 ">
         <Image
           src="/LOGO-SENAC80.png"
           alt="Logo"

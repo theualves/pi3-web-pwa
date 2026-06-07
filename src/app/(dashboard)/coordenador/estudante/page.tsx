@@ -107,7 +107,7 @@ export default function PaginaEstudantes() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {turmas.map((turma: any, index: number) => {
             const coresTeams = [
               "bg-[#4F46E5]", // Azul vibrante
@@ -125,24 +125,23 @@ export default function PaginaEstudantes() {
                 href={`/coordenador/estudante/turma/${turma.id}`}
                 className="group"
               >
-                {/* 👉 CARD: Aumentei a altura com 'py-8 px-6' e 'min-h-[120px]' */}
-                <div className="bg-white py-8 px-6 min-h-[120px] rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-[#004A8D] transition-all flex items-center justify-between cursor-pointer">
-                  <div className="flex items-center gap-5">
-                    
-                    {/* 👉 QUADRADINHO: Aumentado para 64x64, cantos mais arredondados e com shrink-0 */}
+                <div className="bg-white py-8 px-6 min-h-[170px] rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-[#004A8D] transition-all flex items-center justify-between cursor-pointer">
+                  <div className="flex items-center gap-5 min-w-0 flex-1 pr-6">
                     <div
-                      className={`${corFundo} rounded shadow-sm group-hover:scale-105 transition-transform flex items-center justify-center shrink-0 w-[64px] h-[64px]`}
+                      className={`${corFundo} rounded shadow-sm group-hover:scale-105 transition-transform flex items-center justify-center shrink-0 w-[56px] h-[56px] md:w-[64px] md:h-[64px]`}
                     >
                       <IconeSenac
                         branca
-                        // 👉 ÍCONE: Aumentado proporcionalmente para não ficar miúdo no quadrado novo
                         style={{ width: "34px", height: "24px" }}
                         className="text-white"
                       />
                     </div>
 
-                    <div className="flex flex-col justify-center">
-                      <h2 className="text-xl font-bold text-slate-800 group-hover:text-[#004A8D] transition-colors leading-tight">
+                    <div className="flex flex-col justify-center min-w-0 flex-1">
+                      <h2
+                        className="text-lg md:text-xl font-bold text-slate-800 group-hover:text-[#004A8D] transition-colors leading-tight"
+                        style={{ overflowWrap: "anywhere" }}
+                      >
                         {turma.nome}
                       </h2>
                       <p className="text-sm text-slate-500 mt-1">
@@ -151,7 +150,7 @@ export default function PaginaEstudantes() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3 shrink-0 w-[72px] justify-end">
                     <button
                       onClick={(e) => handleAbrirGerenciamento(e, turma)}
                       className="p-2 text-slate-400 hover:text-[#004A8D] hover:bg-slate-100 rounded-full transition-colors"
