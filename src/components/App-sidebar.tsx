@@ -2,9 +2,6 @@
 import { useEffect, useState } from "react";
 import {
   Home,
-  Settings,
-  User,
-  Bell,
   BookOpen,
   FileCheck,
   Users,
@@ -20,7 +17,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar, // 👈 Hook nativo do shadcn adicionado aqui
+  useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,7 +26,7 @@ const links = {
   coordenador: [
     { title: "Visão Geral", url: "/coordenador/home", icon: Home },
     { title: "Atividades", url: "/coordenador/atividades", icon: FileCheck },
-    { title: "Estudantes", url: "/coordenador/estudante", icon: FileCheck },
+    { title: "Turmas", url: "/coordenador/estudante", icon: FileCheck },
     { title: "Relatórios", url: "/coordenador/relatorios", icon: BookOpen },
   ],
   gestor: [
@@ -49,21 +46,30 @@ export default function AppSidebar() {
   const pathname = usePathname();
   const [role, setRole] = useState<string | null>(null);
 
-  // 1. Puxamos o controle de estado mobile do próprio shadcn
   const { setOpenMobile, isMobile } = useSidebar();
 
-  // 2. Estados para capturar o movimento do dedo
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
-    setRole(user.role);
+    if (typeof window !== "undefined") {
+      const storage = localStorage.getItem("usuarioLogado");
+      if (storage) {
+        try {
+          const user = JSON.parse(storage);
+          if (user?.role) {
+            setRole(user.role.toLowerCase()); // Garante o padrão em caixa baixa (ex: "ALUNO" vira "aluno")
+          }
+        } catch (error) {
+          console.error("Erro ao ler JSON da role na Sidebar:", error);
+        }
+      }
+    }
   }, []);
 
-  const items = role ? links[role as keyof typeof links] : [];
+  // CORREÇÃO: Garante que a role buscada existe de fato mapeada no objeto estático
+  const items = role && role in links ? links[role as keyof typeof links] : [];
 
-  // 3. Funções que calculam o deslize
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStartX(e.targetTouches[0].clientX);
   };
@@ -76,7 +82,7 @@ export default function AppSidebar() {
     if (!touchStartX || !touchEndX) return;
 
     const distance = touchStartX - touchEndX;
-    const isLeftSwipe = distance > 50; // Margem de segurança de 50px
+    const isLeftSwipe = distance > 50;
 
     if (isLeftSwipe && isMobile) {
       setOpenMobile(false);
@@ -92,7 +98,6 @@ export default function AppSidebar() {
         <SidebarTrigger className="text-white hover:bg-white/10 hover:text-white" />
       </SidebarHeader>
       
-      {/* 4. Eventos aplicados diretamente no conteúdo, sem criar divs extras! */}
       <SidebarContent
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -110,14 +115,13 @@ export default function AppSidebar() {
                       asChild
                       isActive={isActive}
                       className={`text-sm rounded-none h-10 w-full px-4 transition-all 
-            group-data-[collapsible=icon]:!w-full 
-            group-data-[collapsible=icon]:!h-10 
-            group-data-[collapsible=icon]:!p-0 
-            group-data-[collapsible=icon]:justify-center
-            ${isActive ? "font-semibold bg-[#F78C21] text-white" : "font-medium text-sidebar-foreground/70"}
-          `}
+                        group-data-[collapsible=icon]:!w-full 
+                        group-data-[collapsible=icon]:!h-10 
+                        group-data-[collapsible=icon]:!p-0 
+                        group-data-[collapsible=icon]:justify-center
+                        ${isActive ? "font-semibold bg-[#F78C21] text-white" : "font-medium text-sidebar-foreground/70"}
+                      `}
                     >
-                      {/* 5. UX Bônus: Fechar a barra se o aluno clicar no próprio link usando o celular */}
                       <Link href={item.url} onClick={() => isMobile && setOpenMobile(false)}>
                         <item.icon className="shrink-0 size-4" />
                         <span className="group-data-[collapsible=icon]:!hidden">

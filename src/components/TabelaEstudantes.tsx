@@ -3,16 +3,16 @@
 import { useState, useEffect } from "react";
 import { DataTable } from "@/components/DataTable";
 import { NovoEstudanteModal } from "@/components/NovoEstudanteModal";
-import { EditarEstudanteModal } from "@/components/EditarEstudanteModal"; // NOVO
-import { ExcluirEstudanteModal } from "@/components/ExcluirEstudanteModal"; // NOVO
+import { EditarEstudanteModal } from "@/components/EditarEstudanteModal"; 
+import { ExcluirEstudanteModal } from "@/components/ExcluirEstudanteModal"; 
 import { Button } from "@/components/ui/button";
 import { Plus, RefreshCw } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 
-export function TabelaEstudantes({ colunas }: any) {
+// 1. Recebemos o turmaId como prop opcional
+export function TabelaEstudantes({ colunas, turmaId }: any) {
   const [modalAberto, setModalAberto] = useState(false);
   
-  // NOVOS ESTADOS PARA OS MODAIS DE EDIÇÃO E EXCLUSÃO
   const [estudanteEditando, setEstudanteEditando] = useState<any>(null);
   const [estudanteExcluindo, setEstudanteExcluindo] = useState<any>(null);
 
@@ -43,24 +43,30 @@ export function TabelaEstudantes({ colunas }: any) {
       const cursoIdDoVitor = cursos[0].id;
       const nomeDoCurso = cursos[0].nome;
 
-      const urlAlunos = `https://api-horas-complementares.onrender.com/api/usuarios?tipo=ALUNO&cursoId=${cursoIdDoVitor}`;
+      let urlAlunos = "";
+      if (turmaId) {
+        urlAlunos = `https://api-horas-complementares.onrender.com/api/aluno-coordenador?turmaId=${turmaId}`;
+      } else {
+        urlAlunos = `https://api-horas-complementares.onrender.com/api/usuarios?tipo=ALUNO&cursoId=${cursoIdDoVitor}`;
+      }
+      
       const resAlunos = await fetch(urlAlunos);
       const alunos = await resAlunos.json();
       
-      // ATENÇÃO: Adicionamos o alunoId e os dados brutos para o Modal de Edição conseguir usar!
-      const dadosFormatados = alunos.map((usuario: any) => ({
-        id: usuario.id,
-        alunoId: usuario.aluno?.id, // ID necessário para dar o PUT e DELETE no backend
-        nome: usuario.nome,
-        email: usuario.email,
-        status: usuario.status || "Ativo",
-        cpf: usuario.aluno?.cpf || "Sem CPF",
-        periodo: usuario.aluno?.periodo || "",
-        cursoId: usuario.cursoId || cursoIdDoVitor,
-        curso: usuario.curso?.nome || nomeDoCurso,
-        turma: usuario.aluno?.turma || "",
-        cargaExigida: usuario.aluno?.cargaExigida || "",
-        horasRegistradas: usuario.aluno?.cargaExigida || 0
+      // 3. Formatação ajustada para lidar com as duas rotas
+      const dadosFormatados = alunos.map((item: any) => ({
+        id: item.id,
+        alunoId: item.aluno?.id || item.id, // IDs para exclusão/edição
+        nome: item.usuario?.nome || item.nome,
+        email: item.usuario?.email || item.email,
+        status: item.usuario?.status || item.status || "Ativo",
+        cpf: item.cpf || item.aluno?.cpf || "Sem CPF",
+        periodo: item.periodo || item.aluno?.periodo || "",
+        cursoId: item.cursoId || cursoIdDoVitor,
+        curso: item.curso?.nome || nomeDoCurso,
+        turma: item.turmaId || item.aluno?.turma || "",
+        cargaExigida: item.cargaExigida || item.aluno?.cargaExigida || "",
+        horasRegistradas: item.cargaExigida || item.aluno?.cargaExigida || 0
       }));
       
       setEstudantes(dadosFormatados);
@@ -74,7 +80,7 @@ export function TabelaEstudantes({ colunas }: any) {
 
   useEffect(() => {
     carregarEstudantes();
-  }, []);
+  }, [turmaId]); 
 
   const listaSegura = Array.isArray(estudantes) ? estudantes : [];
   const estudantesFiltrados = listaSegura.filter((estudante: any) => {
@@ -89,7 +95,7 @@ export function TabelaEstudantes({ colunas }: any) {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Estudantes do Curso</h1>
-          <p className="text-sm text-slate-500">Listando alunos vinculados ao seu curso.</p>
+          <p className="text-sm text-slate-500">Listando alunos vinculados.</p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
@@ -102,13 +108,13 @@ export function TabelaEstudantes({ colunas }: any) {
           </Button>
         </div>
 
-        {/* MODAIS */}
         <NovoEstudanteModal
           isOpen={modalAberto}
           onClose={(sucesso) => {
             setModalAberto(false);
             if (sucesso) carregarEstudantes();
           }}
+          turmaIdPreSelecionada={turmaId}
         />
 
         {estudanteEditando && (
@@ -134,16 +140,15 @@ export function TabelaEstudantes({ colunas }: any) {
         )}
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden min-h-[200px]">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
         {carregando ? (
           <div className="p-20 text-center text-slate-500">Carregando...</div>
         ) : (
           <DataTable 
             columns={colunas} 
             data={estudantesFiltrados} 
-            // CONECTANDO OS BOTÕES DA TABELA COM OS MODAIS
-            onEditClick={(row) => setEstudanteEditando(row)}
-            onDeleteClick={(row) => setEstudanteExcluindo(row)}
+            onEditClick={(row: any) => setEstudanteEditando(row)}
+            onDeleteClick={(row: any) => setEstudanteExcluindo(row)}
           />
         )}
       </div>

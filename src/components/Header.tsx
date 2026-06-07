@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { IconeSenac } from "./IconeSenac";
 import { Bell, BellRing, ChevronDown, LogOut } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
@@ -16,60 +16,67 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface HeaderProps {
-  isLoggedIn?: boolean;
-  userName?: string;
-}
-
-export default function Header({
-  isLoggedIn = false,
-  userName = "Usuário",
-}: HeaderProps) {
+export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const [notificacoes, setNotificacoes] = useState([]);
   const hasNotificacoes = notificacoes.length > 0;
 
-  const [nomeReal, setNomeReal] = useState(userName);
+  // Estado unificado do usuário para evitar misturar variáveis soltas
+  const [usuario, setUsuario] = useState<{ nome: string; role: string } | null>(null);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const storage = localStorage.getItem("usuarioLogado");
-      if (storage) {
+    // Busca os dados do localStorage apenas no lado do cliente (navegador)
+    const storage = localStorage.getItem("usuarioLogado");
+    if (storage) {
+      try {
         const usuarioLogado = JSON.parse(storage);
-        const nome = usuarioLogado?.nome || usuarioLogado?.usuario?.nome;
+        const nome = usuarioLogado?.nome || "Usuário";
+        const role = usuarioLogado?.role || "aluno";
         
-        if (nome) {
-          setNomeReal(nome);
-        }
+        setUsuario({ nome, role });
+      } catch (error) {
+        console.error("Erro ao decodificar JSON do usuário:", error);
       }
     }
-  }, [isLoggedIn]);
+  }, []);
 
-  let perfil = "Usuário";
+  // Função de logout que limpa o JWT e desloga o usuário de verdade
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuarioLogado");
+    router.push("/");
+  };
 
+  // Define o crachá do perfil com base na URL atual
+  let perfilExibido = "Usuário"; 
   if (pathname?.includes("/gestor")) {
-    perfil = "Gestor";
+    perfilExibido = "Gestor";
   } else if (pathname?.includes("/coordenador")) {
-    perfil = "Coordenador";
-  } else if (pathname?.includes("/aluno") || pathname?.includes("/home")) {
-    perfil = "Aluno";
+    perfilExibido = "Coordenador";
+  } else if (pathname?.includes("/aluno")) {
+    perfilExibido = "Aluno";
   }
 
   const homeLink = pathname?.startsWith("/coordenador")
-  ? "/coordenador/home"
-  : pathname?.startsWith("/gestor")
-  ? "/gestor/home"
-  : pathname?.startsWith("/aluno")
-  ? "/aluno/home"
-  : "https://www.pe.senac.br/";
+    ? "/coordenador/home"
+    : pathname?.startsWith("/gestor")
+    ? "/gestor/home"
+    : pathname?.startsWith("/aluno")
+    ? "/aluno/home"
+    : "https://www.pe.senac.br/";
+
+  // Consideramos logado se encontramos os dados do usuário no estado do cliente
+  const estaAutenticado = !!usuario;
 
   return (
     <header className="flex flex-col w-full">
       <div className="max-w-[1440px] mx-auto w-full flex py-3 px-4 md:px-8 justify-between items-center">
         
         <div className="flex items-center gap-4">
-          {isLoggedIn && (
+          {estaAutenticado && (
             <SidebarTrigger className="md:hidden"/>
           )}
 
@@ -86,8 +93,10 @@ export default function Header({
         </div>
 
         <nav className="flex items-center">
-          {isLoggedIn ? (
+          {estaAutenticado ? (
             <div className="flex items-center gap-3 md:gap-6">
+              
+              {/* Menu de Notificações */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="relative text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full hover:bg-gray-100">
@@ -110,7 +119,6 @@ export default function Header({
                   </div>
 
                   {hasNotificacoes ? (
-                    // Se tem notificações, faz um loop para mostrar
                     notificacoes.map((nota, index) => (
                       <DropdownMenuItem
                         key={index}
@@ -120,7 +128,6 @@ export default function Header({
                       </DropdownMenuItem>
                     ))
                   ) : (
-                    // Se NÃO tem notificações, mostra essa mensagem
                     <div className="py-4 text-center text-sm text-gray-500">
                       Você não tem novas notificações.
                     </div>
@@ -128,6 +135,7 @@ export default function Header({
                 </DropdownMenuContent>
               </DropdownMenu>
 
+              {/* Menu de Usuário */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center gap-3 cursor-pointer group md:shadow-sm md:border border-transparent md:border-[#DEDEDE] rounded-full md:rounded-lg p-1 md:px-3 md:py-2 bg-transparent md:bg-gray-50 hover:bg-gray-100 md:hover:bg-[#F5ECE5] transition-all duration-200">
@@ -139,10 +147,10 @@ export default function Header({
                     </div>
                     <span className="flex flex-col leading-tight hidden sm:flex">
                       <span className="font-semibold text-gray-800 text-sm transition-colors">
-                        {nomeReal}
+                        {usuario?.nome || "Carregando..."}
                       </span>
                       <span className="text-[10px] uppercase tracking-wider font-bold text-gray-500 transition-colors">
-                        {perfil}
+                        {perfilExibido}
                       </span>
                     </span>
                     <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
@@ -151,19 +159,15 @@ export default function Header({
 
                 <DropdownMenuContent className="w-48 mt-2" align="end">
                   <DropdownMenuItem
-                    asChild
-                    className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
+                    onClick={handleLogout}
+                    className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50 flex items-center w-full"
                   >
-                    <Link
-                      href="/"
-                      className="flex items-center w-full cursor-pointer text-gray-700"
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Sair do sistema</span>
-                    </Link>
+                    <LogOut className="mr-2 h-4 w-4 text-red-600" />
+                    <span className="text-red-600 font-medium">Sair do sistema</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+
             </div>
           ) : (
             <Link href="https://faculdadesenacpe.edu.br/contato" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold text-[#014A8E] hover:text-[#F19100] transition-colors duration-200">

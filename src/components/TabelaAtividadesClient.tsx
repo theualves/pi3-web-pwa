@@ -128,7 +128,7 @@ export function TabelaAtividadesClient() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden min-h-[200px] flex flex-col justify-center">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden  flex flex-col justify-center">
         {carregando ? (
           <div className="flex flex-col items-center gap-2 py-10">
             <Loader2 className="h-8 w-8 animate-spin text-[#004A8D]" />

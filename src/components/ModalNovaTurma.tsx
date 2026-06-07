@@ -22,6 +22,7 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
   const [nome, setNome] = useState("");
   const [cursoId, setCursoId] = useState("");
   const [cursos, setCursos] = useState<any[]>([]);
+  const [periodo, setPeriodo] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -38,7 +39,8 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
           .then((data) => {
             setCursos(data);
             // Pré-seleciona se houver um curso padrão
-            const idDoCursoPadrao = usuarioLogado?.cursoId || usuarioLogado?.usuario?.cursoId;
+            const idDoCursoPadrao =
+              usuarioLogado?.cursoId || usuarioLogado?.usuario?.cursoId;
             if (idDoCursoPadrao) setCursoId(idDoCursoPadrao);
           })
           .catch((err) => console.error("Erro ao buscar cursos:", err));
@@ -46,7 +48,7 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
     } else {
       // Limpeza ao fechar
       setNome("");
-      // Não limpamos o cursoId para facilitar cadastros sequenciais, 
+      // Não limpamos o cursoId para facilitar cadastros sequenciais,
       // mas você pode setar vazio se preferir
     }
   }, [isOpen]);
@@ -63,6 +65,7 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
 
     const payload = {
       nome: nome,
+      periodo: parseInt(periodo, 10),
       cursoId: cursoId,
     };
 
@@ -73,7 +76,7 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -103,23 +106,42 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
       onSubmit={handleSalvar}
     >
       <div className="space-y-4">
-        {/* Nome da Turma */}
-        <div className="space-y-2">
-          <Label htmlFor="nome" className="text-slate-700">
-            Nome da Turma
-          </Label>
-          <Input
-            id="nome"
-            placeholder="Ex: TAS049"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-            disabled={isSubmitting}
-            className="h-11"
-          />
+        {/* LINHA 1: Nome da Turma e Período (Lado a Lado) */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="nome" className="text-slate-700">
+              Nome da Turma
+            </Label>
+            <Input
+              id="nome"
+              placeholder="Ex: TAS049"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+              disabled={isSubmitting}
+              className="h-11"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="periodo" className="text-slate-700">
+              Período Atual
+            </Label>
+            <Input
+              id="periodo"
+              type="number"
+              min="1"
+              placeholder="Ex: 1"
+              value={periodo}
+              onChange={(e) => setPeriodo(e.target.value)}
+              required
+              disabled={isSubmitting}
+              className="h-11"
+            />
+          </div>
         </div>
 
-        {/* Curso Associado */}
+        {/* LINHA 2: Curso Associado */}
         <div className="space-y-2">
           <Label className="text-slate-700">Curso Vinculado</Label>
           <Select
@@ -132,7 +154,9 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
               <span className="truncate block text-left w-full pr-4">
                 <SelectValue
                   placeholder={
-                    cursos.length > 0 ? "Selecione o curso" : "Carregando cursos..."
+                    cursos.length > 0
+                      ? "Selecione o curso"
+                      : "Carregando cursos..."
                   }
                 />
               </span>

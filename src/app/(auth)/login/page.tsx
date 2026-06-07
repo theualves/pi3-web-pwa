@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { api } from "@/lib/api"; 
 
 import Loading from "@/components/Loading";
 
@@ -47,7 +48,7 @@ export default function Login() {
     setIsAuthenticating(true);
 
     try {
-      const response = await fetch("https://api-horas-complementares.onrender.com/api/auth/login", {
+      const response = await api("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,6 +64,10 @@ export default function Login() {
 
       // Recebendo e formatando os dados da API
       const data = await response.json();
+
+      console.log("=== RESPOSTA COMPLETA DA API ===", data);
+      console.log("O token veio aqui?", data.token);
+
       const usuario = data.usuario;
       const perfilBackend = usuario.tipo.toLowerCase(); // Ex: "GESTOR" vira "gestor"
 
@@ -72,6 +77,8 @@ export default function Login() {
         setErro(`O perfil selecionado está incorreto. Este usuário é um(a) ${perfilBackend}.`);
         return;
       }
+
+      localStorage.setItem("token", data.token);
 
       // Salvando no localStorage para o Sidebar e o Header lerem
       localStorage.setItem("usuarioLogado", JSON.stringify({
