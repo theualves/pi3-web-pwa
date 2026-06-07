@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { ModalBase } from "@/components/ModalBase";
 import { IconeSenac } from "./IconeSenac";
+import { api } from "@/lib/api";
 
 interface NovaTurmaModalProps {
   isOpen: boolean;
@@ -32,9 +33,9 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
       const coordenadorId = usuarioLogado?.id;
 
       if (coordenadorId) {
-        const urlCursos = `https://api-horas-complementares.onrender.com/api/cursos?coordenadorId=${coordenadorId}`;
+        const urlCursos = `/api/cursos?coordenadorId=${coordenadorId}`;
 
-        fetch(urlCursos)
+        api(urlCursos)
           .then((res) => res.json())
           .then((data) => {
             setCursos(data);
@@ -70,8 +71,8 @@ export function NovaTurmaModal({ isOpen, onClose }: NovaTurmaModalProps) {
     };
 
     try {
-      const response = await fetch(
-        "https://api-horas-complementares.onrender.com/api/turmas",
+      const response = await api(
+        "/api/turmas",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

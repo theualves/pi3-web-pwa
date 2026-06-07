@@ -3,14 +3,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Plus, Users, ChevronRight, Loader2 } from "lucide-react";
+import { Plus, Users, ChevronRight, Loader2, Settings } from "lucide-react";
 import {NovaTurmaModal} from "@/components/ModalNovaTurma";
+import { GerenciarTurmaModal } from "@/components/GerenciarTurmaModal";
 import { api } from "@/lib/api";
 
 export default function PaginaEstudantes() {
   const [turmas, setTurmas] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [modalTurmaAberto, setModalTurmaAberto] = useState(false);
+  const [modalGerenciarAberto, setModalGerenciarAberto] = useState(false);
+  const [turmaSelecionada, setTurmaSelecionada] = useState(null);
 
   const carregarTurmas = async () => {
     try {
@@ -49,6 +52,12 @@ export default function PaginaEstudantes() {
     carregarTurmas();
   }, []);
 
+  const handleAbrirGerenciamento = (e: React.MouseEvent, turma: any) => {
+    e.preventDefault(); // Impede que o clique no botão ative o <Link>
+    setTurmaSelecionada(turma);
+    setModalGerenciarAberto(true);
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -71,6 +80,16 @@ export default function PaginaEstudantes() {
         onClose={(sucesso) => {
           setModalTurmaAberto(false);
           if (sucesso) carregarTurmas(); // Atualiza a lista se salvou com sucesso
+        }}
+      />
+
+      <GerenciarTurmaModal 
+        isOpen={modalGerenciarAberto}
+        turma={turmaSelecionada}
+        onClose={(sucesso) => {
+          setModalGerenciarAberto(false);
+          setTurmaSelecionada(null);
+          if (sucesso) carregarTurmas();
         }}
       />
 
@@ -106,7 +125,17 @@ export default function PaginaEstudantes() {
                     </p>
                   </div>
                 </div>
-                <ChevronRight className="size-5 text-slate-300 group-hover:text-[#004A8D] transition-colors" />
+
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={(e) => handleAbrirGerenciamento(e, turma)}
+                    className="p-2 text-slate-400 hover:text-[#004A8D] hover:bg-slate-100 rounded-full transition-colors"
+                    title="Gerenciar Turma"
+                  >
+                    <Settings className="size-5" />
+                  </button>
+                  <ChevronRight className="size-5 text-slate-300 group-hover:text-[#004A8D] transition-colors" />
+                </div>
               </div>
             </Link>
           ))}
