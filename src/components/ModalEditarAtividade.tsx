@@ -29,6 +29,7 @@ export function ModalEditarAtividade({
   onSuccess,
 }: ModalEditarProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [baixandoArquivo, setBaixandoArquivo] = useState(false); // 👉 Novo estado para o botão de arquivo
   const [formData, setFormData] = useState({
     titulo: "",
     categoria: "",
@@ -52,6 +53,28 @@ export function ModalEditarAtividade({
       setArquivo(null);
     }
   }, [atividade]);
+
+  const handleBaixarComprovante = async () => {
+    setBaixandoArquivo(true);
+    try {
+      const res = await api(`/api/atividades/${atividade.id}/comprovante/download`);
+
+      if (!res.ok) {
+        throw new Error("Erro ao carregar o comprovante do servidor.");
+      }
+
+      // Transforma a resposta em arquivo visualizável
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, "_blank"); // Abre em uma nova aba
+
+    } catch (error) {
+      console.error(error);
+      alert("Não foi possível carregar o arquivo. Ele pode ter sido removido.");
+    } finally {
+      setBaixandoArquivo(false);
+    }
+  };
 
   const handleSalvar = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -249,13 +272,17 @@ export function ModalEditarAtividade({
                   <UploadCloud className="h-5 w-5 sm:h-6 sm:w-6 text-slate-400 mb-2" />
                   <span className="text-[10px] sm:text-xs text-slate-500 mb-2 text-center">
                     Só envie um arquivo novo se o antigo foi recusado. <br />
-                    <a
-                      href={`https://api-horas-complementares.onrender.com/${atividade.comprovante}`}
-                      target="_blank"
-                      className="text-blue-500 underline mt-1 inline-block"
+                    
+                    {/* 👉 Link substituído pelo botão inteligente aqui! */}
+                    <button
+                      type="button"
+                      onClick={handleBaixarComprovante}
+                      disabled={baixandoArquivo}
+                      className="text-[#004A8D] font-medium hover:underline mt-1 bg-transparent border-none cursor-pointer"
                     >
-                      Ver arquivo atual
-                    </a>
+                      {baixandoArquivo ? "Carregando..." : "Ver arquivo atual"}
+                    </button>
+
                   </span>
                   <Input
                     type="file"
@@ -268,10 +295,6 @@ export function ModalEditarAtividade({
                 </div>
               </div>
 
-              {/* Rodapé Responsivo:
-                flex-col-reverse no celular (botão de excluir fica por último e abaixo)
-                sm:flex-row no desktop (lado a lado, como era antes)
-              */}
               <DialogFooter className="pt-4 border-t mt-4 flex flex-col-reverse sm:flex-row w-full justify-between gap-3 sm:gap-0 items-stretch sm:items-center">
                 <Button
                   type="button"

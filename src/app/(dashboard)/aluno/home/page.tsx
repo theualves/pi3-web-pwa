@@ -16,14 +16,12 @@ export default function AlunoHome() {
   useEffect(() => {
     const carregarDashboard = async () => {
       try {
-        // Pega o nome do aluno do localStorage para deixar o "Olá" dinâmico
         const usuarioStorage = localStorage.getItem("usuarioLogado");
         if (usuarioStorage) {
           const usuario = JSON.parse(usuarioStorage);
           setNomeAluno(usuario.nome || "aluno");
         }
 
-        // 👉 Rota limpa usando a nossa api.js (o token vai automático!)
         const response = await api("/api/aluno-portal/dashboard");
 
         if (!response.ok) throw new Error("Erro ao buscar dados");

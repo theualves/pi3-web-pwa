@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import { Plus, RefreshCw, Search } from "lucide-react"; 
-import { ModalCriarCurso } from "@/components/ModalCriarCurso"; 
+import { ModalCriarCurso } from "@/components/ModalCriarCurso";
+import {api} from "@/lib/api";
 
 export default function CursosPage() {
   const [modalAberto, setModalAberto] = useState(false);
@@ -17,7 +18,7 @@ export default function CursosPage() {
   const carregarCursos = async () => {
     try {
       setCarregando(true);
-      const response = await fetch("https://api-horas-complementares.onrender.com/api/cursos");
+      const response = await api("/api/cursos");
       const dados = await response.json();
       setCursos(dados);
     } catch (error) {

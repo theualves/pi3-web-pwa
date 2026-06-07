@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { UserPlus } from "lucide-react";
 import { ModalBase } from "@/components/ModalBase";
 import { IconeSenac } from "./IconeSenac";
+import {api} from "@/lib/api";
 
 interface ModalCriarCoordenadorProps {
   isOpen: boolean;
@@ -23,10 +23,9 @@ export function ModalCriarCoordenador({ isOpen, onClose, onSuccess }: ModalCriar
   const [cursos, setCursos] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Busca a lista de cursos para o Select
   useEffect(() => {
     if (isOpen) {
-      fetch("https://api-horas-complementares.onrender.com/api/cursos")
+      api("/api/cursos")
         .then((res) => res.json())
         .then((data) => setCursos(data))
         .catch((err) => console.error("Erro ao carregar cursos:", err));
@@ -46,14 +45,14 @@ export function ModalCriarCoordenador({ isOpen, onClose, onSuccess }: ModalCriar
     const payload = {
       nome: nome,
       email: email,
-      senha: "123", // Senha padrão conforme sua regra
+      senha: "123", 
       tipo: "COORDENADOR",
       cursoId: cursoId,
       status: status,
     };
 
     try {
-      const response = await fetch("https://api-horas-complementares.onrender.com/api/usuarios", {
+      const response = await api("/api/usuarios", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -63,14 +62,13 @@ export function ModalCriarCoordenador({ isOpen, onClose, onSuccess }: ModalCriar
         throw new Error("Erro ao salvar coordenador.");
       }
 
-      // Limpeza e Sucesso
       setNome("");
       setEmail("");
       setCursoId("");
       setStatus("Ativo");
       
-      onSuccess(); // Recarrega a tabela na página pai
-      onClose();   // Fecha o modal
+      onSuccess(); 
+      onClose();  
     } catch (error) {
       console.error(error);
       alert("Erro de conexão com o servidor.");

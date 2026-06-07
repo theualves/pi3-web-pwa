@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { DataTable } from "@/components/DataTable";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/SearchInput";
 import { ModalCriarCoordenador } from "@/components/ModalCriarCoordenador";
+import {api} from "@/lib/api";
 
 export function TabelaUsuarios({ colunas }: any) {
   const [usuarios, setUsuarios] = useState<any[]>([]);
@@ -17,8 +18,8 @@ export function TabelaUsuarios({ colunas }: any) {
   const carregarCoordenadores = async () => {
     setCarregando(true);
     try {
-      const response = await fetch(
-        "https://api-horas-complementares.onrender.com/api/usuarios?tipo=COORDENADOR",
+      const response = await api(
+        "/api/usuarios?tipo=COORDENADOR",
       );
       if (!response.ok) throw new Error("Erro ao buscar coordenadores.");
 
@@ -48,8 +49,8 @@ export function TabelaUsuarios({ colunas }: any) {
 
     if (confirmou) {
       try {
-        const response = await fetch(
-          `https://api-horas-complementares.onrender.com/api/usuarios/${id}`,
+        const response = await api(
+          `/api/usuarios/${id}`,
           {
             method: "DELETE",
           },
