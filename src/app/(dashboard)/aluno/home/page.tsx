@@ -45,7 +45,6 @@ export default function AlunoHome() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          {/* Nome do aluno dinâmico */}
           <h1 className="text-2xl font-bold text-slate-800">
             Olá, {nomeAluno}!
           </h1>

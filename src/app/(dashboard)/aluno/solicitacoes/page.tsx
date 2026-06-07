@@ -109,11 +109,11 @@ export default function AlunoSolicitacoes() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 p-6 md:p-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl md:text-3xl font-bold text-[#004A8D]">
+    <div className="w-full flex flex-col gap-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <h1 className="text-2xl font-bold text-slate-800">
           Minhas Solicitações
-        </h1>
+        </h1> 
         <BotaoNovaAtividade />
       </div>
 
