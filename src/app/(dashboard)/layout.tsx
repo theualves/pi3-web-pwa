@@ -16,7 +16,7 @@ export default function DashboardLayout({
         <main className="flex-1 flex flex-col w-full bg-[#F7F7FB]">
           
           <div className="border-b border-slate-200 bg-white flex items-center min-h-[64px]">
-            <Header isLoggedIn={true} />
+            <Header />
           </div>
 
           <div className="p-6 flex-1 w-full max-w-[1400px] mx-auto">
