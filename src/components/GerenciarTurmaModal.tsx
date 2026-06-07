@@ -21,8 +21,6 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
   const [isDeleting, setIsDeleting] = useState(false);
   
   const [confirmacaoNome, setConfirmacaoNome] = useState("");
-  
-  // 👉 NOVO: Estado para esconder/mostrar a área de exclusão
   const [mostrarZonaPerigo, setMostrarZonaPerigo] = useState(false);
 
   useEffect(() => {
@@ -30,7 +28,7 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
       setNome(turma.nome);
       setPeriodo(turma.periodo?.toString() || "1");
       setConfirmacaoNome(""); 
-      setMostrarZonaPerigo(false); // 👉 Esconde a zona de perigo toda vez que o modal abre
+      setMostrarZonaPerigo(false); 
     }
   }, [isOpen, turma]);
 
@@ -98,7 +96,8 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
       onSubmit={handleAtualizar}
     >
       <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+        {/* 👉 Ajuste 1: Grid responsivo (1 coluna no celular, 2 no PC) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="edit-nome" className="text-slate-700">Nome da Turma</Label>
             <Input
@@ -126,69 +125,69 @@ export function GerenciarTurmaModal({ isOpen, turma, onClose }: GerenciarTurmaMo
           </div>
         </div>
 
-        {/* 👉 CONTROLE CONDICIONAL DA ZONA DE PERIGO */}
         {!mostrarZonaPerigo ? (
-          // Botão Inicial (Discreto, não atrai tanta atenção)
           <div className="mt-6 pt-4 border-t border-slate-100 flex justify-end">
             <Button
               type="button"
               variant="outline"
               onClick={() => setMostrarZonaPerigo(true)}
-              className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
-              disabled={isSubmitting}
+              className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 w-full sm:w-auto"
             >
               <Trash2 className="size-4 mr-2" />
               Apagar turma
             </Button>
           </div>
         ) : (
-          // A Zona de Perigo Expandida
-          <div className="mt-6 pt-4 border-t border-red-100 flex flex-col gap-4 bg-red-50 p-4 rounded-md animate-in fade-in slide-in-from-top-2">
-            <div className="flex justify-between items-start">
-              <div>
-                <h4 className="text-sm font-semibold text-red-800">Zona de Perigo</h4>
-                <p className="text-xs text-red-600 mt-1">
-                  Esta ação é permanente e deixará os alunos desta turma sem vínculo.
-                </p>
-              </div>
-              {/* Botão de Cancelar (Voltar) */}
-              <button 
-                type="button" 
-                onClick={() => {
-                  setMostrarZonaPerigo(false);
-                  setConfirmacaoNome("");
-                }}
-                className="text-red-400 hover:text-red-700 transition-colors p-1"
-                title="Cancelar exclusão"
-              >
-                <X className="size-4" />
-              </button>
+          /* 👉 Ajuste 2: Container relativo e padding responsivo */
+          <div className="mt-6 pt-4 border-t border-red-100 flex flex-col gap-4 bg-red-50 p-3 sm:p-4 rounded-md animate-in fade-in slide-in-from-top-2 relative">
+            
+            {/* 👉 Ajuste 3: Botão 'X' absoluto para não amassar o texto no celular */}
+            <button 
+              type="button" 
+              onClick={() => {
+                setMostrarZonaPerigo(false);
+                setConfirmacaoNome("");
+              }}
+              className="absolute top-2 right-2 text-red-400 hover:text-red-700 hover:bg-red-100 transition-colors p-1.5 rounded-md"
+              title="Cancelar exclusão"
+            >
+              <X className="size-5" />
+            </button>
+
+            {/* pr-8 garante que o texto não passe por baixo do 'X' */}
+            <div className="pr-8">
+              <h4 className="text-sm font-semibold text-red-800">Zona de Perigo</h4>
+              <p className="text-xs text-red-600 mt-1">
+                Esta ação é permanente e deixará os alunos desta turma sem vínculo.
+              </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmar-exclusao" className="text-xs font-medium text-red-700">
-                Para confirmar, digite <span className="font-bold bg-red-100 px-1 py-0.5 rounded text-red-900 select-none">{turma?.nome}</span> abaixo:
+              {/* 👉 Ajuste 4: leading-relaxed e inline-block para o nome da turma quebrar linha sem estragar o fundo */}
+              <Label htmlFor="confirmar-exclusao" className="text-xs font-medium text-red-700 block leading-relaxed">
+                Para confirmar, digite <span className="font-bold bg-red-100 px-1.5 py-0.5 rounded text-red-900 mx-1 inline-block">{turma?.nome}</span> abaixo:
               </Label>
               <Input
                 id="confirmar-exclusao"
-                placeholder="Digite o nome exato da turma"
+                placeholder="Nome da turma"
                 value={confirmacaoNome}
                 onChange={(e) => setConfirmacaoNome(e.target.value)}
                 disabled={isSubmitting || isDeleting}
-                className="h-10 border-red-200 focus-visible:ring-red-500 bg-white text-slate-800"
+                className="h-11 border-red-200 focus-visible:ring-red-500 bg-white text-slate-800"
                 autoComplete="off"
               />
             </div>
 
+            {/* 👉 Ajuste 5: h-auto e whitespace-normal caso o texto do botão precise de 2 linhas em celulares muito pequenos */}
             <Button
               type="button"
               variant="destructive"
               onClick={handleExcluir}
               disabled={isSubmitting || isDeleting || confirmacaoNome !== turma?.nome}
-              className="w-full h-11"
+              className="w-full min-h-[44px] h-auto py-2 whitespace-normal text-center"
             >
-              <Trash2 className="size-4 mr-2" />
-              {isDeleting ? "Excluindo..." : "Estou ciente, excluir esta turma"}
+              <Trash2 className="size-4 mr-2 shrink-0" />
+              <span>{isDeleting ? "Excluindo..." : "Estou ciente, excluir esta turma"}</span>
             </Button>
           </div>
         )}
