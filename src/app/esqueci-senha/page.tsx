@@ -24,23 +24,18 @@ import Link from "next/link";
 export default function EsqueciSenha() {
   const [perfil, setPerfil] = useState<string>("");
   
-  // Novos estados para a integração
-  const [identificador, setIdentificador] = useState(""); // Matrícula, ID ou Identificação
   const [email, setEmail] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Limpa os campos quando o usuário troca de perfil
   const handleTrocarPerfil = (value: string) => {
     setPerfil(value);
-    setIdentificador("");
     setEmail("");
     setErro("");
     setMensagem("");
   };
 
-  // Função que envia os dados para o backend na porta 3001
   const handleRecuperar = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro("");
@@ -57,19 +52,21 @@ export default function EsqueciSenha() {
       const response = await fetch("https://api-horas-complementares.onrender.com/api/auth/recuperar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // O backend pediu apenas o email no JSON, então enviamos apenas ele
         body: JSON.stringify({ email }),
       });
 
+      // Lemos o JSON de resposta para pegar as mensagens exatas do backend
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error("Erro ao solicitar recuperação");
+        throw new Error(data.error || "Erro ao solicitar recuperação");
       }
 
-      setMensagem("Se os dados estiverem corretos, um link de recuperação foi gerado!");
-      setIdentificador("");
+      setMensagem("Se os dados estiverem corretos, um link de recuperação foi enviado para o seu e-mail!");
       setEmail("");
-    } catch (error) {
-      setErro("Não foi possível processar a solicitação no momento.");
+    } catch (error: any) {
+      // Exibe "Usuário não encontrado" ou erros de servidor
+      setErro(error.message || "Não foi possível processar a solicitação no momento.");
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +99,6 @@ export default function EsqueciSenha() {
             
             <form onSubmit={handleRecuperar} className="space-y-4 flex flex-col">
               
-              {/* O bug do SelectTrigger foi corrigido aqui */}
               <Select onValueChange={handleTrocarPerfil}>
                 <SelectTrigger className="w-full h-12 text-base text-slate-600">
                   <SelectValue placeholder="Selecione seu perfil" />
@@ -114,57 +110,11 @@ export default function EsqueciSenha() {
                 </SelectContent>
               </Select>
 
-              {perfil === "aluno" && (
-                <div className="space-y-4">
+              {/* 👉 O código ficou muito mais enxuto aqui! */}
+              {perfil && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
                   <Input 
-                    placeholder="Matrícula" 
-                    value={identificador}
-                    onChange={(e) => setIdentificador(e.target.value)}
-                    required
-                    className="h-12" 
-                  />
-                  <Input 
-                    placeholder="Email" 
-                    type="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-12" 
-                  />
-                </div>
-              )}
-
-              {perfil === "coordenador" && ( // Corrigido erro de digitação de "coordernador"
-                <div className="space-y-4">
-                  <Input 
-                    placeholder="ID do coordenador" 
-                    value={identificador}
-                    onChange={(e) => setIdentificador(e.target.value)}
-                    required
-                    className="h-12" 
-                  />
-                  <Input 
-                    placeholder="Email" 
-                    type="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-12" 
-                  />
-                </div>
-              )}
-
-              {perfil === "gestor" && (
-                <div className="space-y-4">
-                  <Input 
-                    placeholder="Identificação administrativa" 
-                    value={identificador}
-                    onChange={(e) => setIdentificador(e.target.value)}
-                    required
-                    className="h-12" 
-                  />
-                  <Input 
-                    placeholder="Email" 
+                    placeholder="E-mail cadastrado" 
                     type="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -195,7 +145,6 @@ export default function EsqueciSenha() {
                 {isLoading ? "Enviando..." : "Enviar link"}
               </Button>
 
-              {/* Link para voltar para o login */}
               <Link
                 href="/"
                 className="text-sm text-center block text-[#004A8D] hover:underline mt-4"
