@@ -156,7 +156,7 @@ export default function HomePage() {
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 w-full">
         <div className="flex items-center gap-2 mb-6">
           <h2 className="text-lg font-bold text-slate-800">
-            Termômetro da Fila de Trabalho
+            Andamento das Validações
           </h2>
         </div>
 
@@ -201,7 +201,7 @@ export default function HomePage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0">
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col min-w-0">
           <h2 className="text-lg font-bold text-slate-800 mb-6">
-            Horas Validadas por Pilar
+            Horas por Categoria
           </h2>
 
           <div className="flex-1 flex flex-col justify-center gap-6">
