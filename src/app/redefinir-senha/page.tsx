@@ -37,7 +37,9 @@ export default function RedefinirSenha() {
       }
 
       try {
-        const response = await fetch(`http://localhost:3001/api/auth/validar-token?token=${token}`);
+        // Usa a variável da Vercel ou o link direto do Render como segurança
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api-horas-complementares.onrender.com";
+        const response = await fetch(`${apiUrl}/api/auth/validar-token?token=${token}`);
         const data = await response.json();
 
         if (data.valid) {
@@ -73,7 +75,8 @@ export default function RedefinirSenha() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api-horas-complementares.onrender.com/api/auth/redefinir", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api-horas-complementares.onrender.com";
+      const response = await fetch(`${apiUrl}/api/auth/redefinir`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, novaSenha }),
